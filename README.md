@@ -1,1 +1,2 @@
-Network distribution inference and random network generation using geometry
+READ PACKAGE README (/network_geo)
+READ EXPERIMENTS README (/experiments)
