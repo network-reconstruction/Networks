@@ -6,7 +6,7 @@
 
 Below is the file tree structure of the `network_geo` package:
 
-
+```
 network_geo/
 ├── network_geo/
 │   ├── __init__.py
@@ -39,7 +39,7 @@ network_geo/
 ├── setup.py
 ├── README.md
 └── .gitignore
-
+```
 
 
 ## Installation
