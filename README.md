@@ -3,8 +3,8 @@
 Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 dissertation)
 
 Contact via
-LinkedIn: ```https://www.linkedin.com/in/yi-yao-tan-9719301a3/```
-Email: ```yytanacademic@gmail.com```
+LinkedIn: [Yi Yao Tan](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
+Email: [Yi Yao Tan](mailto:yytanacademic@gmail.com)
 
 Hopefully this will become a larger project in network geometry studying input-output network.
 
