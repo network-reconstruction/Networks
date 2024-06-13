@@ -1,8 +1,13 @@
-# Network Geometry:
+# Network Reconstruction:
 
-Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 dissertation)
+## Contributors
+- Yi Yao Tan (MFoCS University of Oxford)- Network Geometry and Analysis
 
-Hopefully this will become a larger project in network geometry studying input-output networks.
+
+
+## Goal
+
+Hopefully this will become a larger project in network reconstruction studying input-output networks.
 
 ## Contact 
 
