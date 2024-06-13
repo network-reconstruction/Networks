@@ -27,7 +27,7 @@ We develop in the same way as the
 
 ## Package Creation/ Export:
 
-In case more packages need to be created two scripts have been provided 
+In case more packages need to be created two scripts have been provided, documentation are auto compiled with package `sphinx`
 
 ### Package setup: `setup_file_tree.sh` 
 
@@ -35,7 +35,38 @@ Creates a generic file tree for a package.
 
 ### Package creation: `create_package.sh` 
 
-Converts folder into package.
+Builds folder into package.
+
+###  Documentation creation:
+
+Using `sphinx` package
+
+1) Install: 
+```bash
+pip install sphinx
+```
+
+2) Start:
+```bash
+sphinx-quickstart
+```
+
+3) Update `conf.py` file: 
+```python
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../my_package'))
+```
+
+4) Create documentation:
+```bash
+sphinx-apidoc -o source/ ../my_package
+```
+
+5) Build documentation:
+```bash
+make html
+``` 
 
 ## Structure of packages:
 
