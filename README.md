@@ -29,7 +29,7 @@ Real world data such as input-output-networks and other weighted, directed netwo
 
 ## Development:
 
-We develop in the same way as the 
+We develop in the same way as in spirit of MLOPs where orchestrated experiments are in the ```\experiments``` folder and automation in packages.
 ![Development Model](readme-images/MLOPS_pipeline.png)
 
 ## Package Creation/ Export:
