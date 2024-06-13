@@ -114,9 +114,32 @@ class H2Model:
         plt.ylabel("Frequency")
         plt.yscale('log')
         plt.show()
+        
+    def get_graph(self) -> nx.Graph:
+        """
+        Get the generated network graph.
 
-# Example usage
-h2_model = H2Model(N=100, beta=2, avg_degree=5, gamma=2.5)
-G_h2 = h2_model.generate_network()
-h2_model.plot_network()
-h2_model.plot_degree_distribution()
+        Returns:
+            nx.Graph: The generated network graph.
+
+        Raises:
+            ValueError: If the network has not been generated yet.
+        """
+        if self.G is None:
+            raise ValueError("Network has not been generated yet")
+        return self.G
+
+
+if __name__ == "__main__":
+    print("Generating network...")
+    model = H2Model(N=100, beta=2, avg_degree=5, gamma=2.5)
+    print(f"Generated Number of nodes: {len(model.get_graph().nodes)}")
+
+    print("Plotting network...")
+    visualizer = NetworkVisualizer(model.get_graph())
+    network_html = visualizer.plot_network("test_network.html")
+    print(f"Network plot saved at: {network_html}")
+
+    print("Plotting degree distribution...")
+    degree_distribution_file = visualizer.plot_degree_distribution("s1_degree_distribution.png")
+    print(f"Degree distribution plot saved at: {degree_distribution_file}")

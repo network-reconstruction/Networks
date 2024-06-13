@@ -1,0 +1,7 @@
+networkx
+setuptools
+matplotlib
+pyvis
+numpy
+H2
+jax

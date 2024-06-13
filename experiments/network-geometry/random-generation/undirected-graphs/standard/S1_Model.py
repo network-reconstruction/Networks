@@ -8,9 +8,8 @@ Papadopoulos, F., Krioukov, D., Boguñá, M., & Vahdat, A. (2008). Efficient Rou
 
 import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
-from pyvis.network import Network
-from typing import Callable, List
+from typing import Callable, Optional
+from network_visualizer import NetworkVisualizer
 
 class S1Model:
     def __init__(self, N: int, beta: float, avg_degree: float):
@@ -32,12 +31,12 @@ class S1Model:
         if avg_degree <= 0:
             raise ValueError("Average degree must be positive")
 
-        self.N = N
-        self.beta = beta
-        self.avg_degree = avg_degree
-        self.G = None
+        self.N: int = N
+        self.beta: float = beta
+        self.avg_degree: float = avg_degree
+        self.G: Optional[nx.Graph] = None
 
-    def initialize_hidden_degrees(self, distribution: Callable, **kwargs) -> np.ndarray:
+    def initialize_hidden_degrees(self, distribution: Callable[..., np.ndarray], **kwargs) -> np.ndarray:
         """
         Initialize hidden degrees for the nodes based on a given distribution.
 
@@ -59,7 +58,7 @@ class S1Model:
         """
         return np.random.uniform(0, 2 * np.pi, size=self.N)
 
-    def generate_network(self, distribution: Callable, **kwargs) -> nx.Graph:
+    def generate_network(self, distribution: Callable[..., np.ndarray], **kwargs) -> nx.Graph:
         """
         Generate the network based on the S1 model.
 
@@ -88,44 +87,31 @@ class S1Model:
         self.G = G
         return G
 
-    def plot_network(self, notebook: bool = False) -> None:
+    def get_graph(self) -> nx.Graph:
         """
-        Plot the network using PyVis.
+        Get the generated network graph.
 
-        Args:
-            notebook (bool): If True, render the plot in a Jupyter Notebook.
-        """
-        if self.G is None:
-            raise ValueError("Network has not been generated yet")
+        Returns:
+            nx.Graph: The generated network graph.
 
-        net = Network(notebook=notebook)
-        net.from_nx(self.G)
-        net.show("s1_network.html")
-
-    def plot_degree_distribution(self) -> None:
-        """
-        Plot the degree distribution of the generated network.
+        Raises:
+            ValueError: If the network has not been generated yet.
         """
         if self.G is None:
             raise ValueError("Network has not been generated yet")
+        return self.G
 
-        degrees = [self.G.degree(n) for n in self.G.nodes()]
-        plt.hist(degrees, bins=30, edgecolor='black')
-        plt.title("Degree Distribution")
-        plt.xlabel("Degree")
-        plt.ylabel("Frequency")
-        plt.yscale('log')
-        plt.show()
+if __name__ == "__main__":
+    print("Generating network...")
+    model = S1Model(N=100, beta=2, avg_degree=5)
+    model.generate_network(np.random.pareto, a=4)
+    print(f"Generated Number of nodes: {len(model.get_graph().nodes)}")
 
-# Example usage
-s1_model = S1Model(N=100, beta=2, avg_degree=5)
+    print("Plotting network...")
+    visualizer = NetworkVisualizer(model.get_graph())
+    network_html = visualizer.plot_network("test_network.html")
+    print(f"Network plot saved at: {network_html}")
 
-# Generate network with hidden degrees following a normal distribution
-G_s1_normal = s1_model.generate_network(np.random.normal, loc=0, scale=1)
-s1_model.plot_network()
-s1_model.plot_degree_distribution()
-
-# Generate network with hidden degrees following a power-law distribution
-G_s1_powerlaw = s1_model.generate_network(np.random.pareto, a=3)
-s1_model.plot_network()
-s1_model.plot_degree_distribution()
+    print("Plotting degree distribution...")
+    degree_distribution_file = visualizer.plot_degree_distribution("s1_degree_distribution.png")
+    print(f"Degree distribution plot saved at: {degree_distribution_file}")

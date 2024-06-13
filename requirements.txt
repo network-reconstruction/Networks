@@ -1,0 +1,11 @@
+pyvis
+setuptools
+pytest
+flask
+s1_model
+numpy
+networkx
+S1_Model
+jax
+matplotlib
+network_visualizer

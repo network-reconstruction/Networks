@@ -6,6 +6,10 @@
 
 ## Goal
 
+Two main tasks:
+1) Network to Manifold Embedding
+2) Manifold to Network (Random Statistical Ensemble Generation)
+
 Hopefully this will become a larger project in network reconstruction studying input-output networks.
 
 ## Contact 
@@ -16,6 +20,12 @@ Main admin: Yi Yao Tan
 
 [Email](mailto:yytanacademic@gmail.com)
 
+## Initial Setup:
+
+Running `.\scripts\setup\setup.sh` will create conda environment and create and download requirements (run from network_reconstruction root, eg. same folder as this readme)
+pyvis only compatible with python 3.10. Also works when you are missing dependencies and want to update the environment it will ask to create new conda env or use old env.
+
+## Organization
 Consists of four main branches:
 
 ## Network Geometry Package: ```\network-geometry```
@@ -40,7 +50,7 @@ Real world data such as input-output-networks and other weighted, directed netwo
 We develop in the same way as in spirit of MLOPs where orchestrated experiments are in the ```\experiments``` folder and automation in packages.
 ![Development Model](readme-images/MLOPS_pipeline.png)
 
-## Package Creation/ Export:
+## Package Creation/ Export found in `network_reconstruction\scripts\package-generation`:
 
 In case more packages need to be created two scripts have been provided, documentation are auto compiled with package `sphinx`
 

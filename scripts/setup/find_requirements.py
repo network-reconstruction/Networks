@@ -69,10 +69,10 @@ def create_requirements_txt(dependencies: Set[str]):
             req_file.write(f"{dependency}\n")
 
 def main():
-    root_dir = input("Enter the root directory of your project: ")
+    #root directory is argument of the script
+    root_dir = sys.argv[1]
     dependencies = gather_dependencies(root_dir)
     create_requirements_txt(dependencies)
-    print("requirements.txt file created successfully.")
     print("requirements.txt file created successfully.")
     print("Please review the file and remove any unnecessary dependencies.")
     print("After reviewing, you can install the dependencies using:\npip install -r requirements.txt")
