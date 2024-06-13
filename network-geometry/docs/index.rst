@@ -1,4 +1,4 @@
-network-geometry/ Documentation
+network-geometry Documentation
 =========================
 .. toctree::
    :maxdepth: 2

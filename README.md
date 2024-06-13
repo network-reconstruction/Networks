@@ -1,8 +1,12 @@
-# Network Geometry:
+# Network Reconstruction:
 
-Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 dissertation)
 
-Hopefully this will become a larger project in network geometry studying input-output networks.
+## Contributors
+- Yi Yao Tan (MFoCS University of Oxford)- Network Geometry and Analysis
+
+## Goal
+
+Hopefully this will become a larger project in network reconstruction studying input-output networks.
 
 ## Contact 
 
@@ -94,12 +98,12 @@ Below is the file tree structure of the `network-geometry` package:
 network-geometry/
 ├── network-geometry/
 │   ├── __init__.py
-│   ├── linearized/
+│   ├── standard/
 │   │   ├── __init__.py
 │   │   ├── module1.py
 │   │   ├── module2.py
 │   │   └── ...
-│   ├── tensorized/
+│   ├── JAX/
 │   │   ├── __init__.py
 │   │   ├── module1.py
 │   │   ├── module2.py
@@ -130,8 +134,8 @@ network-geometry/
 │       └── ...
 ├── tests/
 │   ├── __init__.py
-│   ├── test_linearized.py
-│   ├── test_tensorized.py
+│   ├── test_standard.py
+│   ├── test_jax.py
 │   └── ...
 ├── scripts/
 │   ├── setup.py
@@ -146,10 +150,10 @@ network-geometry/
 
 ## Installation
 
-To install the `network_geo` package, use the following command:
+To install the `network-geometry` package, use the following command:
 
 ```bash
-pip install network_geo 
+pip install network_geometry
 ```
 
 ## Usage
@@ -323,3 +327,4 @@ if __name__ == '__main__':
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
+z
