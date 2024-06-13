@@ -151,10 +151,10 @@ network-geometry/
 
 ## Installation
 
-To install the `network_geo` package, use the following command:
+To install the `network-geometry` package, use the following command:
 
 ```bash
-pip install network_geo 
+pip install network_geometry
 ```
 
 ## Usage
