@@ -99,12 +99,12 @@ Below is the file tree structure of the `network-geometry` package:
 network-geometry/
 ├── network-geometry/
 │   ├── __init__.py
-│   ├── linearized/
+│   ├── standard/
 │   │   ├── __init__.py
 │   │   ├── module1.py
 │   │   ├── module2.py
 │   │   └── ...
-│   ├── tensorized/
+│   ├── JAX/
 │   │   ├── __init__.py
 │   │   ├── module1.py
 │   │   ├── module2.py
@@ -135,8 +135,8 @@ network-geometry/
 │       └── ...
 ├── tests/
 │   ├── __init__.py
-│   ├── test_linearized.py
-│   ├── test_tensorized.py
+│   ├── test_standard.py
+│   ├── test_jax.py
 │   └── ...
 ├── scripts/
 │   ├── setup.py
