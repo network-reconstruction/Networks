@@ -8,6 +8,7 @@ Hopefully this will become a larger project in network geometry studying input-o
 
 Main admin: Yi Yao Tan
 [LinkedIn](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
+
 [Email](mailto:yytanacademic@gmail.com)
 
 Consists of four main branches:
