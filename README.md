@@ -5,8 +5,10 @@ Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 disser
 Hopefully this will become a larger project in network geometry studying input-output networks.
 
 ## Contact 
-LinkedIn: [Yi Yao Tan](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
-Email: [Yi Yao Tan](mailto:yytanacademic@gmail.com)
+
+Main admin: Yi Yao Tan
+[LinkedIn](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
+[Email](mailto:yytanacademic@gmail.com)
 
 Consists of four main branches:
 
