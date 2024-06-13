@@ -2,11 +2,11 @@
 
 Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 dissertation)
 
-Contact via
+Hopefully this will become a larger project in network geometry studying input-output networks.
+
+## Contact 
 LinkedIn: [Yi Yao Tan](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
 Email: [Yi Yao Tan](mailto:yytanacademic@gmail.com)
-
-Hopefully this will become a larger project in network geometry studying input-output network.
 
 Consists of four main branches:
 
@@ -319,5 +319,3 @@ if __name__ == '__main__':
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-## Contact
-For any questions or inquiries, please contact ```yytanacademic@gmail.com```
