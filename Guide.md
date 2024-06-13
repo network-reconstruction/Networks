@@ -1,6 +1,13 @@
 # Network Geometry:
 
 Built for the thesis for Yi Yao Tan (MFoCS University of Oxford 2023-2024 dissertation)
+
+Contact via
+LinkedIn: ```https://www.linkedin.com/in/yi-yao-tan-9719301a3/```
+Email: ```yytanacademic@gmail.com```
+
+Hopefully this will become a larger project in network geometry studying input-output network.
+
 Consists of four main branches:
 
 ## ```\network_geometry```: a network geometry package
