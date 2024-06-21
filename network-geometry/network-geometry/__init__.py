@@ -1,1 +1,1 @@
-# network-geometry/ package initialization
+# network-geometry package initialization

@@ -1,4 +1,4 @@
 Modules
 =======
-.. automodule:: network-geometry/
+.. automodule:: network-geometry
    :members:
