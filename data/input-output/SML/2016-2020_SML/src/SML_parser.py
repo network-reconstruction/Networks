@@ -93,12 +93,21 @@ class OECDICIOData:
         self.country_codes = country_codes
         self.data = pd.read_csv(file_path, index_col=0)
         self.data = self.data.fillna(0)
-        print(f"sample of csv: {self.data.head()}")
+        # print(f"sample of csv: {self.data.head()}")
         
         self.intermediate_use = self.extract_intermediate_use()
         self.country_intermediate_use_dict = self.extract_intermediate_use_all_countries()
+        # self.country_intermediate_use_dict = {k: self.shift_first_column_to_index(v) for k, v in self.country_intermediate_use_dict.items()}
+        # self.intermediate_use = self.shift_first_column_to_index(self.intermediate_use)
         self.country_data = self.extract_all_countries()
-
+        # self.country_data = {k: self.shift_first_column_to_index(v) for k, v in self.country_data.items()}
+    def shift_first_column_to_index(self, data: pd.DataFrame): 
+        """
+        Shifts the first column to the index of the DataFrame.
+        """
+        data.set_index(self.data.columns[0], inplace=True)
+        data.index.name = None
+        return data
     def find_first_column_with_label(self, label: str) -> Optional[int]:
         """
         Finds the first column that contains the specified label in the DataFrame using NumPy.
@@ -147,10 +156,10 @@ class OECDICIOData:
         Returns:
         pd.DataFrame: Cropped DataFrame.
         """
-        print(f"labels: {col_label}, {row_label}")
+        # print(f"labels: {col_label}, {row_label}")
         col_index = self.find_first_column_with_label(col_label)
         row_index = self.find_first_row_with_label(row_label)
-        print(f"indices: col: {col_index}, row: {row_index}")
+        # print(f"indices: col: {col_index}, row: {row_index}")
         if col_index is None or row_index is None:
             raise ValueError("Specified labels not found in DataFrame.")
 
