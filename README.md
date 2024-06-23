@@ -17,11 +17,16 @@ Hopefully this will become a larger project in network reconstruction studying i
 
 ## Contact 
 
-Main admin: Yi Yao Tan
+Main Owner: Yi Yao Tan
 
 [LinkedIn](https://www.linkedin.com/in/yi-yao-tan-9719301a3/)
 
 [Email](mailto:yytanacademic@gmail.com)
+
+## Collaboration:
+
+Feel free to contact Yao for collaboration.
+Most of the work is done in the Dev or Data branches, final production phase in packages. Please typing, docstrings, descriptive pushes to working branches. Pushes to main branch need to have pull requests and peer-reviewed.
 
 ## Initial Setup:
 
