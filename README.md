@@ -1,25 +1,18 @@
 # Network Reconstruction:
 
-<<<<<<< HEAD
-## Contributors
-- Yi Yao Tan (MFoCS University of Oxford)- Network Geometry and Analysis
 
 
-
-## Goal
-
-=======
 
 ## Contributors
 - Yi Yao Tan (MFoCS University of Oxford)- Network Geometry and Analysis
 
 ## Goal
 
-Two main tasks:
-1) Network to Manifold Embedding
+Three main tasks:
+1) Statistical Network Analysis
+3) Network to Manifold Embedding
 2) Manifold to Network (Random Statistical Ensemble Generation)
 
->>>>>>> 826789ae35517c3915770cc666ce374923ae8c04
 Hopefully this will become a larger project in network reconstruction studying input-output networks.
 
 ## Contact 
