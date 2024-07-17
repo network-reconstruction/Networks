@@ -131,28 +131,71 @@ class NetworkVisualizer:
             print(info)
         return info
 
-    def save_network(self, output_dir: str) -> None:
+    #TODO parallelizable?
+    def save_network(self, output_dir: str,, **kwargs) -> None:
         """
         Saves an interactive visualization of the network as an HTML file in the specified output directory.
 
         Args:
             output_dir (str): The directory to save the network visualization.
+            **kwargs: Additional keyword arguments to customize the network visualization. 
+                    Possible arguments include:
+                    - layout (str): Layout of the network (e.g., 'hierarchical', 'random', etc.).
+                    - notebook (bool): Whether to display in a Jupyter notebook (default: True).
+                    - directed (bool): Whether the network is directed (default: self.directed).
+                    - weighted (bool): Whether the network is weighted (default: self.weighted).
+                    - embedding (str): Embedding style for nodes (e.g., 'spring', 'shell', etc.).
+
         """
         if self.verbose:
             print(f"Saving network visualization to directory: {output_dir}")
-        net = Network(notebook=True, directed=self.directed)
+
+        # Extract parameters from kwargs with default fallbacks
+        layout = kwargs.get('layout', None)
+        notebook = kwargs.get('notebook', True)
+        directed = kwargs.get('directed', self.directed)
+        weighted = kwargs.get('weighted', self.weighted)
+        embedding = kwargs.get('embedding', None)
+
+        net = Network(notebook=notebook, directed=directed)
+
         if self.G is None:
-            self.G = self._create_graph_from_adj_matrix(self.adj_matrix, self.directed, self.weighted)
+            self.G = self._create_graph_from_adj_matrix(self.adj_matrix, directed, weighted)
+
         for node in self.G.nodes:
             net.add_node(node, label=str(node))
+
         for edge in self.G.edges:
-            if self.weighted:
+            if weighted:
                 net.add_edge(edge[0], edge[1], weight=self.G[edge[0]][edge[1]]['weight'])
             else:
                 net.add_edge(edge[0], edge[1])
+
+        # Apply layout if specified
+        if layout:
+            net.repulsion()
+            if layout == 'hierarchical':
+                net.hierarchical_repulsion()
+            elif layout == 'random':
+                net.force_atlas_2based()
+            # Add other layout options as needed
+
+        # Apply embedding if specified
+        if embedding:
+            if embedding == 'spring':
+                pos = nx.spring_layout(self.G)
+            elif embedding == 'shell':
+                pos = nx.shell_layout(self.G)
+            # Add other embedding styles as needed
+            for node, position in pos.items():
+                net.nodes[node]['x'] = position[0] * 1000
+                net.nodes[node]['y'] = position[1] * 1000
+
         net.show(f'{output_dir}/network.html')
-        if self.verbose:
-            print("Network visualization saved.")
+
+    if self.verbose:
+        print("Network visualization saved.")
+
             
     def save_heatmap(self, output_dir: str, title: str = 'Adjacency Matrix Heatmap', max_labels: int = 10) -> None:
         """
@@ -355,3 +398,5 @@ class NetworkVisualizer:
             
         if self.verbose:
             print("Degree distributions saved.")
+            
+

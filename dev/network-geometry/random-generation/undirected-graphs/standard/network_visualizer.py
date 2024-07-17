@@ -13,14 +13,12 @@ class NetworkVisualizer:
         return filename
 
     def plot_degree_distribution(self, filename: str = "degree_distribution.png") -> str:
-        degrees = [self.G.degree(n) for n in self.G.nodes()]
-        print(f"Degree range: {min(degrees)} - {max(degrees)}")  # Debug: Print the range of degrees
-        
+        degrees = [self.G.degree(n) for n in self.G.nodes()]        
         plt.hist(degrees, bins=30, edgecolor='black')
         plt.title("Degree Distribution")
         plt.xlabel("Degree")
         plt.ylabel("Frequency")
-        plt.yscale('log')
+        # plt.yscale('log')
 
         plt.savefig(filename)  # Save the plot as a normal image file
         plt.close()

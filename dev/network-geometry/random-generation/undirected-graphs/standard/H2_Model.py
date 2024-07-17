@@ -11,6 +11,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from pyvis.network import Network
 from typing import Callable, List
+from network_visualizer import NetworkVisualizer
 
 class H2Model:
     def __init__(self, N: int, beta: float, avg_degree: float, gamma: float):
@@ -126,20 +127,27 @@ class H2Model:
             ValueError: If the network has not been generated yet.
         """
         if self.G is None:
-            raise ValueError("Network has not been generated yet")
+            #generate graph
+            self.generate_network()
         return self.G
 
 
 if __name__ == "__main__":
     print("Generating network...")
-    model = H2Model(N=100, beta=2, avg_degree=5, gamma=2.5)
-    print(f"Generated Number of nodes: {len(model.get_graph().nodes)}")
-
-    print("Plotting network...")
-    visualizer = NetworkVisualizer(model.get_graph())
-    network_html = visualizer.plot_network("test_network.html")
-    print(f"Network plot saved at: {network_html}")
-
-    print("Plotting degree distribution...")
-    degree_distribution_file = visualizer.plot_degree_distribution("s1_degree_distribution.png")
-    print(f"Degree distribution plot saved at: {degree_distribution_file}")
+    #find average degree distribution over 10 runs
+    degree_distribution = []
+    for i in range(30):
+        model = H2Model(N=200, beta=2, avg_degree=5, gamma=2.5)
+        model.generate_network()
+        degree_distribution.append([model.G.degree(n) for n in model.G.nodes()])
+    #plot average degree distribution
+    avg_degree_distribution = np.mean(degree_distribution, axis=0)
+    plt.hist(avg_degree_distribution, bins=30, edgecolor='black')
+    plt.title("Average Degree Distribution over 30 Trials")
+    plt.xlabel("Degree")
+    plt.ylabel("Frequency")
+    #save
+    plt.savefig('avg_degree_distribution_30_trials.png')
+    
+        
+    #generate 

@@ -255,17 +255,6 @@ class OECDICIOData:
         """
         for country_code, df in self.country_intermediate_use_dict.items():
             df.to_csv(f"{directory_path}/{country_code}_intermediate_use.csv")
-# Example usage
-# if __name__ == "__main__":
-#     file_path = '/users/mf23yyt/Thesis/network_reconstruction/data/input-output/SML/2016-2020_SML/2020_SML.csv'
-#     oecd_data = OECDICIOData(file_path)
-#     intermediate_data = oecd_data.extract_intermediate_use()
-#     country_data = oecd_data.country_data
-#     oecd_data.save_intermediate_use('/path/to/save/intermediate_use.csv')
-#     oecd_data.save_country_data('/path/to/save/country_data')
-#     print(country_data.keys())  # List of country codes
-#     print(country_data['ARG'])  # DataFrame for Argentina
-
 
 # Example usage
 if __name__ == "__main__":
