@@ -3,21 +3,36 @@ import jax.random as random
 from scipy.special import hyp2f1
 import numpy as np
 from typing import Dict, List, Tuple
-from jax import vmap, pmap
 import time
+import jax 
+from jax import lax
+
+def hyp2f1_approx(a, b, c, z, n_terms=10):
+    def body_fun(i, val):
+        term, result = val
+        term = term * (a + i - 1) * (b + i - 1) * z / ((c + i - 1) * i)
+        result = result + term
+        return (term, result), result
+    
+    init_term = jnp.ones_like(z)
+    init_result = jnp.ones_like(z)
+    init_val = (init_term, init_result)
+    _, result = lax.scan(body_fun, init_val, jnp.arange(1, n_terms))
+    return result
+
 def hyp2f1a(beta, z):
-    return hyp2f1(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
+    return hyp2f1_approx(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 def hyp2f1b(beta, z):
-    return hyp2f1(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
+    return hyp2f1_approx(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
 
 def hyp2f1c(beta, z):
-    return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
+    return hyp2f1_approx(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 class FittingDirectedS1:
     PI = jnp.pi
 
-    def __init__(self, seed: int = 0, verbose: bool = False, KAPPA_MAX_NB_ITER_CONV: int = 3):
+    def __init__(self, seed: int = 0, verbose: bool = False):
         self.ALLOW_LARGE_INITIAL_ANGULAR_GAPS = True
         self.CHARACTERIZATION_MODE = False
         self.CLEAN_RAW_OUTPUT_MODE = False
@@ -42,7 +57,7 @@ class FittingDirectedS1:
         self.MIN_NB_ANGLES_TO_TRY = 100
         self.EDGELIST_FILENAME = ""
         self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 200
-        self.KAPPA_MAX_NB_ITER_CONV = KAPPA_MAX_NB_ITER_CONV
+        self.KAPPA_MAX_NB_ITER_CONV = 1000
         self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-2
         self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-2
         self.NUMERICAL_ZERO = 1e-5
@@ -298,15 +313,16 @@ class FittingDirectedS1:
         self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
         self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
         directions = [0, 1]
+        
+        # Vectorized 1
         for direction in directions:
             for el in self.degree_histogram[direction].items():
                 self.random_ensemble_kappa_per_degree_class[direction][el[0]] = el[0] + 0.001
+        # ---------------------
 
         keep_going = True
         cnt = 0
         start_time = time.time()
-        if self.verbose:
-            print(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
         while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
             if self.verbose:
                 print(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
@@ -340,24 +356,109 @@ class FittingDirectedS1:
 
             if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
                 print("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
+    def infer_kappas_vmap(self) -> None:
+        """
+        infer kappas using vmap for parallelization
+        """
+        if self.verbose:
+            print(f"Infering kappas ...")
+        self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)] # [in-degree, out-degree]
+        self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)] # [in-degree, out-degree]
 
+        if self.verbose:
+            print(f"degree histogram: {self.degree_histogram}")
+        
+       
+        for direction, direction_dict in enumerate(self.degree_histogram):
+            for degree in direction_dict.keys():
+                self.random_ensemble_kappa_per_degree_class[direction][degree] = degree + 0.001
 
+        keep_going = True
+        cnt = 0
+        start_time = time.time()
+        while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
+            if self.verbose:
+                print(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
+                start_time = time.time()
+            for direction, direction_dict in enumerate(self.degree_histogram):
+                for degree in direction_dict.keys():
+                    self.random_ensemble_expected_degree_per_degree_class[direction][degree] = degree
+
+            # Vectorize 1:
+            #--------------------------------
+            # for in_deg, count_in in self.degree_histogram[0].items():
+            #     for out_deg, count_out in self.degree_histogram[1].items():
+            #         prob_conn = self.directed_connection_probability(
+            #             self.PI,
+            #             self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
+            #         )
+            #         self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
+            #         self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
+            #--------------------------------
+            in_degrees = jnp.array(list(self.degree_histogram[0].keys()))
+            count_ins = jnp.array(list(self.degree_histogram[0].values()))
+            out_degrees = jnp.array(list(self.degree_histogram[1].keys()))
+            count_outs = jnp.array(list(self.degree_histogram[1].values()))
+
+            # Convert JAX arrays to native Python integers for dictionary lookups
+            in_degrees_list = [int(deg) for deg in in_degrees]
+            out_degrees_list = [int(deg) for deg in out_degrees]
+
+            # Extract kappa values for the in-degrees and out-degrees
+            in_kappas = jnp.array([self.random_ensemble_kappa_per_degree_class[0][deg] for deg in in_degrees_list])
+            out_kappas = jnp.array([self.random_ensemble_kappa_per_degree_class[1][deg] for deg in out_degrees_list])
+            
+            # Create grids for the degrees and kappas
+            in_deg_grid, out_deg_grid = jnp.meshgrid(in_degrees, out_degrees, indexing='ij')
+            in_kappa_grid, out_kappa_grid = jnp.meshgrid(in_kappas, out_kappas, indexing='ij')
+            count_in_grid, count_out_grid = jnp.meshgrid(count_ins, count_outs, indexing='ij')
+
+            # Compute the product of kappas
+            kappa_product = in_kappa_grid * out_kappa_grid
+
+            # Compute the connection probabilities using vmap
+            prob_conn = jax.vmap(jax.vmap(lambda k: self.directed_connection_probability(self.PI, k)))(kappa_product)
+
+            # Calculate the updates for the expected degrees
+            in_degree_updates = jax.ops.index_add(jnp.zeros_like(in_degrees, dtype=jnp.float32), jax.ops.index[in_deg_grid], prob_conn * count_in_grid)
+            out_degree_updates = jax.ops.index_add(jnp.zeros_like(out_degrees, dtype=jnp.float32), jax.ops.index[out_deg_grid], prob_conn * count_out_grid)
+
+            # Update the dictionaries for expected degrees
+            updated_in_degrees = {deg: self.random_ensemble_expected_degree_per_degree_class[0].get(deg, 0.0) + in_degree_updates[i] for i, deg in enumerate(in_degrees_list)}
+            updated_out_degrees = {deg: self.random_ensemble_expected_degree_per_degree_class[1].get(deg, 0.0) + out_degree_updates[j] for j, deg in enumerate(out_degrees_list)}
+
+            # Assign the updated values back to the original dictionaries
+            self.random_ensemble_expected_degree_per_degree_class[0].update(updated_in_degrees)
+            self.random_ensemble_expected_degree_per_degree_class[1].update(updated_out_degrees)
+            #--------------------------------
+            keep_going = False
+            for direction, direction_dict in enumerate(self.degree_histogram):
+                for degree in direction_dict.keys():
+                    if jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][degree] - degree) > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
+                        keep_going = True
+
+            if keep_going:
+                for direction, direction_dict in enumerate(self.degree_histogram):
+                    for degree in direction_dict.keys():
+                        self.random_ensemble_kappa_per_degree_class[direction][degree] += (degree - self.random_ensemble_expected_degree_per_degree_class[direction][degree]) * random.uniform(self.engine)
+                        if self.random_ensemble_kappa_per_degree_class[direction][degree] < 0:
+                            self.random_ensemble_kappa_per_degree_class[direction][degree] = jnp.abs(self.random_ensemble_kappa_per_degree_class[direction][degree])
+                cnt += 1
+
+            if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
+                print("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
+                    
     def infer_nu(self) -> None:
         """
         Infer the parameter nu.
         """
         if self.verbose:
             print(f"Infering nu ...")
-            print(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
-            start_time = time.time()    
-            #random_ensemble_kappa_per_degree_class
         xi_m1, xi_00, xi_p1 = 0, 0, 0
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
-                #convert self.degree to int buckets, as data generated originally needs degree sequence but I random generated without being degree seq
                 kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
                 kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
-
                 p12 = self.directed_connection_probability(self.PI, kout1kin2)
                 p21 = self.directed_connection_probability(self.PI, kout2kin1)
 
@@ -397,8 +498,7 @@ class FittingDirectedS1:
             self.random_ensemble_reciprocity = (xi_p1 - xi_00) * self.nu + xi_00
         else:
             self.random_ensemble_reciprocity = (xi_m1 + xi_00) * self.nu + xi_00
-        if self.verbose:
-            print(f"nu: {self.nu}, random_ensemble_reciprocity: {self.random_ensemble_reciprocity}, time: {time.time() - start_time}")
+
     def infer_parameters(self) -> None:
         """
         Infer the parameters beta, mu, nu, and R.
@@ -417,7 +517,7 @@ class FittingDirectedS1:
             while True:
                 if self.verbose:
                     print(f"Beta: {self.beta}, iteration count: {iter}")      
-                self.infer_kappas()
+                self.infer_kappas_vmap()
                 self.compute_random_ensemble_average_degree()
                 if not self.CUSTOM_NU:
                     self.infer_nu()
