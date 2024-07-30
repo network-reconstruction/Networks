@@ -1,24 +1,43 @@
 import jax.numpy as jnp
 import jax.random as random
-from scipy.special import hyp2f1
+from scipy.special import poch, factorial
 import numpy as np
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import time
 import jax 
-from jax import lax
+from jax import lax, jit, vmap
+from functools import partial
+import sys
 
-def hyp2f1_approx(a, b, c, z, n_terms=10):
-    def body_fun(i, val):
-        term, result = val
-        term = term * (a + i - 1) * (b + i - 1) * z / ((c + i - 1) * i)
-        result = result + term
-        return (term, result), result
+def pochhammer(a, n):
+    print(f" poch a: {a}, n: {n}")
+    res = poch(a, n)
+    print(f"poch res: {res}")
+    return res
+
+def hyp2f1_approx(a: float, b: float, c: float, z: float, n_terms: int =10) -> jnp.ndarray:
+    """
+    Compute the Taylor series expansion for _2F_1(a, b; c; z) using JAX.
+    a, b, c, z: Scalar parameters for the hypergeometric function.
+    n_terms: Number of terms in the series.
+    """
+    print(f"a: {a}, b: {b}, c: {c}, z: {z}")
+    def series_term(n):
+        term = (pochhammer(a, n) * pochhammer(b, n ) / pochhammer(c, n )) * (z**n) / factorial(n)
+        return term
     
-    init_term = jnp.ones_like(z)
-    init_result = jnp.ones_like(z)
-    init_val = (init_term, init_result)
-    _, result = lax.scan(body_fun, init_val, jnp.arange(1, n_terms))
+    terms = []
+    for n in range(n_terms):
+        term = series_term(n)
+        #if a term has -inf in the array print it and the values inputed into the equation
+        print(f"term: {term}, n: {n}")
+        terms.append(term)
+    terms = jnp.array(terms)
+    # print(f"terms: {terms}")
+    result = jnp.sum(terms, axis=0)
+    # print(f"result: {result}")
     return result
+  
 
 def hyp2f1a(beta, z):
     return hyp2f1_approx(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
@@ -120,7 +139,23 @@ class FittingDirectedS1:
         """
         Compute the directed connection probability.
         """
+        print(f"")
         return (z / self.PI) * hyp2f1a(self.beta, -((self.R * z) / (self.mu * koutkin)) ** self.beta)
+    
+    def directed_connection_probability_vmap(self, z: Union[float, jnp.ndarray], koutkin: jnp.ndarray) -> jnp.ndarray:
+        """
+        Compute the directed connection probability vmapped
+        z: float or jnp.ndarray
+        koutkin: jnp.ndarray
+        """
+        if isinstance(z, float):
+            #vectorize over koutkin vmap
+            return jax.vmap(lambda k: self.directed_connection_probability(z, k))(koutkin)
+        elif isinstance(z, jnp.ndarray):
+            #vectorize over both z and koutkin
+            return jax.vmap(lambda z, k: self.directed_connection_probability(z, k))(z, koutkin)
+        else:
+            raise ValueError("z must be a float or jnp.ndarray")
 
     def undirected_connection_probability(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
         """
@@ -202,8 +237,10 @@ class FittingDirectedS1:
                     tmp_val = nkkp[key]
                     if tmp_val > self.NUMERICAL_ZERO:
                         tmp_cumul += tmp_val
+                        cumul_prob_kgkp[in_deg][out_deg] = cumul_prob_kgkp[in_deg].get(out_deg, {})
                         cumul_prob_kgkp[in_deg][out_deg][tmp_cumul] = key
         self.cumul_prob_kgkp = cumul_prob_kgkp
+        
 
     def compute_random_ensemble_average_degree(self) -> None:
         """
@@ -232,22 +269,24 @@ class FittingDirectedS1:
                     random_ensemble_average_clustering += tmp_val * out_degs[out_deg]
         self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one
 
-    def compute_random_ensemble_clustering_for_degree_class(self, p1: Tuple[int, int]) -> float:
+    def compute_random_ensemble_clustering_for_degree_class(self, in_deg: int, out_deg: int) -> float:
         """
         Compute the random ensemble clustering for a specific degree class.
         """
         if self.verbose:
-            print(f"Computing random ensemble clustering for degree class: {p1}")
+            print(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
+            start_time = time.time()
+
         p2, p3 = None, None
         p12, p13, p23, p32, pc, pz, zmin, zmax, z, z12, z13, da, k_in2, kout2, k_in3, kout3 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         tmp_val, tmp_cumul = 0, 0
-        k_in1 = self.random_ensemble_kappa_per_degree_class[0][p1[0]]
-        kout1 = self.random_ensemble_kappa_per_degree_class[1][p1[1]]
+        k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg]
+        kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
 
         nb_points = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS
 
         for i in range(nb_points):
-            p2 = self.cumul_prob_kgkp[p1[0]][p1[1]].lower_bound(random.uniform(self.engine)).second
+            p2 = self.cumul_prob_kgkp[in_deg][out_deg].lower_bound(random.uniform(self.engine)).second
             k_in2 = self.random_ensemble_kappa_per_degree_class[0][p2[0]]
             kout2 = self.random_ensemble_kappa_per_degree_class[1][p2[1]]
             p12 = self.undirected_connection_probability(self.PI, kout1 * k_in2, kout2 * k_in1)
@@ -264,7 +303,7 @@ class FittingDirectedS1:
                     zmin = z
             z12 = (zmax + zmin) / 2
 
-            p3 = self.cumul_prob_kgkp[p1[0]][p1[1]].lower_bound(random.uniform(self.engine)).second
+            p3 = self.cumul_prob_kgkp[in_deg][out_deg].lower_bound(random.uniform(self.engine)).second
             k_in3 = self.random_ensemble_kappa_per_degree_class[0][p3[0]]
             kout3 = self.random_ensemble_kappa_per_degree_class[1][p3[1]]
             p13 = self.undirected_connection_probability(self.PI, kout1 * k_in3, kout3 * k_in1)
@@ -304,7 +343,9 @@ class FittingDirectedS1:
                     if (p23 + p32) > 1:
                         tmp_val -= self.nu * (1 - p23 - p32)
             tmp_cumul += tmp_val
-
+            
+        if self.verbose:
+            print(f"Time: {time.time() - start_time}")
         return tmp_cumul / nb_points
 
     def infer_kappas(self) -> None:
@@ -368,7 +409,6 @@ class FittingDirectedS1:
         if self.verbose:
             print(f"degree histogram: {self.degree_histogram}")
         
-       
         for direction, direction_dict in enumerate(self.degree_histogram):
             for degree in direction_dict.keys():
                 self.random_ensemble_kappa_per_degree_class[direction][degree] = degree + 0.001
@@ -385,16 +425,6 @@ class FittingDirectedS1:
                     self.random_ensemble_expected_degree_per_degree_class[direction][degree] = degree
 
             # Vectorize 1:
-            #--------------------------------
-            # for in_deg, count_in in self.degree_histogram[0].items():
-            #     for out_deg, count_out in self.degree_histogram[1].items():
-            #         prob_conn = self.directed_connection_probability(
-            #             self.PI,
-            #             self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
-            #         )
-            #         self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
-            #         self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
-            #--------------------------------
             in_degrees = jnp.array(list(self.degree_histogram[0].keys()))
             count_ins = jnp.array(list(self.degree_histogram[0].values()))
             out_degrees = jnp.array(list(self.degree_histogram[1].keys()))
@@ -412,30 +442,47 @@ class FittingDirectedS1:
             in_deg_grid, out_deg_grid = jnp.meshgrid(in_degrees, out_degrees, indexing='ij')
             in_kappa_grid, out_kappa_grid = jnp.meshgrid(in_kappas, out_kappas, indexing='ij')
             count_in_grid, count_out_grid = jnp.meshgrid(count_ins, count_outs, indexing='ij')
-
+            if self.verbose:
+                print(f"count_ins: {count_ins}\n shape: {count_ins.shape}")
+                print(f"count_outs: {count_outs}\n shape: {count_outs.shape}")
+                print(f"count_in_grid: {count_in_grid}\n shape: {count_in_grid.shape}")
+                print(f"count_out_grid: {count_out_grid}\n shape: {count_out_grid.shape}")
             # Compute the product of kappas
             kappa_product = in_kappa_grid * out_kappa_grid
 
             # Compute the connection probabilities using vmap
-            prob_conn = jax.vmap(jax.vmap(lambda k: self.directed_connection_probability(self.PI, k)))(kappa_product)
-
-            # Calculate the updates for the expected degrees
-            in_degree_updates = jax.ops.index_add(jnp.zeros_like(in_degrees, dtype=jnp.float32), jax.ops.index[in_deg_grid], prob_conn * count_in_grid)
-            out_degree_updates = jax.ops.index_add(jnp.zeros_like(out_degrees, dtype=jnp.float32), jax.ops.index[out_deg_grid], prob_conn * count_out_grid)
-
+            if self.verbose:
+                print(f"kappa_product: {kappa_product}\n shape: {kappa_product.shape}")
+            kappa_product_flattened = kappa_product.flatten()
+            prob_conn = self.directed_connection_probability_vmap(self.PI, kappa_product_flattened)
+            prob_conn = prob_conn.reshape(kappa_product.shape) #shape is (in_degrees, out_degrees) by class
+            
+            # Compute the expected degrees probability of connection * count per class, and then sum over all classes in opposite direction
+            expected_in_degrees = jnp.sum(prob_conn * count_out_grid, axis=1)
+            # prob_conn: [[prob kappa_inclass1 kappa_outclass1, prob kappa_inclass1 kappa_outclass2, ...], [prob kappa_inclass2 kappa_outclass1, prob kappa_inclass2 kappa_outclass2, ...] ... ] * count_out_grid: [[out_class1, out_class2, ...], [out_class1, out_class2, ...] ...] 
+            # --> [[outclass1 * prob kappa_inclass1 kappa_outclass1, outclass2 * prob kappa_inclass1 kappa_outclass2, ...], [outclass1 * prob kappa_inclass2 kappa_outclass1, outclass2 * prob kappa_inclass2 kappa_outclass2, ...] ...]
+            # --> sum over axis 0 to get expected in degrees
+            # --> [expected in degree class 1, expected in degree class 2, ...]
+            expected_out_degrees = jnp.sum(prob_conn * count_in_grid, axis=0) 
             # Update the dictionaries for expected degrees
-            updated_in_degrees = {deg: self.random_ensemble_expected_degree_per_degree_class[0].get(deg, 0.0) + in_degree_updates[i] for i, deg in enumerate(in_degrees_list)}
-            updated_out_degrees = {deg: self.random_ensemble_expected_degree_per_degree_class[1].get(deg, 0.0) + out_degree_updates[j] for j, deg in enumerate(out_degrees_list)}
+            updated_in_degrees = {deg: expected_in_degrees[i] for i, deg in enumerate(in_degrees_list)}
+            updated_out_degrees = {deg: expected_out_degrees[i] for i, deg in enumerate(out_degrees_list)}
 
             # Assign the updated values back to the original dictionaries
             self.random_ensemble_expected_degree_per_degree_class[0].update(updated_in_degrees)
             self.random_ensemble_expected_degree_per_degree_class[1].update(updated_out_degrees)
-            #--------------------------------
+
+            # Calculate error and check for convergence
+            error = jnp.inf
             keep_going = False
             for direction, direction_dict in enumerate(self.degree_histogram):
                 for degree in direction_dict.keys():
-                    if jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][degree] - degree) > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
+                    error = jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][degree] - degree)
+                    if error > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
                         keep_going = True
+                        break
+            if self.verbose:
+                print(f"Error: {error} NUMERICAL CONVERGENCE THRESHOLD: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
 
             if keep_going:
                 for direction, direction_dict in enumerate(self.degree_histogram):
@@ -447,13 +494,14 @@ class FittingDirectedS1:
 
             if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
                 print("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
-                    
+
     def infer_nu(self) -> None:
         """
         Infer the parameter nu.
         """
         if self.verbose:
             print(f"Infering nu ...")
+            start_time = time.time()
         xi_m1, xi_00, xi_p1 = 0, 0, 0
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
@@ -498,7 +546,8 @@ class FittingDirectedS1:
             self.random_ensemble_reciprocity = (xi_p1 - xi_00) * self.nu + xi_00
         else:
             self.random_ensemble_reciprocity = (xi_m1 + xi_00) * self.nu + xi_00
-
+        if self.verbose:
+            print(f"Time: {time.time() - start_time}")
     def infer_parameters(self) -> None:
         """
         Infer the parameters beta, mu, nu, and R.
@@ -565,8 +614,9 @@ class FittingDirectedS1:
             for line in f:
                 try:
                     k_out, k_in = map(float, line.strip().split())
-                    self.kappas_out.append(k_out)
-                    self.kappas_in.append(k_in)
+                    #append rounded nearest integer k_out and k_in
+                    self.kappas_out.append(round(k_out))
+                    self.kappas_in.append(round(k_in))
                 except:
                     if self.verbose:
                         print(f"Skipping: {line}")
@@ -634,7 +684,7 @@ def main():
     model = FittingDirectedS1(seed=0, verbose=True)
 
     # Set parameters
-    edgelist_filename = "degree_sequence.txt"
+    edgelist_filename = sys.argv[1]  # Example value, set appropriately
     reciprocity = 0.046  # Example value, set appropriately
     average_local_clustering = 0.28  # Example value, set appropriately
 

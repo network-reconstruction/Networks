@@ -4,7 +4,7 @@ echo "Inference started, check output.log for progress"
 date
 
 # run inference and save the PID
-find . -type f -name '{file_pattern}' -exec rm -rf {} + && python -u infer_params.py > output.log 2>&1 &
+find . -type f -name '{file_pattern}' -exec rm -rf {} + && python -u infer_params.p degree_sequence.txt > output.log 2>&1 &
 PID=$!
 
 # print the PID

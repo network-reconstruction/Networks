@@ -4,7 +4,7 @@ echo "Inference started, check output.log for progress"
 date
 
 # run inference and save the PID
-find . -type f -name '{file_pattern}' -exec rm -rf {} + && python -u infer_params_JAX.py degree_sequence.txt > output_JAX.log 2>&1 &
+find . -type f -name '{file_pattern}' -exec rm -rf {} + && python -u infer_params_JAX.py deg_seq_test.txt > output_JAX_small.log 2>&1 &
 PID=$!
 
 # print the PID
