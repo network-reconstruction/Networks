@@ -25,7 +25,7 @@ def hyp2f1a(beta, z):
 def hyp2f1b(beta, z):
     return hyp2f1(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
 
-def hyp2f1c(beta, z):
+def hyp2f1c(beta, z): #S75b
     return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 class FittingDirectedS1:
@@ -55,7 +55,7 @@ class FittingDirectedS1:
         self.CHARACTERIZATION_NB_GRAPHS = 100
         self.MIN_NB_ANGLES_TO_TRY = 100
         self.EDGELIST_FILENAME = ""
-        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 200
+        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10 #200
         self.KAPPA_MAX_NB_ITER_CONV = KAPPA_MAX_NB_ITER_CONV
         self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-2
         self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-2
@@ -88,6 +88,7 @@ class FittingDirectedS1:
 
         self.kappas_out, self.kappas_in = [], []
         self.verbose = False
+        
 
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
         """
@@ -124,32 +125,40 @@ class FittingDirectedS1:
     def undirected_connection_probability(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
         """
         Compute the undirected connection probability.
+        This whole function is S79 until S82
         """
-        p12 = self.directed_connection_probability(z, kout1kin2)
-        p21 = self.directed_connection_probability(z, kout2kin1)
+        # Potentially bellow between S81 line and S82 line
+        p12 = self.directed_connection_probability(z, kout1kin2) #S23a 
+        p21 = self.directed_connection_probability(z, kout2kin1) #S23a 
 
+        # S81
+        # -------------------------------------
         conn_prob = 0
         if jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
-            conn_prob -= (1 - jnp.abs(self.nu)) * hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
+            conn_prob -= (1 - jnp.abs(self.nu)) * hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta) #S75b term in S82 with 0<= nu <=1
+            #why minus? We are subtracting from the equation in S80
         else:
-            conn_prob -= ((1 - jnp.abs(self.nu)) / (1 - (kout1kin2 / kout2kin1) ** self.beta))
+            conn_prob -= ((1 - jnp.abs(self.nu)) / (1 - (kout1kin2 / kout2kin1) ** self.beta)) #I've 
             conn_prob *= (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
         conn_prob += p12
         conn_prob += p21
-
+        # -------------------------------------
+        # TODO: Figure this equation out
+        # -------------------------------------
         if self.nu > 0:
             if kout1kin2 < kout2kin1:
                 conn_prob -= self.nu * p12
             else:
-                conn_prob -= self.nu * p21
+                conn_prob -= self.nu * p21 # -------------------------------------
         elif self.nu < 0:
-            z_max = self.find_minimal_angle_by_bisection(kout1kin2, kout2kin1)
+            z_max = self.find_minimal_angle_by_bisection(kout1kin2, kout2kin1) #S86
             if z_max < z:
                 p12 = self.directed_connection_probability(z_max, kout1kin2)
                 p21 = self.directed_connection_probability(z_max, kout2kin1)
                 conn_prob -= self.nu * ((z_max / self.PI) - p12 - p21)
             else:
                 conn_prob -= self.nu * ((z / self.PI) - p12 - p21)
+        
         return conn_prob
 
     def find_minimal_angle_by_bisection(self, kout1kin2: float, kout2kin1: float) -> float:
@@ -174,43 +183,53 @@ class FittingDirectedS1:
     def build_cumul_dist_for_mc_integration(self) -> None:
         """
         Build cumulative distribution for Monte Carlo integration.
+        From S80 to S85 of the paper, calculation for point 4 in S86
         """
         if self.verbose:
             print(f"Building cumulative distribution for Monte Carlo integration ...")
             print(f"self.degree_class: {self.degree_class}")
             start_time = time.time()
-        cumul_prob_kgkp = {}
-        for in_deg, out_degs in self.degree_class.items():
+        for in_deg, out_degs in self.degree_class.items(): 
+            #Iterating over all nodes,basically but via degree classes
+            #This iteration and inner iteration form point 1 above S86
+            self.cumul_prob_kgkp[in_deg] = {}
             for out_deg in out_degs:
-                cumul_prob_kgkp[in_deg] = {}
+                
+                #for each pair of in and out observed degree classes, (k_1in, k_1out)
+                    
                 nkkp = {(i, j): 0 for i in self.degree_class for j in self.degree_class[i]}
                 #nkkp is a dictionary of tuples of in and out degrees, with values as 0
                 tmp_cumul = 0
-                k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg]
+                k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg] 
                 kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
                 #We take kappa values from random ensemble
-                for in_deg2, out_degs2 in self.degree_class.items():
+                for in_deg2, out_degs2 in self.degree_class.items(): 
+                    #iterating over all nodes,basically but via degree classes
                     for out_deg2 in out_degs2:
                         k_in2 = self.random_ensemble_kappa_per_degree_class[0][in_deg2]
                         kout2 = self.random_ensemble_kappa_per_degree_class[1][out_deg2]
-                        tmp_val = self.undirected_connection_probability(self.PI, kout1 * k_in2, kout2 * k_in1)
+                        tmp_val = self.undirected_connection_probability(self.PI, kout1 * k_in2, kout2 * k_in1) #S86
                         
                         if in_deg == in_deg2 and out_deg == out_deg2:
-                            nkkp[(in_deg2, out_deg2)] = (out_degs2[out_deg2] - 1) * tmp_val
+                            nkkp[(in_deg2, out_deg2)] = (out_degs2[out_deg2] - 1) * tmp_val 
                         else:
                             nkkp[(in_deg2, out_deg2)] = out_degs2[out_deg2] * tmp_val
                         tmp_cumul += nkkp[(in_deg2, out_deg2)]
+                        
+                #noralizing as we multiplied with counts per degree class, so now we have probabilities in nkkp[key]
                 for key in nkkp:
-                    nkkp[key] /= tmp_cumul
+                    nkkp[key] /= tmp_cumul 
+                    
+                # For each degree class (in, out), we have nkkp which gives cumulative distribution of probability of connection.
                 tmp_cumul = 0
                 for key in nkkp:
                     tmp_val = nkkp[key]
                     if tmp_val > self.NUMERICAL_ZERO:
-                        tmp_cumul += tmp_val
-                        cumul_prob_kgkp[int(in_deg)][int(out_deg)] = cumul_prob_kgkp[int(in_deg)].get(int(out_deg), {})
+                        tmp_cumul += tmp_val 
+                        if out_deg not in self.cumul_prob_kgkp[in_deg]:
+                            self.cumul_prob_kgkp[in_deg][out_deg] = SortedDict()
+                        self.cumul_prob_kgkp[in_deg][out_deg][int(tmp_cumul)] = key
                         #tmp_cumul is single digit array in jax so we need to convert to hashable type by dictionary
-                        cumul_prob_kgkp[int(in_deg)][int(out_deg)][float(tmp_cumul)] = key
-        self.cumul_prob_kgkp = cumul_prob_kgkp
         if self.verbose:
             print(f"finished building cumulative distribution for Monte Carlo integration ...")
             print(f"runtime: {time.time() - start_time}")
@@ -230,6 +249,7 @@ class FittingDirectedS1:
     def compute_random_ensemble_clustering(self) -> None:
         """
         Compute the random ensemble average clustering.
+        S85 of the paper.
         """
         if self.verbose:
             print(f"Computing random ensemble clustering ...")  
@@ -237,11 +257,16 @@ class FittingDirectedS1:
         for in_deg, out_degs in self.degree_class.items():
             for out_deg in out_degs:
                 if in_deg + out_deg > 1: # only consider degree classes with in and out degrees greater than 1
-                    tmp_val = self.compute_random_ensemble_clustering_for_degree_class(in_deg, out_deg)
-                    random_ensemble_average_clustering += tmp_val * out_degs[out_deg]
-        self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one
+                    # basically over all nodes, done in degree class outer summation of S85
+                    tmp_val = self.compute_random_ensemble_clustering_for_degree_class(in_deg, out_deg) 
+                    random_ensemble_average_clustering += tmp_val * out_degs[out_deg] #this is per class
+        self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one # 1 / MN
 
     def compute_random_ensemble_clustering_for_degree_class(self, in_deg: int, out_deg: int) -> float:
+        """
+        Compute the random ensemble clustering for a given degree class.
+        Point 1-4 after Equation S86 of the paper, inner summation of S85
+        """
         if self.verbose:
             print(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
             print(f"Cumul_prob_kgkp: {self.cumul_prob_kgkp}")
@@ -251,20 +276,25 @@ class FittingDirectedS1:
         k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg]
         kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
 
-        nb_points = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS
+        M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS #this is the value of M in S85
         if self.verbose:
+            #print all of the first two keys of self.cumul_prob_kgkp
+            print(f"In and out pairs for cumul_prob_kgkp:")
+            for key1 in self.cumul_prob_kgkp.keys():
+                for key2 in self.cumul_prob_kgkp[key1].keys():
+                    print(f"({key1}, {key2})")
             print(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
             
-        for i in range(nb_points):
+        for i in range(M): #this is the value of M in S85
             cumul_prob_dict = self.cumul_prob_kgkp[int(in_deg)].get(int(out_deg), SortedDict())
-
             random_val = random.uniform(self.engine)
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
             lower_bound_key = min(lower_bound_key, len(cumul_prob_dict) - 1)
             if self.verbose:
-                print(f"in_deg: {in_deg}, out_deg: {out_deg}")
-                print(f"cumul_prob_dict: {cumul_prob_dict}")
-                print(f"lower_bound_key: {lower_bound_key}")
+                print(f"sample: {i}")
+            #     print(f"in_deg: {in_deg}, out_deg: {out_deg}")
+            #     print(f"cumul_prob_dict: {cumul_prob_dict}")
+            #     print(f"lower_bound_key: {lower_bound_key}")
             p2_key = cumul_prob_dict.iloc[lower_bound_key]
             p2 = cumul_prob_dict[p2_key]
 
@@ -309,7 +339,7 @@ class FittingDirectedS1:
                 da = jnp.abs(z12 + z13)
             else:
                 da = jnp.abs(z12 - z13)
-            da = jnp.min(da, (2.0 * self.PI) - da)
+            da = min(da, (2.0 * self.PI) - da)
 
             tmp_val = 0
             if da < self.NUMERICAL_ZERO:
@@ -331,7 +361,7 @@ class FittingDirectedS1:
 
         if self.verbose:
             print(f"Time: {time.time() - start_time}")
-        return tmp_cumul / nb_points
+        return tmp_cumul / M
 
     def infer_kappas(self) -> None:
         if self.verbose:
@@ -349,7 +379,7 @@ class FittingDirectedS1:
         start_time = time.time()
         if self.verbose:
             print(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
-            
+
         while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
             if self.verbose:
                 print(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
