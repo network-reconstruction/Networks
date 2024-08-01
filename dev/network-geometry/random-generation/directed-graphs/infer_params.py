@@ -9,7 +9,9 @@ from typing import Dict, List, Tuple
 from jax import vmap, pmap
 import time
 import sys
-from sortedcontainers import SortedDict #cum
+from sortedcontainers import SortedDict
+import json
+
 
 def lower_bound(d, key):
     index = d.bisect_left(key)
@@ -55,7 +57,7 @@ class FittingDirectedS1:
         self.CHARACTERIZATION_NB_GRAPHS = 100
         self.MIN_NB_ANGLES_TO_TRY = 100
         self.EDGELIST_FILENAME = ""
-        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10 #200
+        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 50 #200
         self.KAPPA_MAX_NB_ITER_CONV = KAPPA_MAX_NB_ITER_CONV
         self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-2
         self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-2
@@ -592,22 +594,34 @@ class FittingDirectedS1:
         self.save_inferred_parameters()
         self.finalize()
 
+
     def save_inferred_parameters(self) -> None:
         """
-        Save the inferred parameters to a file.
+        Save the inferred parameters to a JSON file.
         """
-        output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.txt"
+        output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
+        data = {
+            "beta": self.beta,
+            "mu": self.mu,
+            "nu": self.nu,
+            "R": self.R,
+            "inferred_kappas": []
+        }
+        
+        for in_deg, out_degs in self.degree_class.items():
+            for out_deg, count in out_degs.items():
+                kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
+                kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
+                data["inferred_kappas"].append({
+                    "in_deg": in_deg,
+                    "out_deg": out_deg,
+                    "kappa_in": kappa_in,
+                    "kappa_out": kappa_out
+                })
+        
         with open(output_filename, 'w') as f:
-            f.write(f"beta: {self.beta}\n")
-            f.write(f"mu: {self.mu}\n")
-            f.write(f"nu: {self.nu}\n")
-            f.write(f"R: {self.R}\n")
-            f.write("Inferred kappas:\n")
-            for in_deg, out_degs in self.degree_class.items():
-                for out_deg, count in out_degs.items():
-                    kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
-                    kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
-                    f.write(f"{in_deg} {out_deg} {kappa_in} {kappa_out}\n")
+            json.dump(data, f, indent=4)
+
 
     def finalize(self) -> None:
         """

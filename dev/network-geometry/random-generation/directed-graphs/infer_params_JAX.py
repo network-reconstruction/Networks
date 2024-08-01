@@ -8,6 +8,7 @@ import jax
 from jax import lax, jit, vmap
 from functools import partial
 import sys
+import json
 
 def pochhammer(a, n):
     print(f" poch a: {a}, n: {n}")
@@ -688,6 +689,7 @@ class FittingDirectedS1_JAX:
         """
         self.verbose = verbose
         self.EDGELIST_FILENAME = edgelist_filename
+        self.ROOTNAME_OUTPUT = edgelist_filename.split(".")[0]
         self.reciprocity = reciprocity
         self.average_undir_clustering = average_local_clustering
         self.initialize()
@@ -697,20 +699,30 @@ class FittingDirectedS1_JAX:
 
     def save_inferred_parameters(self) -> None:
         """
-        Save the inferred parameters to a file.
+        Save the inferred parameters to a JSON file.
         """
-        output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.txt"
+        output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
+        data = {
+            "beta": self.beta,
+            "mu": self.mu,
+            "nu": self.nu,
+            "R": self.R,
+            "inferred_kappas": []
+        }
+        
+        for in_deg, out_degs in self.degree_class.items():
+            for out_deg, count in out_degs.items():
+                kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
+                kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
+                data["inferred_kappas"].append({
+                    "in_deg": in_deg,
+                    "out_deg": out_deg,
+                    "kappa_in": kappa_in,
+                    "kappa_out": kappa_out
+                })
+        
         with open(output_filename, 'w') as f:
-            f.write(f"beta: {self.beta}\n")
-            f.write(f"mu: {self.mu}\n")
-            f.write(f"nu: {self.nu}\n")
-            f.write(f"R: {self.R}\n")
-            f.write("Inferred kappas:\n")
-            for in_deg, out_degs in self.degree_class.items():
-                for out_deg, count in out_degs.items():
-                    kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
-                    kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
-                    f.write(f"{in_deg} {out_deg} {kappa_in} {kappa_out}\n")
+            json.dump(data, f, indent=4)
 
     def finalize(self) -> None:
         """
