@@ -1,0 +1,7 @@
+# prop_name, value
+name,academia_edu
+description,"Snapshot of the follower relationships among users of academia.edu, a platform for academics to share research papers, scraped in 2011. Nodes are users and a directed edge (i,j) denotes that user i follows j.[^icon]
+[^icon]: Description obtained from the [ICON](https://icon.colorado.edu) project."
+citation,"['M. Fire et al. \"Computationally Efficient Link Prediction in a Variety of Social Networks.\" ACM Transactions on Intelligent Systems and Technology 5(1), Article 10 (2013), https://doi.org/10.1145/2542182.2542192']"
+url,https://data4goodlab.github.io/MichaelFire/#section3
+tags,"['Social', 'Online', 'Unweighted']"

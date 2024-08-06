@@ -1,0 +1,6 @@
+# prop_name, value
+name,amazon_copurchases (601)
+description,"Network of items for sale on amazon.com in 2003 and the items they \"recommend\" (via the \"Customers Who Bought This Item Also Bought\" feature). If one item is frequently co-purchased with another, then the first item recommends the second."
+citation,"['J. Leskovec, L. Adamic and B. Adamic. \"The Dynamics of Viral Marketing.\" ACM Transactions on the Web (ACM TWEB), 1 (2007), http://www.cs.cmu.edu/~jure/pubs/viral-tweb.pdf']"
+url,http://snap.stanford.edu/data/amazon0302.html
+tags,"['Economic', 'Commerce', 'Unweighted']"
