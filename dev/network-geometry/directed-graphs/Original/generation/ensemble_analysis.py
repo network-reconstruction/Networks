@@ -1,7 +1,6 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import skew, kurtosis
 import sys
 from random_generation import GeneratingDirectedS1
 
@@ -13,6 +12,12 @@ class GraphEnsembleAnalysis:
         self.clustering_list = []
         self.in_degree_sequences = []
         self.out_degree_sequences = []
+        self.average_reciprocity = 0
+        self.average_clustering = 0
+        self.variance_reciprocity = 0
+        self.variance_clustering = 0
+        self.average_in_degree = 0
+        
     
     def run_analysis(self):
         for _ in range(self.num_samples):
@@ -28,13 +33,20 @@ class GraphEnsembleAnalysis:
         self.plot_degree_distribution()
     
     def save_results(self):
-        avg_reciprocity = np.mean(self.reciprocity_list)
-        avg_clustering = np.mean(self.clustering_list)
-        
+        self.average_reciprocity = np.mean(self.reciprocity_list)
+        self.average_clustering = np.mean(self.clustering_list) 
+        self.variance_reciprocity = np.var(self.reciprocity_list)
+        self.variance_clustering = np.var(self.clustering_list) 
+        self.average_in_degree = np.mean([np.mean(seq) for seq in self.in_degree_sequences])
         
         results = {
-            "average_reciprocity": avg_reciprocity,
-            "average_clustering": avg_clustering,
+            "average_reciprocity": self.average_reciprocity,
+            "average_clustering": self.average_clustering,
+            "variance_reciprocity": self.variance_reciprocity,
+            "variance_clustering": self.variance_clustering,
+            "reciprocity_list": self.reciprocity_list,
+            "clustering_list": self.clustering_list,
+            "average_in_degree": self.average_in_degree,
             "in_degree_sequences": self.in_degree_sequences,
             "out_degree_sequences": self.out_degree_sequences
         }
@@ -46,25 +58,6 @@ class GraphEnsembleAnalysis:
         all_in_degrees = np.concatenate(self.in_degree_sequences)
         all_out_degrees = np.concatenate(self.out_degree_sequences)
         
-        # Plotting the empirical degree distributions
-        plt.figure(figsize=(12, 6))
-        
-        plt.subplot(1, 2, 1)
-        plt.hist(all_in_degrees, bins='auto', alpha=0.7, color='blue', density=True)
-        plt.title("In-Degree Distribution")
-        plt.xlabel("In-Degree")
-        plt.ylabel("Density")
-        
-        plt.subplot(1, 2, 2)
-        plt.hist(all_out_degrees, bins='auto', alpha=0.7, color='red', density=True)
-        plt.title("Out-Degree Distribution")
-        plt.xlabel("Out-Degree")
-        plt.ylabel("Density")
-        
-        plt.tight_layout()
-        plt.savefig(f"{self.gen.OUTPUT_ROOTNAME}_degree_distribution.png")
-        plt.show()
-
         # Plotting the complementary cumulative degree distributions
         plt.figure(figsize=(12, 6))
         plt.subplot(1, 2, 1)
@@ -104,8 +97,11 @@ class GraphEnsembleAnalysis:
         plt.show()
         
         # print reciprocity, clustering, in_degree_sequence, out_degree_sequence averages
-        print(f"Average Reciprocity: {np.mean(self.reciprocity_list)}")
+        print(f"Average Reciprocity: {self.average_reciprocity}")
+        print(f"Variance Reciprocity: {np.var(self.reciprocity_list)}")
         print(f"Average Clustering: {np.mean(self.clustering_list)}")
+        print(f"Variance Clustering: {np.var(self.clustering_list)}")
+        print(f"Average in-degree: {np.mean([np.mean(seq) for seq in self.in_degree_sequences])}")
 
        
 
