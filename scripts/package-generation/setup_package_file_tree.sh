@@ -21,6 +21,11 @@ create_file_structure() {
     touch $PACKAGE_NAME/$PACKAGE_NAME/__init__.py
     echo "# $PACKAGE_NAME package initialization" > $PACKAGE_NAME/$PACKAGE_NAME/__init__.py
 
+    # Create requirements.txt, readme.md in root
+    touch $PACKAGE_NAME/requirements.txt
+    
+
+
     touch $PACKAGE_NAME/$PACKAGE_NAME/standard/__init__.py
     echo "# standard module initialization" > $PACKAGE_NAME/$PACKAGE_NAME/standard/__init__.py
 
