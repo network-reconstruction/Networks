@@ -395,19 +395,20 @@ class FittingDirectedS1_JAX:
     def infer_kappas(self) -> None:
         if self.verbose:
             print(f"Infering kappas ...")
+            print(f"degree_histogram: {self.degree_histogram}")
         self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
         self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
-        directions = [0, 1]
-        
-        # Vectorized 1
+        directions = [0, 1] # in and out degrees [in, out]
         for direction in directions:
             for el in self.degree_histogram[direction].items():
                 self.random_ensemble_kappa_per_degree_class[direction][el[0]] = el[0] + 0.001
-        # ---------------------
 
         keep_going = True
         cnt = 0
         start_time = time.time()
+        if self.verbose:
+            print(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
+
         while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
             if self.verbose:
                 print(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
@@ -416,21 +417,38 @@ class FittingDirectedS1_JAX:
                 for el in self.degree_histogram[direction].items():
                     self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] = 0
 
-            for in_deg, count_in in self.degree_histogram[0].items():
-                for out_deg, count_out in self.degree_histogram[1].items():
+            
+            if self.verbose:
+                
+                prob_conn_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
+                kappa_prod_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
+                print(f"kappa_prod_mat: {kappa_prod_mat}")
+            for i, (in_deg, count_in) in enumerate(self.degree_histogram[0].items()):
+                for j, (out_deg, count_out) in enumerate(self.degree_histogram[1].items()):
                     prob_conn = self.directed_connection_probability(
                         self.PI,
                         self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     )
+                    #indexing with degree histogram index
+                    if self.verbose:
+                        prob_conn_mat[i,j] = prob_conn 
+                        kappa_prod_mat[i,j] = self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
-
+            if self.verbose:
+                print(f"prob_conn_mat: {prob_conn_mat}")
+                print(f"kappa_prod_mat: {kappa_prod_mat}")
+            error = jnp.inf
             keep_going = False
             for direction in directions:
                 for el in self.degree_histogram[direction].items():
-                    if jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] - el[0]) > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
+                    error = jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] - el[0])
+                    if error > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
                         keep_going = True
-
+                        break
+            if self.verbose:
+                print(f"Error: {error}, NUMERICAL_CONVERGENCE_THRESHOLD_1: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
+                
             if keep_going:
                 for direction in directions:
                     for el in self.degree_histogram[direction].items():
@@ -441,6 +459,7 @@ class FittingDirectedS1_JAX:
 
             if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
                 print("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
+
     def infer_kappas_vmap(self) -> None:
         """
         infer kappas using vmap for parallelization
@@ -702,35 +721,33 @@ class FittingDirectedS1_JAX:
         Save the inferred parameters to a JSON file.
         """
         output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
+        
+        
         data = {
-            "beta": self.beta,
-            "mu": self.mu,
-            "nu": self.nu,
-            "R": self.R,
+            "beta": float(self.beta),
+            "mu": float(self.mu),
+            "nu": float(self.nu),
+            "R": float(self.R),
             "inferred_kappas": []
         }
+        if self.verbose:
+            print("Data types:")
+            print(f"beta: {type(self.beta)}, mu: {type(self.mu)}, nu: {type(self.nu)}, R: {type(self.R)}")
         
         for in_deg, out_degs in self.degree_class.items():
             for out_deg, count in out_degs.items():
                 kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
                 kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
+                # Ensure kappa_in and kappa_out are converted to serializable types
                 data["inferred_kappas"].append({
                     "in_deg": in_deg,
                     "out_deg": out_deg,
-                    "kappa_in": kappa_in,
-                    "kappa_out": kappa_out
+                    "kappa_in": kappa_in.tolist() if hasattr(kappa_in, 'tolist') else kappa_in,
+                    "kappa_out": kappa_out.tolist() if hasattr(kappa_out, 'tolist') else kappa_out
                 })
         
         with open(output_filename, 'w') as f:
             json.dump(data, f, indent=4)
-
-    def finalize(self) -> None:
-        """
-        Finalize the fitting process.
-        """
-        # Placeholder for any final steps or cleanup
-        pass
-
 
 def main():
     # Initialize the model

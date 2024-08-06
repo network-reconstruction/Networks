@@ -33,7 +33,7 @@ def hyp2f1c(beta, z): #S75b
 class FittingDirectedS1:
     PI = jnp.pi
 
-    def __init__(self, seed: int = 0, verbose: bool = False, KAPPA_MAX_NB_ITER_CONV: int = 3):
+    def __init__(self, seed: int = 0, verbose: bool = False, KAPPA_MAX_NB_ITER_CONV: int = 100):
         self.ALLOW_LARGE_INITIAL_ANGULAR_GAPS = True
         self.CHARACTERIZATION_MODE = False
         self.CLEAN_RAW_OUTPUT_MODE = False
@@ -292,8 +292,8 @@ class FittingDirectedS1:
             random_val = random.uniform(self.engine)
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
             lower_bound_key = min(lower_bound_key, len(cumul_prob_dict) - 1)
-            if self.verbose:
-                print(f"sample: {i}")
+            # if self.verbose:
+            #     print(f"sample: {i}")
             #     print(f"in_deg: {in_deg}, out_deg: {out_deg}")
             #     print(f"cumul_prob_dict: {cumul_prob_dict}")
             #     print(f"lower_bound_key: {lower_bound_key}")
@@ -587,6 +587,7 @@ class FittingDirectedS1:
         """
         self.verbose = verbose
         self.EDGELIST_FILENAME = edgelist_filename
+        self.ROOTNAME_OUTPUT = edgelist_filename.split(".")[0]
         self.reciprocity = reciprocity
         self.average_undir_clustering = average_local_clustering
         self.initialize()
@@ -600,23 +601,29 @@ class FittingDirectedS1:
         Save the inferred parameters to a JSON file.
         """
         output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
+        
+        
         data = {
-            "beta": self.beta,
-            "mu": self.mu,
-            "nu": self.nu,
-            "R": self.R,
+            "beta": float(self.beta),
+            "mu": float(self.mu),
+            "nu": float(self.nu),
+            "R": float(self.R),
             "inferred_kappas": []
         }
+        if self.verbose:
+            print("Data types:")
+            print(f"beta: {type(self.beta)}, mu: {type(self.mu)}, nu: {type(self.nu)}, R: {type(self.R)}")
         
         for in_deg, out_degs in self.degree_class.items():
             for out_deg, count in out_degs.items():
                 kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
                 kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
+                # Ensure kappa_in and kappa_out are converted to serializable types
                 data["inferred_kappas"].append({
                     "in_deg": in_deg,
                     "out_deg": out_deg,
-                    "kappa_in": kappa_in,
-                    "kappa_out": kappa_out
+                    "kappa_in": kappa_in.tolist() if hasattr(kappa_in, 'tolist') else kappa_in,
+                    "kappa_out": kappa_out.tolist() if hasattr(kappa_out, 'tolist') else kappa_out
                 })
         
         with open(output_filename, 'w') as f:
@@ -639,8 +646,8 @@ def main():
     #take edge list file name from arguments:
     # Set parameters
     edgelist_filename = sys.argv[1]
-    reciprocity = 0.046  # Example value, set appropriately
-    average_local_clustering = 0.28  # Example value, set appropriately
+    reciprocity = 0.05  # Example value, set appropriately
+    average_local_clustering = 0.25  # Example value, set appropriately
     print(f"Infering params with inputs: {edgelist_filename}, reciprocity: {reciprocity}, average_local_clustering: {average_local_clustering}")
     # Fit the model
     print(f"Fitting ...")

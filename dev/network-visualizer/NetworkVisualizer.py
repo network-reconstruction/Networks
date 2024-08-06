@@ -22,25 +22,27 @@ class NetworkVisualizer:
     def __init__(self, 
                  graph: Optional[nx.Graph] = None, 
                  adjacency_matrix: Optional[Union[np.ndarray, pd.DataFrame]] = None, 
+                 adjacency_list: Optional[Union[str, list]] = None,
                  csv_path: Optional[str] = None, 
                  directed: bool = False, 
                  weighted: bool = False, 
                  verbose: bool = False,
                  create_graph: bool = False) -> None:
         """
-        Initializes the NetworkVisualizer with a graph, an adjacency matrix, or a CSV file.
+        Initializes the NetworkVisualizer with a graph, an adjacency matrix, an adjacency list, or a CSV file.
 
         Args:
             graph (networkx.Graph, optional): A NetworkX graph object.
             adjacency_matrix (numpy.ndarray or pandas.DataFrame, optional): An adjacency matrix.
+            adjacency_list (str or list, optional): An adjacency list or a path to an adjacency list file.
             csv_path (str, optional): Path to a CSV file containing edge list or adjacency matrix with labels.
             directed (bool): Whether the graph is directed. Default is False.
             weighted (bool): Whether the graph is weighted. Default is False.
             verbose (bool): Whether to enable verbose output. Default is False.
-            create_graph (bool): Whether to create a graph from the adjacency matrix or CSV file. Default is False.
+            create_graph (bool): Whether to create a graph from the adjacency matrix, adjacency list, or CSV file. Default is False.
 
         Raises:
-            ValueError: If neither graph, adjacency matrix, nor CSV path is provided.
+            ValueError: If neither graph, adjacency matrix, adjacency list, nor CSV path is provided.
         """
         self.verbose = verbose
 
@@ -50,7 +52,7 @@ class NetworkVisualizer:
                 print("Graph provided directly.")
             self.adj_matrix = jnp.array(nx.to_numpy_array(self.G))
         elif adjacency_matrix is not None:
-            if create_graph == True: 
+            if create_graph:
                 self.G = self._create_graph_from_adj_matrix(adjacency_matrix, directed, weighted)
                 if self.verbose:
                     print("Graph created from adjacency matrix.")
@@ -59,15 +61,30 @@ class NetworkVisualizer:
             self.adj_matrix = jnp.array(adjacency_matrix)
             if self.verbose:
                 print("Adjacency matrix provided.")
+        elif adjacency_list is not None:
+            if create_graph:
+                self.G = self._create_graph_from_adj_list(adjacency_list, directed, weighted)
+                if self.verbose:
+                    print("Graph created from adjacency list.")
+            else:
+                self.G = None
+            if isinstance(adjacency_list, str):
+                with open(adjacency_list, 'r') as f:
+                    self.adj_list = f.readlines()
+            else:
+                self.adj_list = adjacency_list
+            if self.verbose:
+                print("Adjacency list provided.")
         elif csv_path is not None:
-            if create_graph == True:
+            if create_graph:
                 self.G = self._load_graph_from_csv(csv_path, directed, weighted)
                 if self.verbose:
                     print(f"Graph loaded from CSV file: {csv_path}")
-            else: self.G = None
+            else:
+                self.G = None
             self.adj_matrix = jnp.array(pd.read_csv(csv_path))
         else:
-            raise ValueError("Either graph, adjacency matrix, or CSV path must be provided.")
+            raise ValueError("Either graph, adjacency matrix, adjacency list, or CSV path must be provided.")
         
         self.directed = directed
         self.weighted = weighted
@@ -88,8 +105,24 @@ class NetworkVisualizer:
             G = nx.from_pandas_adjacency(adjacency_matrix, create_using=nx.DiGraph() if directed else nx.Graph())
         else:
             G = nx.from_numpy_array(adjacency_matrix, create_using=nx.DiGraph() if directed else nx.Graph())
+        return G
 
+    def _create_graph_from_adj_list(self, adjacency_list: Union[str, list], directed: bool, weighted: bool) -> nx.Graph:
+        """
+        Creates a graph from an adjacency list.
 
+        Args:
+            adjacency_list (str or list): The adjacency list or a path to an adjacency list file.
+            directed (bool): Whether the graph is directed.
+            weighted (bool): Whether the graph is weighted.
+
+        Returns:
+            networkx.Graph: The graph created from the adjacency list.
+        """
+        if isinstance(adjacency_list, str):
+            G = nx.read_adjlist(adjacency_list, create_using=nx.DiGraph() if directed else nx.Graph(), nodetype=int)
+        else:
+            G = nx.parse_adjlist(adjacency_list, create_using=nx.DiGraph() if directed else nx.Graph(), nodetype=int)
         return G
 
     def _load_graph_from_csv(self, csv_path: str, directed: bool, weighted: bool) -> nx.Graph:
@@ -131,8 +164,7 @@ class NetworkVisualizer:
             print(info)
         return info
 
-    #TODO parallelizable?
-    def save_network(self, output_dir: str,, **kwargs) -> None:
+    def save_network(self, output_dir: str, **kwargs) -> None:
         """
         Saves an interactive visualization of the network as an HTML file in the specified output directory.
 
@@ -193,10 +225,9 @@ class NetworkVisualizer:
 
         net.show(f'{output_dir}/network.html')
 
-    if self.verbose:
-        print("Network visualization saved.")
+        if self.verbose:
+            print("Network visualization saved.")
 
-            
     def save_heatmap(self, output_dir: str, title: str = 'Adjacency Matrix Heatmap', max_labels: int = 10) -> None:
         """
         Saves a heatmap of the adjacency matrix as an image file in the specified output directory.
@@ -209,11 +240,6 @@ class NetworkVisualizer:
         if self.verbose:
             print(f"Saving heatmap to directory: {output_dir}")
 
-        # Apply z-score normalization
-        # mean = jnp.mean(self.adj_matrix)
-        # std = jnp.std(self.adj_matrix)
-        # normalized_adj_matrix = (self.adj_matrix - mean) / std
-        #TODO find some normalization over adjacency matrix
         plt.figure(figsize=(10, 8))
         ax = sns.heatmap(self.adj_matrix, annot=False, cbar=True, xticklabels=True, yticklabels=True, center=0)
         plt.title(title)
@@ -235,9 +261,22 @@ class NetworkVisualizer:
         if self.verbose:
             print("Heatmap saved.")
 
+    def _ccdf(self, data):
+        """
+        Computes the complementary cumulative distribution function (CCDF) for a dataset.
 
+        Args:
+            data (array-like): The input data.
 
-    def save_distributions(self, output_dir: str, title: str = '') -> None:
+        Returns:
+            x (array-like): The sorted data points.
+            y (array-like): The CCDF values.
+        """
+        sorted_data = np.sort(data)
+        ccdf = 1.0 - np.arange(1, len(sorted_data) + 1) / len(sorted_data)
+        return sorted_data, ccdf
+
+    def save_distributions(self, output_dir: str, title: str = '', loglog: bool = True) -> None:
         """
         Saves the degree distributions of the graph based on its type (directed, weighted, etc.)
         as image files in the specified output directory.
@@ -245,6 +284,7 @@ class NetworkVisualizer:
         Args:
             output_dir (str): The directory to save the distribution plots.
             title (str): The prefix for the titles of the plots.
+            loglog (bool): Whether to plot scatter plots on a log-log scale. Default is True.
         """
         if self.verbose:
             print(f"Saving degree distributions to directory: {output_dir}")
@@ -298,20 +338,24 @@ class NetworkVisualizer:
             out_degrees = jnp.sum(adj_matrix != 0, axis=1)
             
             # In-Degree Distribution
-            sns.histplot(in_degrees, kde=True, color='blue', label='In-Degree')
+            x, y = self._ccdf(in_degrees)
+            plt.plot(x, y, marker='o', linestyle='none')
+            plt.xscale('log')
+            plt.yscale('log')
             plt.title(f'{title} In-Degree Distribution (Unweighted, Directed)')
             plt.xlabel('In-Degree')
-            plt.ylabel('Frequency')
-            plt.legend()
+            plt.ylabel('CCDF')
             plt.savefig(f'{output_dir}/in_degree_distribution_unweighted_directed.png')
             plt.close()
             
             # Out-Degree Distribution
-            sns.histplot(out_degrees, kde=True, color='orange', label='Out-Degree')
+            x, y = self._ccdf(out_degrees)
+            plt.plot(x, y, marker='o', linestyle='none')
+            plt.xscale('log')
+            plt.yscale('log')
             plt.title(f'{title} Out-Degree Distribution (Unweighted, Directed)')
             plt.xlabel('Out-Degree')
-            plt.ylabel('Frequency')
-            plt.legend()
+            plt.ylabel('CCDF')
             plt.savefig(f'{output_dir}/out_degree_distribution_unweighted_directed.png')
             plt.close()
             
@@ -320,6 +364,9 @@ class NetworkVisualizer:
             plt.title(f'{title} In-Degree vs Out-Degree Scatter Plot (Unweighted, Directed)', fontsize=14)
             plt.xlabel('In-Degree')
             plt.ylabel('Out-Degree')
+            if loglog:
+                plt.xscale('log')
+                plt.yscale('log')
             plt.savefig(f'{output_dir}/in_out_degree_scatter_plot_unweighted_directed.png')
             plt.close()
         elif self.weighted and self.directed:
@@ -329,20 +376,24 @@ class NetworkVisualizer:
             out_strengths = jnp.sum(adj_matrix, axis=1)
 
             # In-Degree Distribution
-            sns.histplot(in_degrees, kde=True, color='blue', label='In-Degree')
+            x, y = self._ccdf(in_degrees)
+            plt.plot(x, y, marker='o', linestyle='none')
+            plt.xscale('log')
+            plt.yscale('log')
             plt.title(f'{title} In-Degree Distribution (Weighted, Directed)')
             plt.xlabel('In-Degree')
-            plt.ylabel('Frequency')
-            plt.legend()
+            plt.ylabel('CCDF')
             plt.savefig(f'{output_dir}/in_degree_distribution_weighted_directed.png')
             plt.close()
 
             # Out-Degree Distribution
-            sns.histplot(out_degrees, kde=True, color='orange', label='Out-Degree')
+            x, y = self._ccdf(out_degrees)
+            plt.plot(x, y, marker='o', linestyle='none')
+            plt.xscale('log')
+            plt.yscale('log')
             plt.title(f'{title} Out-Degree Distribution (Weighted, Directed)')
             plt.xlabel('Out-Degree')
-            plt.ylabel('Frequency')
-            plt.legend()
+            plt.ylabel('CCDF')
             plt.savefig(f'{output_dir}/out_degree_distribution_weighted_directed.png')
             plt.close()
 
@@ -369,6 +420,9 @@ class NetworkVisualizer:
             plt.title(f'{title} In-Degree vs In-Strength Scatter Plot (Weighted, Directed)', fontsize=14)
             plt.xlabel('In-Degree')
             plt.ylabel('In-Strength')
+            if loglog:
+                plt.xscale('log')
+                plt.yscale('log')
             plt.savefig(f'{output_dir}/in_degree_in_strength_scatter_plot_weighted_directed.png')
             plt.close()
 
@@ -377,6 +431,9 @@ class NetworkVisualizer:
             plt.title(f'{title} Out-Degree vs Out-Strength Scatter Plot (Weighted, Directed)', fontsize=14)
             plt.xlabel('Out-Degree')
             plt.ylabel('Out-Strength')
+            if loglog:
+                plt.xscale('log')
+                plt.yscale('log')
             plt.savefig(f'{output_dir}/out_degree_out_strength_scatter_plot_weighted_directed.png')
             plt.close()
 
@@ -385,6 +442,9 @@ class NetworkVisualizer:
             plt.title(f'{title} In-Degree vs Out-Degree Scatter Plot (Weighted, Directed)', fontsize=14)
             plt.xlabel('In-Degree')
             plt.ylabel('Out-Degree')
+            if loglog:
+                plt.xscale('log')
+                plt.yscale('log')
             plt.savefig(f'{output_dir}/in_out_degree_scatter_plot_weighted_directed.png')
             plt.close()
 
@@ -393,10 +453,11 @@ class NetworkVisualizer:
             plt.title(f'{title} In-Strength vs Out-Strength Scatter Plot (Weighted, Directed)', fontsize=14)
             plt.xlabel('In-Strength')
             plt.ylabel('Out-Strength')
+            if loglog:
+                plt.xscale('log')
+                plt.yscale('log')
             plt.savefig(f'{output_dir}/in_out_strength_scatter_plot_weighted_directed.png')
             plt.close()
             
         if self.verbose:
             print("Degree distributions saved.")
-            
-

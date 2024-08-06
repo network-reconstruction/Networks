@@ -4,7 +4,7 @@ import os
 if __name__ == "__main__":
     # Example usage with CSV:
     #print csv as dataframe
-    df = pd.read_csv('/users/mf23yyt/Thesis/network_reconstruction/data/input-output/SML/2016-2020_SML/preprocessed/2016_SML/countries_intermediate_use/AUT_intermediate_use.csv')
+    df = pd.read_csv('/users/mf23yyt/Thesis/networks/data/input-output/SML/2016-2020_SML/preprocessed/2016_SML/countries_intermediate_use/AUT_intermediate_use.csv')
     df.set_index('V1', inplace=True)
     index_labels = df.index.tolist()
     adjacency_matrix = df.reindex(index=index_labels, columns=index_labels)
