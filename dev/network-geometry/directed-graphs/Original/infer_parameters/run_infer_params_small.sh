@@ -1,6 +1,6 @@
 echo "Running inference on directed graphs, output will be saved to output.log"
 # print start time
-echo "Inference started, check output.log for progress"
+echo "Inference started, check output_small.log for progress"
 date
 
 # run inference and save the PID

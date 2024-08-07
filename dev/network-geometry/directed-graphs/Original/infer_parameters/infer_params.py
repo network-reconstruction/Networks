@@ -5,12 +5,12 @@ import jax.numpy as jnp
 import jax.random as random
 from scipy.special import hyp2f1
 import numpy as np
-from typing import Dict, List, Tuple
-from jax import vmap, pmap
+from typing import Dict, List, Tuple, Union, Optional
 import time
 import sys
 from sortedcontainers import SortedDict
 import json
+import logging
 
 
 def lower_bound(d, key):
@@ -33,34 +33,25 @@ def hyp2f1c(beta, z): #S75b
 class FittingDirectedS1:
     PI = jnp.pi
 
-    def __init__(self, seed: int = 0, verbose: bool = False, KAPPA_MAX_NB_ITER_CONV: int = 100):
-        self.ALLOW_LARGE_INITIAL_ANGULAR_GAPS = True
-        self.CHARACTERIZATION_MODE = False
-        self.CLEAN_RAW_OUTPUT_MODE = False
+    def __init__(self, 
+                 seed: int = 0, 
+                 verbose: bool = False, 
+                 KAPPA_MAX_NB_ITER_CONV: int = 100, 
+                 EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 50, 
+                 NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
+                 NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2):
+
         self.CUSTOM_BETA = False
         self.CUSTOM_MU = False
         self.CUSTOM_NU = False
-        self.CUSTOM_CHARACTERIZATION_NB_GRAPHS = False
-        self.CUSTOM_INFERRED_COORDINATES = False
-        self.CUSTOM_OUTPUT_ROOTNAME_MODE = False
-        self.CUSTOM_SEED = False
-        self.KAPPA_POST_INFERENCE_MODE = True
-        self.MAXIMIZATION_MODE = True
-        self.QUIET_MODE = False
-        self.REFINE_MODE = False
-        self.VALIDATION_MODE = False
-        self.VERBOSE_MODE = False
-
-        self.ALREADY_INFERRED_PARAMETERS_FILENAME = ""
         self.BETA_ABS_MAX = 25
         self.BETA_ABS_MIN = 1.01
-        self.CHARACTERIZATION_NB_GRAPHS = 100
-        self.MIN_NB_ANGLES_TO_TRY = 100
-        self.EDGELIST_FILENAME = ""
-        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = 50 #200
+        self.deg_seq_filename = ""
+        self.deg_seq = []
+        self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = EXP_CLUST_NB_INTEGRATION_MC_STEPS #200
         self.KAPPA_MAX_NB_ITER_CONV = KAPPA_MAX_NB_ITER_CONV
-        self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-2
-        self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-2
+        self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = NUMERICAL_CONVERGENCE_THRESHOLD_1
+        self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = NUMERICAL_CONVERGENCE_THRESHOLD_2
         self.NUMERICAL_ZERO = 1e-5
         self.ROOTNAME_OUTPUT = ""
         self.SEED = seed
@@ -88,8 +79,8 @@ class FittingDirectedS1:
         self.cumul_prob_kgkp = {}
         self.engine = random.PRNGKey(self.SEED)
 
-        self.kappas_out, self.kappas_in = [], []
-        self.verbose = False
+        self.out_degree_sequence, self.in_degree_sequence = [], []
+        self.verbose = verbose
         
 
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
@@ -109,7 +100,7 @@ class FittingDirectedS1:
         Classify nodes based on their in-degrees and out-degrees.
         """
         degree_class = {}
-        for k_in, k_out in zip(self.kappas_in, self.kappas_out):
+        for k_in, k_out in zip(self.in_degree_sequence, self.out_degree_sequence):
             k_in, k_out = int(k_in), int(k_out)
             if k_in not in degree_class:
                 degree_class[k_in] = {}
@@ -235,6 +226,7 @@ class FittingDirectedS1:
         if self.verbose:
             print(f"finished building cumulative distribution for Monte Carlo integration ...")
             print(f"runtime: {time.time() - start_time}")
+            
     def compute_random_ensemble_average_degree(self) -> None:
         """
         Compute the random ensemble average degree.
@@ -297,7 +289,7 @@ class FittingDirectedS1:
             #     print(f"in_deg: {in_deg}, out_deg: {out_deg}")
             #     print(f"cumul_prob_dict: {cumul_prob_dict}")
             #     print(f"lower_bound_key: {lower_bound_key}")
-            p2_key = cumul_prob_dict.iloc[lower_bound_key]
+            p2_key = list(cumul_prob_dict.keys())[lower_bound_key]
             p2 = cumul_prob_dict[p2_key]
 
             k_in2 = self.random_ensemble_kappa_per_degree_class[0][p2[0]]
@@ -318,7 +310,7 @@ class FittingDirectedS1:
 
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
             lower_bound_key = min(lower_bound_key, len(cumul_prob_dict) - 1)
-            p3_key = cumul_prob_dict.iloc[lower_bound_key]
+            p3_key = list(cumul_prob_dict.keys())[lower_bound_key]
             p3 = cumul_prob_dict[p3_key]
 
             k_in3 = self.random_ensemble_kappa_per_degree_class[0][p3[0]]
@@ -391,11 +383,11 @@ class FittingDirectedS1:
                     self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] = 0
 
             
-            if self.verbose:
+            # if self.verbose:
                 
-                prob_conn_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
-                kappa_prod_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
-                print(f"kappa_prod_mat: {kappa_prod_mat}")
+            #     prob_conn_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
+            #     kappa_prod_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
+            #     print(f"kappa_prod_mat: {kappa_prod_mat}")
             for i, (in_deg, count_in) in enumerate(self.degree_histogram[0].items()):
                 for j, (out_deg, count_out) in enumerate(self.degree_histogram[1].items()):
                     prob_conn = self.directed_connection_probability(
@@ -403,14 +395,14 @@ class FittingDirectedS1:
                         self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     )
                     #indexing with degree histogram index
-                    if self.verbose:
-                        prob_conn_mat[i,j] = prob_conn 
-                        kappa_prod_mat[i,j] = self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
+                    # if self.verbose:
+                    #     prob_conn_mat[i,j] = prob_conn 
+                    #     kappa_prod_mat[i,j] = self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
-            if self.verbose:
-                print(f"prob_conn_mat: {prob_conn_mat}")
-                print(f"kappa_prod_mat: {kappa_prod_mat}")
+            # if self.verbose:
+            #     print(f"prob_conn_mat: {prob_conn_mat}")
+            #     print(f"kappa_prod_mat: {kappa_prod_mat}")
             error = jnp.inf
             keep_going = False
             for direction in directions:
@@ -550,52 +542,102 @@ class FittingDirectedS1:
             self.build_cumul_dist_for_mc_integration()
             self.compute_random_ensemble_clustering()
 
-    def initialize(self) -> None:
-        if self.verbose:
-            print(f"Initializing ...")
-        with open(self.EDGELIST_FILENAME, 'r') as f:
-            for line in f:
-                try:
-                    k_out, k_in = map(float, line.strip().split())
-                    self.kappas_out.append(k_out)
-                    self.kappas_in.append(k_in)
-                except:
-                    if self.verbose:
-                        print(f"Skipping: {line}")
-                    pass
-
-        self.nb_vertices = len(self.kappas_out)
-        if self.verbose:
-            print(f"Number of vertices: {self.nb_vertices}")
-
-        self.degree = [self.kappas_in, self.kappas_out]
-
+    def initialize_degrees(self) -> None:
+        """
+        Initialize the degrees compatible to computation by classes.
+        """
         # Initialize degree histograms
-        self.degree_histogram = [self._compute_degree_histogram(self.kappas_in),
-                                self._compute_degree_histogram(self.kappas_out)]
-
+        self.degree_histogram = [self._compute_degree_histogram(self.in_degree_sequence),
+                                    self._compute_degree_histogram(self.out_degree_sequence)]
         # Compute average degree
-        self.average_degree = sum(self.kappas_in) / self.nb_vertices
+        self.average_degree = sum(self.in_degree_sequence) / self.nb_vertices
 
         # Classify nodes by their degrees
         self.degree_class = self._classify_degrees()
+        
 
-
-    def fit(self, edgelist_filename: str, reciprocity: float, average_local_clustering: float, verbose: bool = False) -> None:
+    #hidden function
+    def _fit(self, 
+            reciprocity: float, 
+            average_local_clustering: float,
+            ) -> None:
         """
         Fit the model to the network data.
         """
-        self.verbose = verbose
-        self.EDGELIST_FILENAME = edgelist_filename
-        self.ROOTNAME_OUTPUT = edgelist_filename.split(".")[0]
         self.reciprocity = reciprocity
         self.average_undir_clustering = average_local_clustering
-        self.initialize()
+        self.initialize_degrees()
         self.infer_parameters()
         self.save_inferred_parameters()
         self.finalize()
+        
+    def fit_from_deg_seq(self,
+                         deg_seq: Tuple[List[float], List[float]],
+                         reciprocity: float,
+                         average_local_clustering: float,
+                         network_name: str = "",
+                         verbose: bool = False
+                         ) -> None:
+        """
+        Fit the model to the network data from a degree sequence.
+        """
+        self.verbose = verbose
+        self.ROOTNAME_OUTPUT = network_name
+        try:
+            self.in_degree_sequence, self.out_degree_sequence = deg_seq
+            assert len(self.in_degree_sequence) == len(self.out_degree_sequence)
+            #TODO more checks?
+            
+        except:
+            raise ValueError("Degree is a tuple of two lists of integers/ float and sequences must be of equal length.")
+        
+        self.nb_vertices = len(self.in_degree_sequence)
+        self.degree = self.deg_seq
+        if self.verbose:
+            print(f"Using degree sequence of length: {self.nb_vertices}")
+            
+        self._fit(reciprocity, average_local_clustering)
+        
+    def fit_from_file(self, 
+                      filename: str,
+                      reciprocity: float,
+                      average_local_clustering: float,
+                      network_name: str = "", 
+                      verbose: bool = False
+                      ) -> None:
+        """
+        Fit the model to the network data from a file.
+        """
+        self.verbose = verbose
+        if self.verbose:
+            print(f"Reading degree sequence from file: {filename}")
+        
+        # -------------------------------------
+        if network_name:
+            self.ROOTNAME_OUTPUT = network_name
+        else:
+            self.ROOTNAME_OUTPUT = self.deg_seq_filename.split(".")[0]
 
+        self.deg_seq_filename = filename
+        with open(self.deg_seq_filename, 'r') as f:
+                for line in f:
+                    try:
+                        k_out, k_in = map(float, line.strip().split())
+                        self.out_degree_sequence.append(k_out)
+                        self.in_degree_sequence.append(k_in)
+                    except:
+                        if self.verbose:
+                            print(f"Skipping: {line}")
+                        pass
 
+        self.nb_vertices = len(self.out_degree_sequence)
+        if self.verbose:
+            print(f"Number of vertices: {self.nb_vertices}")
+
+        self.degree = [self.in_degree_sequence, self.out_degree_sequence]
+        
+        self._fit(reciprocity, average_local_clustering)
+        
     def save_inferred_parameters(self) -> None:
         """
         Save the inferred parameters to a JSON file.
@@ -645,13 +687,13 @@ def main():
     model = FittingDirectedS1(seed=0, verbose=True)
     #take edge list file name from arguments:
     # Set parameters
-    edgelist_filename = sys.argv[1]
+    deg_seq_filename = sys.argv[1]
     reciprocity = 0.05  # Example value, set appropriately
     average_local_clustering = 0.25  # Example value, set appropriately
-    print(f"Infering params with inputs: {edgelist_filename}, reciprocity: {reciprocity}, average_local_clustering: {average_local_clustering}")
+    print(f"Infering params with inputs: {deg_seq_filename}, reciprocity: {reciprocity}, average_local_clustering: {average_local_clustering}")
     # Fit the model
     print(f"Fitting ...")
-    model.fit(edgelist_filename, reciprocity, average_local_clustering, verbose=True)
+    model.fit_from_file(deg_seq_filename, reciprocity, average_local_clustering, verbose=True)
 
     print(f"Fitted! inferring parameters")
     # Output inferred parameters (this will be saved to a file)
