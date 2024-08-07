@@ -10,7 +10,7 @@ import zipfile
 #PARAMS 
 
 # max scraping limit
-max_networks = 10
+max_networks = 20
 # Base URL of the website
 base_url = "https://networks.skewed.de"
 # Directory to save the downloaded files
