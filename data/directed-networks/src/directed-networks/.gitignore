@@ -1,0 +1,10 @@
+#ignore all csv and zip files
+*.csv
+*.zip
+
+
+
+
+
+
+

@@ -4,7 +4,7 @@ import pandas as pd
 import json
 
 class NetworkProcessor:
-    def __init__(self, root_dir, max_edges=100000):
+    def __init__(self, root_dir, max_edges=150000):
         self.root_dir = root_dir
         self.network_data = {}
         self.max_edges = max_edges
@@ -45,14 +45,18 @@ class NetworkProcessor:
     def extract_network_data(self, G):
         reciprocity = nx.reciprocity(G)
         avg_clustering = nx.average_clustering(G)
+        
         in_degree_sequence = [d for n, d in G.in_degree()]
         out_degree_sequence = [d for n, d in G.out_degree()]
+        #avg in degree 
+        average_in_degree = sum(in_degree_sequence) / len(in_degree_sequence)
 
         network_data = {
             'reciprocity': reciprocity,
             'average_clustering': avg_clustering,
             'in_degree_sequence': in_degree_sequence,
-            'out_degree_sequence': out_degree_sequence
+            'out_degree_sequence': out_degree_sequence,
+            'average_in_degree': average_in_degree
         }
         
         return network_data
@@ -84,5 +88,5 @@ class NetworkProcessor:
 
 # Example usage
 if __name__ == "__main__":
-    processor = NetworkProcessor('directed_networks')
+    processor = NetworkProcessor('directed-networks')
     processor.recursive_process()
