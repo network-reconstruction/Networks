@@ -5,54 +5,118 @@ import numpy as np
 from typing import Dict, List, Tuple, Union
 import time
 import jax 
-from jax import lax, jit, vmap
+# from jax import lax, jit, vmap
 from functools import partial
 import sys
 import json
 
-def pochhammer(a, n):
-    print(f" poch a: {a}, n: {n}")
+def pochhammer(a: Union[int, float], n: int) -> float:
+    """
+    Compute the Pochhammer symbol (rising factorial) for given a and n.
+
+    Args:
+        a (Union[int, float]): The starting value.
+        n (int): The number of terms.
+
+    Returns:
+        float: The value of the Pochhammer symbol.
+    """
+    # print(f" poch a: {a}, n: {n}")
     res = poch(a, n)
-    print(f"poch res: {res}")
+    # print(f"poch res: {res}")
     return res
 
 def hyp2f1_approx(a: float, b: float, c: float, z: float, n_terms: int =10) -> jnp.ndarray:
     """
     Compute the Taylor series expansion for _2F_1(a, b; c; z) using JAX.
-    a, b, c, z: Scalar parameters for the hypergeometric function.
-    n_terms: Number of terms in the series.
+
+    Args:
+        a (float): The parameter a.
+        b (float): The parameter b.
+        c (float): The parameter c.
+        z (float): The variable z.
+        n_terms (int): Number of terms in the series.
+
+    Returns:
+        jnp.ndarray: The value of the hypergeometric function approximation.
     """
     print(f"a: {a}, b: {b}, c: {c}, z: {z}")
-    def series_term(n):
-        term = (pochhammer(a, n) * pochhammer(b, n ) / pochhammer(c, n )) * (z**n) / factorial(n)
+    def series_term(n: int) -> float:
+        term = (pochhammer(a, n) * pochhammer(b, n) / pochhammer(c, n)) * (z**n) / factorial(n)
         return term
     
     terms = []
     for n in range(n_terms):
         term = series_term(n)
-        #if a term has -inf in the array print it and the values inputed into the equation
         print(f"term: {term}, n: {n}")
         terms.append(term)
     terms = jnp.array(terms)
-    # print(f"terms: {terms}")
     result = jnp.sum(terms, axis=0)
-    # print(f"result: {result}")
     return result
   
+def hyp2f1a(beta: float, z: float) -> float:
+    """
+    Approximate the hypergeometric function _2F_1 for specific parameters.
 
-def hyp2f1a(beta, z):
+    Args:
+        beta (float): The beta parameter.
+        z (float): The variable z.
+
+    Returns:
+        float: The value of the hypergeometric function approximation.
+    """
     return hyp2f1_approx(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
-def hyp2f1b(beta, z):
+def hyp2f1b(beta: float, z: float) -> float:
+    """
+    Approximate the hypergeometric function _2F_1 for specific parameters.
+
+    Args:
+        beta (float): The beta parameter.
+        z (float): The variable z.
+
+    Returns:
+        float: The value of the hypergeometric function approximation.
+    """
     return hyp2f1_approx(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
 
-def hyp2f1c(beta, z):
+def hyp2f1c(beta: float, z: float) -> float:
+    """
+    Approximate the hypergeometric function _2F_1 for specific parameters.
+
+    Args:
+        beta (float): The beta parameter.
+        z (float): The variable z.
+
+    Returns:
+        float: The value of the hypergeometric function approximation.
+    """
     return hyp2f1_approx(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 class FittingDirectedS1_JAX:
+    """
+    A class to fit the directed S1 model using JAX for numerical computations.
+
+    Attributes:
+        PI (jnp.ndarray): The value of Pi.
+        SEED (int): The random seed.
+        ... (other attributes)
+
+    Methods:
+        __init__(self, seed: int = 0, verbose: bool = False):
+            Initializes the model with default parameters and attributes.
+        ...
+    """
     PI = jnp.pi
 
     def __init__(self, seed: int = 0, verbose: bool = False):
+        """
+        Initializes the FittingDirectedS1_JAX class.
+
+        Args:
+            seed (int): The random seed for reproducibility.
+            verbose (bool): Whether to enable verbose output.
+        """
         self.ALLOW_LARGE_INITIAL_ANGULAR_GAPS = True
         self.CHARACTERIZATION_MODE = False
         self.CLEAN_RAW_OUTPUT_MODE = False
@@ -108,11 +172,17 @@ class FittingDirectedS1_JAX:
         self.engine = random.PRNGKey(self.SEED)
 
         self.kappas_out, self.kappas_in = [], []
-        self.verbose = False
+        self.verbose = verbose
 
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
         """
         Compute the degree histogram.
+
+        Args:
+            degrees (List[float]): The list of degrees.
+
+        Returns:
+            Dict[int, int]: The histogram of degrees.
         """
         histogram = {}
         for degree in degrees:
@@ -125,6 +195,9 @@ class FittingDirectedS1_JAX:
     def _classify_degrees(self) -> Dict[int, Dict[int, int]]:
         """
         Classify nodes based on their in-degrees and out-degrees.
+
+        Returns:
+            Dict[int, Dict[int, int]]: The classified degree dictionary.
         """
         degree_class = {}
         for k_in, k_out in zip(self.kappas_in, self.kappas_out):
@@ -139,21 +212,30 @@ class FittingDirectedS1_JAX:
     def directed_connection_probability(self, z: float, koutkin: float) -> float:
         """
         Compute the directed connection probability.
+
+        Args:
+            z (float): The variable z.
+            koutkin (float): The product of kappa_out and kappa_in.
+
+        Returns:
+            float: The directed connection probability.
         """
-        print(f"")
         return (z / self.PI) * hyp2f1a(self.beta, -((self.R * z) / (self.mu * koutkin)) ** self.beta)
     
     def directed_connection_probability_vmap(self, z: Union[float, jnp.ndarray], koutkin: jnp.ndarray) -> jnp.ndarray:
         """
-        Compute the directed connection probability vmapped
-        z: float or jnp.ndarray
-        koutkin: jnp.ndarray
+        Compute the directed connection probability using vmap.
+
+        Args:
+            z (Union[float, jnp.ndarray]): The variable z.
+            koutkin (jnp.ndarray): The product of kappa_out and kappa_in.
+
+        Returns:
+            jnp.ndarray: The directed connection probability.
         """
         if isinstance(z, float):
-            #vectorize over koutkin vmap
             return jax.vmap(lambda k: self.directed_connection_probability(z, k))(koutkin)
         elif isinstance(z, jnp.ndarray):
-            #vectorize over both z and koutkin
             return jax.vmap(lambda z, k: self.directed_connection_probability(z, k))(z, koutkin)
         else:
             raise ValueError("z must be a float or jnp.ndarray")
@@ -161,6 +243,14 @@ class FittingDirectedS1_JAX:
     def undirected_connection_probability(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
         """
         Compute the undirected connection probability.
+
+        Args:
+            z (float): The variable z.
+            kout1kin2 (float): The product of kappa_out1 and kappa_in2.
+            kout2kin1 (float): The product of kappa_out2 and kappa_in1.
+
+        Returns:
+            float: The undirected connection probability.
         """
         p12 = self.directed_connection_probability(z, kout1kin2)
         p21 = self.directed_connection_probability(z, kout2kin1)
@@ -192,6 +282,13 @@ class FittingDirectedS1_JAX:
     def find_minimal_angle_by_bisection(self, kout1kin2: float, kout2kin1: float) -> float:
         """
         Find the minimal angle by bisection.
+
+        Args:
+            kout1kin2 (float): The product of kappa_out1 and kappa_in2.
+            kout2kin1 (float): The product of kappa_out2 and kappa_in1.
+
+        Returns:
+            float: The minimal angle.
         """
         z_min = 0
         z_max = self.PI
@@ -217,25 +314,17 @@ class FittingDirectedS1_JAX:
             print(f"self.degree_class: {self.degree_class}")
             start_time = time.time()
         for in_deg, out_degs in self.degree_class.items(): 
-            #Iterating over all nodes,basically but via degree classes
-            #This iteration and inner iteration form point 1 above S86
             self.cumul_prob_kgkp[in_deg] = {}
             for out_deg in out_degs:
-                
-                #for each pair of in and out observed degree classes, (k_1in, k_1out)
-                    
                 nkkp = {(i, j): 0 for i in self.degree_class for j in self.degree_class[i]}
-                #nkkp is a dictionary of tuples of in and out degrees, with values as 0
                 tmp_cumul = 0
                 k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg] 
                 kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
-                #We take kappa values from random ensemble
                 for in_deg2, out_degs2 in self.degree_class.items(): 
-                    #iterating over all nodes,basically but via degree classes
                     for out_deg2 in out_degs2:
                         k_in2 = self.random_ensemble_kappa_per_degree_class[0][in_deg2]
                         kout2 = self.random_ensemble_kappa_per_degree_class[1][out_deg2]
-                        tmp_val = self.undirected_connection_probability(self.PI, kout1 * k_in2, kout2 * k_in1) #S86
+                        tmp_val = self.undirected_connection_probability(self.PI, kout1 * k_in2, kout2 * k_in1)
                         
                         if in_deg == in_deg2 and out_deg == out_deg2:
                             nkkp[(in_deg2, out_deg2)] = (out_degs2[out_deg2] - 1) * tmp_val 
@@ -243,11 +332,9 @@ class FittingDirectedS1_JAX:
                             nkkp[(in_deg2, out_deg2)] = out_degs2[out_deg2] * tmp_val
                         tmp_cumul += nkkp[(in_deg2, out_deg2)]
                         
-                #noralizing as we multiplied with counts per degree class, so now we have probabilities in nkkp[key]
                 for key in nkkp:
                     nkkp[key] /= tmp_cumul 
                     
-                # For each degree class (in, out), we have nkkp which gives cumulative distribution of probability of connection.
                 tmp_cumul = 0
                 for key in nkkp:
                     tmp_val = nkkp[key]
@@ -256,12 +343,10 @@ class FittingDirectedS1_JAX:
                         if out_deg not in self.cumul_prob_kgkp[in_deg]:
                             self.cumul_prob_kgkp[in_deg][out_deg] = SortedDict()
                         self.cumul_prob_kgkp[in_deg][out_deg][int(tmp_cumul)] = key
-                        #tmp_cumul is single digit array in jax so we need to convert to hashable type by dictionary
         if self.verbose:
             print(f"finished building cumulative distribution for Monte Carlo integration ...")
             print(f"runtime: {time.time() - start_time}")
         
-
     def compute_random_ensemble_average_degree(self) -> None:
         """
         Compute the random ensemble average degree.
@@ -285,16 +370,22 @@ class FittingDirectedS1_JAX:
         random_ensemble_average_clustering = 0
         for in_deg, out_degs in self.degree_class.items():
             for out_deg in out_degs:
-                if in_deg + out_deg > 1: # only consider degree classes with in and out degrees greater than 1
-                    # basically over all nodes, done in degree class outer summation of S85
+                if in_deg + out_deg > 1:
                     tmp_val = self.compute_random_ensemble_clustering_for_degree_class(in_deg, out_deg) 
-                    random_ensemble_average_clustering += tmp_val * out_degs[out_deg] #this is per class
-        self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one # 1 / MN
+                    random_ensemble_average_clustering += tmp_val * out_degs[out_deg]
+        self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one
 
     def compute_random_ensemble_clustering_for_degree_class(self, in_deg: int, out_deg: int) -> float:
         """
         Compute the random ensemble clustering for a given degree class.
         Point 1-4 after Equation S86 of the paper, inner summation of S85
+
+        Args:
+            in_deg (int): The in-degree class.
+            out_deg (int): The out-degree class.
+
+        Returns:
+            float: The clustering value for the degree class.
         """
         if self.verbose:
             print(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
@@ -305,25 +396,21 @@ class FittingDirectedS1_JAX:
         k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg]
         kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
 
-        M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS #this is the value of M in S85
+        M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS
         if self.verbose:
-            #print all of the first two keys of self.cumul_prob_kgkp
             print(f"In and out pairs for cumul_prob_kgkp:")
             for key1 in self.cumul_prob_kgkp.keys():
                 for key2 in self.cumul_prob_kgkp[key1].keys():
                     print(f"({key1}, {key2})")
-            print(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
+            print(f"just for debugging: {self.cumul_prob_kgkp[2][3]}")
             
-        for i in range(M): #this is the value of M in S85
+        for i in range(M):
             cumul_prob_dict = self.cumul_prob_kgkp[int(in_deg)].get(int(out_deg), SortedDict())
             random_val = random.uniform(self.engine)
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
             lower_bound_key = min(lower_bound_key, len(cumul_prob_dict) - 1)
             if self.verbose:
                 print(f"sample: {i}")
-            #     print(f"in_deg: {in_deg}, out_deg: {out_deg}")
-            #     print(f"cumul_prob_dict: {cumul_prob_dict}")
-            #     print(f"lower_bound_key: {lower_bound_key}")
             p2_key = cumul_prob_dict.iloc[lower_bound_key]
             p2 = cumul_prob_dict[p2_key]
 
@@ -393,12 +480,15 @@ class FittingDirectedS1_JAX:
         return tmp_cumul / M
 
     def infer_kappas(self) -> None:
+        """
+        Infer the kappa values.
+        """
         if self.verbose:
             print(f"Infering kappas ...")
             print(f"degree_histogram: {self.degree_histogram}")
         self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
         self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
-        directions = [0, 1] # in and out degrees [in, out]
+        directions = [0, 1]
         for direction in directions:
             for el in self.degree_histogram[direction].items():
                 self.random_ensemble_kappa_per_degree_class[direction][el[0]] = el[0] + 0.001
@@ -417,9 +507,7 @@ class FittingDirectedS1_JAX:
                 for el in self.degree_histogram[direction].items():
                     self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] = 0
 
-            
             if self.verbose:
-                
                 prob_conn_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
                 kappa_prod_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
                 print(f"kappa_prod_mat: {kappa_prod_mat}")
@@ -429,7 +517,6 @@ class FittingDirectedS1_JAX:
                         self.PI,
                         self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     )
-                    #indexing with degree histogram index
                     if self.verbose:
                         prob_conn_mat[i,j] = prob_conn 
                         kappa_prod_mat[i,j] = self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
@@ -462,12 +549,12 @@ class FittingDirectedS1_JAX:
 
     def infer_kappas_vmap(self) -> None:
         """
-        infer kappas using vmap for parallelization
+        Infer kappas using vmap for parallelization.
         """
         if self.verbose:
             print(f"Infering kappas ...")
-        self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)] # [in-degree, out-degree]
-        self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)] # [in-degree, out-degree]
+        self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
+        self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
 
         if self.verbose:
             print(f"degree histogram: {self.degree_histogram}")
@@ -487,21 +574,17 @@ class FittingDirectedS1_JAX:
                 for degree in direction_dict.keys():
                     self.random_ensemble_expected_degree_per_degree_class[direction][degree] = degree
 
-            # Vectorize 1:
             in_degrees = jnp.array(list(self.degree_histogram[0].keys()))
             count_ins = jnp.array(list(self.degree_histogram[0].values()))
             out_degrees = jnp.array(list(self.degree_histogram[1].keys()))
             count_outs = jnp.array(list(self.degree_histogram[1].values()))
 
-            # Convert JAX arrays to native Python integers for dictionary lookups
             in_degrees_list = [int(deg) for deg in in_degrees]
             out_degrees_list = [int(deg) for deg in out_degrees]
 
-            # Extract kappa values for the in-degrees and out-degrees
             in_kappas = jnp.array([self.random_ensemble_kappa_per_degree_class[0][deg] for deg in in_degrees_list])
             out_kappas = jnp.array([self.random_ensemble_kappa_per_degree_class[1][deg] for deg in out_degrees_list])
             
-            # Create grids for the degrees and kappas
             in_deg_grid, out_deg_grid = jnp.meshgrid(in_degrees, out_degrees, indexing='ij')
             in_kappa_grid, out_kappa_grid = jnp.meshgrid(in_kappas, out_kappas, indexing='ij')
             count_in_grid, count_out_grid = jnp.meshgrid(count_ins, count_outs, indexing='ij')
@@ -510,32 +593,24 @@ class FittingDirectedS1_JAX:
                 print(f"count_outs: {count_outs}\n shape: {count_outs.shape}")
                 print(f"count_in_grid: {count_in_grid}\n shape: {count_in_grid.shape}")
                 print(f"count_out_grid: {count_out_grid}\n shape: {count_out_grid.shape}")
-            # Compute the product of kappas
+
             kappa_product = in_kappa_grid * out_kappa_grid
 
-            # Compute the connection probabilities using vmap
             if self.verbose:
                 print(f"kappa_product: {kappa_product}\n shape: {kappa_product.shape}")
             kappa_product_flattened = kappa_product.flatten()
             prob_conn = self.directed_connection_probability_vmap(self.PI, kappa_product_flattened)
-            prob_conn = prob_conn.reshape(kappa_product.shape) #shape is (in_degrees, out_degrees) by class
+            prob_conn = prob_conn.reshape(kappa_product.shape)
             
-            # Compute the expected degrees probability of connection * count per class, and then sum over all classes in opposite direction
             expected_in_degrees = jnp.sum(prob_conn * count_out_grid, axis=1)
-            # prob_conn: [[prob kappa_inclass1 kappa_outclass1, prob kappa_inclass1 kappa_outclass2, ...], [prob kappa_inclass2 kappa_outclass1, prob kappa_inclass2 kappa_outclass2, ...] ... ] * count_out_grid: [[out_class1, out_class2, ...], [out_class1, out_class2, ...] ...] 
-            # --> [[outclass1 * prob kappa_inclass1 kappa_outclass1, outclass2 * prob kappa_inclass1 kappa_outclass2, ...], [outclass1 * prob kappa_inclass2 kappa_outclass1, outclass2 * prob kappa_inclass2 kappa_outclass2, ...] ...]
-            # --> sum over axis 0 to get expected in degrees
-            # --> [expected in degree class 1, expected in degree class 2, ...]
-            expected_out_degrees = jnp.sum(prob_conn * count_in_grid, axis=0) 
-            # Update the dictionaries for expected degrees
+            expected_out_degrees = jnp.sum(prob_conn * count_in_grid, axis=0)
+
             updated_in_degrees = {deg: expected_in_degrees[i] for i, deg in enumerate(in_degrees_list)}
             updated_out_degrees = {deg: expected_out_degrees[i] for i, deg in enumerate(out_degrees_list)}
 
-            # Assign the updated values back to the original dictionaries
             self.random_ensemble_expected_degree_per_degree_class[0].update(updated_in_degrees)
             self.random_ensemble_expected_degree_per_degree_class[1].update(updated_out_degrees)
 
-            # Calculate error and check for convergence
             error = jnp.inf
             keep_going = False
             for direction, direction_dict in enumerate(self.degree_histogram):
@@ -671,13 +746,15 @@ class FittingDirectedS1_JAX:
             self.compute_random_ensemble_clustering()
 
     def initialize(self) -> None:
+        """
+        Initialize the model with data from the edge list file.
+        """
         if self.verbose:
             print(f"Initializing ...")
         with open(self.EDGELIST_FILENAME, 'r') as f:
             for line in f:
                 try:
                     k_out, k_in = map(float, line.strip().split())
-                    #append rounded nearest integer k_out and k_in
                     self.kappas_out.append(round(k_out))
                     self.kappas_in.append(round(k_in))
                 except:
@@ -691,20 +768,22 @@ class FittingDirectedS1_JAX:
 
         self.degree = [self.kappas_in, self.kappas_out]
 
-        # Initialize degree histograms
         self.degree_histogram = [self._compute_degree_histogram(self.kappas_in),
                                 self._compute_degree_histogram(self.kappas_out)]
 
-        # Compute average degree
         self.average_degree = sum(self.kappas_in) / self.nb_vertices
 
-        # Classify nodes by their degrees
         self.degree_class = self._classify_degrees()
-
 
     def fit(self, edgelist_filename: str, reciprocity: float, average_local_clustering: float, verbose: bool = False) -> None:
         """
         Fit the model to the network data.
+
+        Args:
+            edgelist_filename (str): The filename of the edge list.
+            reciprocity (float): The reciprocity value.
+            average_local_clustering (float): The average local clustering coefficient.
+            verbose (bool): Whether to enable verbose output.
         """
         self.verbose = verbose
         self.EDGELIST_FILENAME = edgelist_filename
@@ -722,7 +801,6 @@ class FittingDirectedS1_JAX:
         """
         output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
         
-        
         data = {
             "beta": float(self.beta),
             "mu": float(self.mu),
@@ -738,7 +816,6 @@ class FittingDirectedS1_JAX:
             for out_deg, count in out_degs.items():
                 kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
                 kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
-                # Ensure kappa_in and kappa_out are converted to serializable types
                 data["inferred_kappas"].append({
                     "in_deg": in_deg,
                     "out_deg": out_deg,
@@ -750,22 +827,20 @@ class FittingDirectedS1_JAX:
             json.dump(data, f, indent=4)
 
 def main():
-    # Initialize the model
-    # Ecuador 2015
+    """
+    The main function to run the FittingDirectedS1_JAX model.
+    """
     start_time = time.time()
     model = FittingDirectedS1_JAX(seed=0, verbose=True)
 
-    # Set parameters
     edgelist_filename = sys.argv[1]  # Example value, set appropriately
     reciprocity = 0.046  # Example value, set appropriately
     average_local_clustering = 0.28  # Example value, set appropriately
 
-    # Fit the model
     print(f"Fitting ...")
     model.fit(edgelist_filename, reciprocity, average_local_clustering, verbose=True)
 
     print(f"Fitted! inferring parameters")
-    # Output inferred parameters (this will be saved to a file)
     model.save_inferred_parameters()
     end_time = time.time()
     print(f"Execution time: {end_time - start_time} seconds")

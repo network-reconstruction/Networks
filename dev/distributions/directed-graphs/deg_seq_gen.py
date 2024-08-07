@@ -7,7 +7,38 @@ from distributions import bivariate_lognormal, bivariate_lognormal_pareto2
 from scipy import stats
 
 class DegreeSeq:
-    def __init__(self, n: int, kappa_out: Optional[jnp.ndarray] = None, kappa_in: Optional[jnp.ndarray] = None, verbose: bool = False):
+    """
+    A class to generate, plot, and save degree sequences for networks.
+
+    Attributes:
+        n (int): Number of nodes in the network.
+        kappa_out (Optional[jnp.ndarray]): Out-degree sequence.
+        kappa_in (Optional[jnp.ndarray]): In-degree sequence.
+        verbose (bool): Enable verbose output for debugging.
+
+    Methods:
+        generate(key: Any, distribution: Callable, **kwargs: Any) -> Tuple[jnp.ndarray, jnp.ndarray]:
+            Generate in-degree and out-degree sequences using a specified distribution.
+        plot(save_path: str) -> None:
+            Plot various distributions and relationships of the degree sequences.
+        save(save_path: str) -> None:
+            Save the degree sequences to a file.
+    """
+
+    def __init__(self, 
+                 n: int, 
+                 kappa_out: Optional[jnp.ndarray] = None,
+                 kappa_in: Optional[jnp.ndarray] = None,
+                 verbose: bool = False):
+        """
+        Initialize the DegreeSeq class.
+
+        Args:
+            n (int): Number of nodes.
+            kappa_out (Optional[jnp.ndarray]): Out-degree sequence.
+            kappa_in (Optional[jnp.ndarray]): In-degree sequence.
+            verbose (bool): Enable verbose output.
+        """
         self.n = n
         self.verbose = verbose
 
@@ -26,6 +57,17 @@ class DegreeSeq:
             self.kappa_in = kappa_in
 
     def generate(self, key: Any, distribution: Callable, **kwargs: Any) -> Tuple[jnp.ndarray, jnp.ndarray]:
+        """
+        Generate in-degree and out-degree sequences using a specified distribution.
+
+        Args:
+            key (Any): Random key for reproducibility.
+            distribution (Callable): Distribution function to generate degrees.
+            **kwargs (Any): Additional arguments for the distribution function.
+
+        Returns:
+            Tuple[jnp.ndarray, jnp.ndarray]: Generated in-degrees and out-degrees.
+        """
         if self.verbose:
             print('Generating degree sequence...')
         
@@ -41,9 +83,25 @@ class DegreeSeq:
         return self.in_degrees, self.out_degrees
 
     def plot(self, save_path: str) -> None:
+        """
+        Plot various distributions and relationships of the degree sequences.
+
+        Args:
+            save_path (str): Path to save the plot.
+        """
         fig, axs = plt.subplots(3, 3, figsize=(18, 18))
 
-        def plot_ccdf(data, ax, color, title, xlabel):
+        def plot_ccdf(data: jnp.ndarray, ax: plt.Axes, color: str, title: str, xlabel: str) -> None:
+            """
+            Plot the complementary cumulative distribution function (CCDF).
+
+            Args:
+                data (jnp.ndarray): Data to plot.
+                ax (plt.Axes): Axis to plot on.
+                color (str): Color of the plot.
+                title (str): Title of the plot.
+                xlabel (str): Label for the x-axis.
+            """
             sorted_data = jnp.sort(data)
             ccdf = 1.0 - jnp.arange(len(sorted_data)) / len(sorted_data)
             ax.plot(sorted_data, ccdf, marker='.', linestyle='none', color=color)
@@ -99,6 +157,12 @@ class DegreeSeq:
             print(f'Degree sequence plot saved to {save_path}')
 
     def save(self, save_path: str) -> None:
+        """
+        Save the degree sequences to a file.
+
+        Args:
+            save_path (str): Path to save the degree sequences.
+        """
         with open(save_path, 'w') as f:
             f.write('# kappa_out  kappa_in\n')
             for i in range(self.n):
@@ -109,7 +173,7 @@ class DegreeSeq:
 
 
 if __name__ == "__main__":
-    #Ecuador 2015
+    # Ecuador 2015 example parameters
     mu = jnp.array([35, 35])
     Sigma = jnp.log(jnp.array([[2.89, 1.37], [1.37, 2.06]]))
     key = random.PRNGKey(0)
