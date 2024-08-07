@@ -1,0 +1,6 @@
+# prop_name, value
+name,arxiv_citation (HepPh)
+description,"Citations among papers posted on arxiv.org under the hep-ph and hep-th categories, between 1993 and 2003. This time begins a few months after axiv was launched. If a paper i cites a paper j also in this data set, then a directed edge connects i to j. (Papers not in the data set are excluded.) These data were originally released as part of the 2003 KDD Cup."
+citation,"['J. Gehrke, P. Ginsparg, J. M. Kleinberg. \"Overview of the 2003 KDD Cup.\" SIGKDD Explorations 5(2), 149-151 (2003), http://www.cs.cmu.edu/~jure/pubs/powergrowth-kdd05.pdf']"
+url,http://snap.stanford.edu/data/cit-HepPh.html
+tags,"['Informational', 'Citation', 'Unweighted']"
