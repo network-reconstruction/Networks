@@ -5,7 +5,7 @@ import jax.numpy as jnp
 import jax.random as random
 from scipy.special import hyp2f1
 import numpy as np
-from typing import Dict, List, Tuple, Union, Optional
+from typing import Dict, List, Tuple, Union, Optional, Any
 import time
 import sys
 from sortedcontainers import SortedDict
@@ -13,7 +13,19 @@ import json
 import logging
 
 
-def lower_bound(d, key):
+def lower_bound(d: SortedDict,
+                key: Any) -> Tuple: 
+    """
+    Compute the lower bound of a key in a sorted dictionary.
+    
+    Args:
+        - d (SortedDict): Sorted dictionary.
+        - key (Any): Key to search.
+    
+    Returns:
+        - Tuple: Lower bound of the key.
+    """
+    
     index = d.bisect_left(key)
     if index < len(d):
         return d.peekitem(index)
@@ -45,15 +57,16 @@ class FittingDirectedS1:
         Initialize the parameter inference model for directed hyperbolic networks.
         
         Args:
-            - seed: int: Seed for random number generation.
-            - verbose: bool: Whether to print verbose output.
-            - KAPPA_MAX_NB_ITER_CONV: int: Maximum number of iterations for convergence of kappa.
-            - EXP_CLUST_NB_INTEGRATION_MC_STEPS: int: Number of Monte Carlo steps for integration of expected clustering.
-            - NUMERICAL_CONVERGENCE_THRESHOLD_1: float: Threshold for numerical convergence of kappa
-            - NUMERICAL_CONVERGENCE_THRESHOLD_2: float: Threshold for numerical convergence of clustering
-            - log_file: str: Path to the log file.
+            - seed (int): Seed for random number generation.
+            - verbose (bool): Whether to print verbose output.
+            - KAPPA_MAX_NB_ITER_CONV (int): Maximum number of iterations for convergence of kappa.
+            - EXP_CLUST_NB_INTEGRATION_MC_STEPS (int): Number of Monte Carlo steps for integration of expected clustering.
+            - NUMERICAL_CONVERGENCE_THRESHOLD_1 (float): Threshold for numerical convergence of kappa
+            - NUMERICAL_CONVERGENCE_THRESHOLD_2 (float): Threshold for numerical convergence of clustering
+            - log_file (str): Path to the log file.
         """
         # Setup logging
+        # if self.verbose: #TODO test verbosity?
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler(sys.stdout)
@@ -70,7 +83,6 @@ class FittingDirectedS1:
         self.BETA_ABS_MAX = 25
         self.BETA_ABS_MIN = 1.01
         self.deg_seq_filename = ""
-        self.deg_seq = []
         self.EXP_CLUST_NB_INTEGRATION_MC_STEPS = EXP_CLUST_NB_INTEGRATION_MC_STEPS #200
         self.KAPPA_MAX_NB_ITER_CONV = KAPPA_MAX_NB_ITER_CONV
         self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = NUMERICAL_CONVERGENCE_THRESHOLD_1
@@ -121,6 +133,11 @@ class FittingDirectedS1:
     def _classify_degrees(self) -> Dict[int, Dict[int, int]]:
         """
         Classify nodes based on their in-degrees and out-degrees.
+        
+        Returns:
+            - Dict[int, Dict[int, int]]: 
+                Degree class, outer key is in-degree, 
+                inner key is out-degree, inner value is count.
         """
         degree_class = {}
         for k_in, k_out in zip(self.in_degree_sequence, self.out_degree_sequence):
@@ -134,13 +151,28 @@ class FittingDirectedS1:
 
     def directed_connection_probability(self, z: float, koutkin: float) -> float:
         """
-        Compute the directed connection probability.
+        Compute the directed connection probability using hypergeometric function.
+        
+        Args:
+            - z (float): Angle between two nodes.
+            - koutkin (float): Product of out-degree and in-degree.
+        
+        Returns:
+            - float: Directed donnection probability.
         """
         return (z / self.PI) * hyp2f1a(self.beta, -((self.R * z) / (self.mu * koutkin)) ** self.beta)
 
     def undirected_connection_probability(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
         """
         Compute the undirected connection probability.
+        
+        Args:
+            - z (float): Angle between two nodes.
+            - kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
+            - kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
+            
+        Returns:
+            - float: Undirected connection probability.
         This whole function is S79 until S82
         """
         # Potentially bellow between S81 line and S82 line
@@ -294,13 +326,13 @@ class FittingDirectedS1:
         kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
 
         M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS #this is the value of M in S85
-        if self.verbose:
-            #self.logger.info all of the first two keys of self.cumul_prob_kgkp
-            self.logger.info(f"In and out pairs for cumul_prob_kgkp:")
-            for key1 in self.cumul_prob_kgkp.keys():
-                for key2 in self.cumul_prob_kgkp[key1].keys():
-                    self.logger.info(f"({key1}, {key2})")
-            self.logger.info(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
+        # if self.verbose:
+        #     #self.logger.info all of the first two keys of self.cumul_prob_kgkp
+        #     self.logger.info(f"In and out pairs for cumul_prob_kgkp:")
+        #     for key1 in self.cumul_prob_kgkp.keys():
+        #         for key2 in self.cumul_prob_kgkp[key1].keys():
+        #             self.logger.info(f"({key1}, {key2})")
+        #     self.logger.info(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
             
         for i in range(M): #this is the value of M in S85
             cumul_prob_dict = self.cumul_prob_kgkp[int(in_deg)].get(int(out_deg), SortedDict())
@@ -455,6 +487,7 @@ class FittingDirectedS1:
         """
         if self.verbose:
             self.logger.info(f"Infering nu ...")
+            self.logger.info(f"self.degree: {self.degree}")
             self.logger.info(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
             start_time = time.time()    
             #random_ensemble_kappa_per_degree_class
@@ -462,6 +495,7 @@ class FittingDirectedS1:
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
                 #convert self.degree to int buckets, as data generated originally needs degree sequence but I random generated without being degree seq, rather decimals.
+                    
                 kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
                 kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
 
@@ -509,6 +543,17 @@ class FittingDirectedS1:
     def infer_parameters(self) -> None:
         """
         Infer the parameters beta, mu, nu, and R.
+        
+        Function:
+            1) Infer beta.
+            2) Infer mu given beta.
+            3) Infer R.
+            4) Infer kappa given beta and mu.
+            5) Compute random ensemble average degree.
+            6) Infer nu.
+            7) Build cumulative distribution for Monte Carlo integration for clustering.
+            8) Compute random ensemble clustering.
+            9) Refine beta (back to step 1) if not converged.
         """
         if not self.CUSTOM_BETA:
             self.beta = 1 + random.uniform(self.engine)
@@ -568,6 +613,11 @@ class FittingDirectedS1:
     def initialize_degrees(self) -> None:
         """
         Initialize the degrees compatible to computation by classes.
+        
+        Function:
+            - Initialize degree histograms.
+            - Compute average degree.
+            - Classify nodes by their degrees.
         """
         # Initialize degree histograms
         self.degree_histogram = [self._compute_degree_histogram(self.in_degree_sequence),
@@ -586,13 +636,24 @@ class FittingDirectedS1:
             ) -> None:
         """
         Fit the model to the network data.
+        
+        Args:
+            - reciprocity (float): Reciprocity of the network.
+            - average_local_clustering (float): Average local clustering coefficient of the network.    
+        
+        Returns:
+            - None
+        
+        Function:
+            1) Initialize the degrees for fitting
+            2) Infer the parameters via fitting.
+            3) Save the inferred parameters.
         """
         self.reciprocity = reciprocity
         self.average_undir_clustering = average_local_clustering
         self.initialize_degrees()
         self.infer_parameters()
         self.save_inferred_parameters()
-        self.finalize()
         
     def fit_from_deg_seq(self,
                          deg_seq: Tuple[List[float], List[float]],
@@ -602,7 +663,21 @@ class FittingDirectedS1:
                          verbose: bool = False
                          ) -> None:
         """
-        Fit the model to the network data from a degree sequence.
+        Fit the model to the network data from a degree sequence, reciprocity, and average local clustering coefficient.
+        
+        Args:
+            - deg_seq (Tuple[List[float], List[float]]): Tuple of two lists of integers/ float representing in-degree and out-degree sequences.
+            - reciprocity (float): Reciprocity of the network.
+            - average_local_clustering (float): Average local clustering coefficient of the network.
+            - network_name (str): Name of the network.
+            - verbose (bool): Verbosity.    
+        
+        Returns:
+            - None
+        
+        Function:
+            1) Define degree sequence from the input.
+            2) Fit the model to the network data.
         """
         self.verbose = verbose
         self.ROOTNAME_OUTPUT = network_name
@@ -615,7 +690,7 @@ class FittingDirectedS1:
             raise ValueError("Degree is a tuple of two lists of integers/ float and sequences must be of equal length.")
         
         self.nb_vertices = len(self.in_degree_sequence)
-        self.degree = self.deg_seq
+        self.degree =  deg_seq
         if self.verbose:
             self.logger.info(f"Using degree sequence of length: {self.nb_vertices}")
             
@@ -630,6 +705,20 @@ class FittingDirectedS1:
                       ) -> None:
         """
         Fit the model to the network data from a file.
+        
+        Args:
+            - filename (str): Filename containing the degree sequence.
+            - reciprocity (float): Reciprocity of the network.
+            - average_local_clustering (float): Average local clustering coefficient of the network.
+            - network_name (str): Name of the network.
+            - verbose (bool): Verbosity.
+        
+        Returns:    
+            - None
+        
+        Function:
+            1) Read the degree sequence from the input file.
+            2) Fit the model to the network
         """
         self.verbose = verbose
         if self.verbose:
