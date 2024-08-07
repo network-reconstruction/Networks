@@ -39,7 +39,30 @@ class FittingDirectedS1:
                  KAPPA_MAX_NB_ITER_CONV: int = 100, 
                  EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 50, 
                  NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
-                 NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2):
+                 NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
+                 log_file: str = "output.log"): 
+        """
+        Initialize the parameter inference model for directed hyperbolic networks.
+        
+        Args:
+            - seed: int: Seed for random number generation.
+            - verbose: bool: Whether to print verbose output.
+            - KAPPA_MAX_NB_ITER_CONV: int: Maximum number of iterations for convergence of kappa.
+            - EXP_CLUST_NB_INTEGRATION_MC_STEPS: int: Number of Monte Carlo steps for integration of expected clustering.
+            - NUMERICAL_CONVERGENCE_THRESHOLD_1: float: Threshold for numerical convergence of kappa
+            - NUMERICAL_CONVERGENCE_THRESHOLD_2: float: Threshold for numerical convergence of clustering
+            - log_file: str: Path to the log file.
+        """
+        # Setup logging
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file:
+            handler = logging.FileHandler(log_file, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
         self.CUSTOM_BETA = False
         self.CUSTOM_MU = False
@@ -179,8 +202,8 @@ class FittingDirectedS1:
         From S80 to S85 of the paper, calculation for point 4 in S86
         """
         if self.verbose:
-            print(f"Building cumulative distribution for Monte Carlo integration ...")
-            print(f"self.degree_class: {self.degree_class}")
+            self.logger.info(f"Building cumulative distribution for Monte Carlo integration ...")
+            self.logger.info(f"self.degree_class: {self.degree_class}")
             start_time = time.time()
         for in_deg, out_degs in self.degree_class.items(): 
             #Iterating over all nodes,basically but via degree classes
@@ -224,15 +247,15 @@ class FittingDirectedS1:
                         self.cumul_prob_kgkp[in_deg][out_deg][int(tmp_cumul)] = key
                         #tmp_cumul is single digit array in jax so we need to convert to hashable type by dictionary
         if self.verbose:
-            print(f"finished building cumulative distribution for Monte Carlo integration ...")
-            print(f"runtime: {time.time() - start_time}")
+            self.logger.info(f"finished building cumulative distribution for Monte Carlo integration ...")
+            self.logger.info(f"runtime: {time.time() - start_time}")
             
     def compute_random_ensemble_average_degree(self) -> None:
         """
         Compute the random ensemble average degree.
         """
         if self.verbose:
-            print(f"Computing random ensemble average degree ...")
+            self.logger.info(f"Computing random ensemble average degree ...")
         directions = [0, 1]
         random_ensemble_average_degree = 0
         for direction in directions:
@@ -246,7 +269,7 @@ class FittingDirectedS1:
         S85 of the paper.
         """
         if self.verbose:
-            print(f"Computing random ensemble clustering ...")  
+            self.logger.info(f"Computing random ensemble clustering ...")  
         random_ensemble_average_clustering = 0
         for in_deg, out_degs in self.degree_class.items():
             for out_deg in out_degs:
@@ -262,8 +285,8 @@ class FittingDirectedS1:
         Point 1-4 after Equation S86 of the paper, inner summation of S85
         """
         if self.verbose:
-            print(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
-            print(f"Cumul_prob_kgkp: {self.cumul_prob_kgkp}")
+            self.logger.info(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
+            self.logger.info(f"Cumul_prob_kgkp: {self.cumul_prob_kgkp}")
             start_time = time.time()
 
         tmp_cumul = 0
@@ -272,12 +295,12 @@ class FittingDirectedS1:
 
         M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS #this is the value of M in S85
         if self.verbose:
-            #print all of the first two keys of self.cumul_prob_kgkp
-            print(f"In and out pairs for cumul_prob_kgkp:")
+            #self.logger.info all of the first two keys of self.cumul_prob_kgkp
+            self.logger.info(f"In and out pairs for cumul_prob_kgkp:")
             for key1 in self.cumul_prob_kgkp.keys():
                 for key2 in self.cumul_prob_kgkp[key1].keys():
-                    print(f"({key1}, {key2})")
-            print(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
+                    self.logger.info(f"({key1}, {key2})")
+            self.logger.info(f"just for debugging: { self.cumul_prob_kgkp[2][3]}")
             
         for i in range(M): #this is the value of M in S85
             cumul_prob_dict = self.cumul_prob_kgkp[int(in_deg)].get(int(out_deg), SortedDict())
@@ -285,10 +308,10 @@ class FittingDirectedS1:
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
             lower_bound_key = min(lower_bound_key, len(cumul_prob_dict) - 1)
             # if self.verbose:
-            #     print(f"sample: {i}")
-            #     print(f"in_deg: {in_deg}, out_deg: {out_deg}")
-            #     print(f"cumul_prob_dict: {cumul_prob_dict}")
-            #     print(f"lower_bound_key: {lower_bound_key}")
+            #     self.logger.info(f"sample: {i}")
+            #     self.logger.info(f"in_deg: {in_deg}, out_deg: {out_deg}")
+            #     self.logger.info(f"cumul_prob_dict: {cumul_prob_dict}")
+            #     self.logger.info(f"lower_bound_key: {lower_bound_key}")
             p2_key = list(cumul_prob_dict.keys())[lower_bound_key]
             p2 = cumul_prob_dict[p2_key]
 
@@ -354,13 +377,13 @@ class FittingDirectedS1:
             tmp_cumul += tmp_val
 
         if self.verbose:
-            print(f"Time: {time.time() - start_time}")
+            self.logger.info(f"Time: {time.time() - start_time}")
         return tmp_cumul / M
 
     def infer_kappas(self) -> None:
         if self.verbose:
-            print(f"Infering kappas ...")
-            print(f"degree_histogram: {self.degree_histogram}")
+            self.logger.info(f"Infering kappas ...")
+            self.logger.info(f"degree_histogram: {self.degree_histogram}")
         self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
         self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
         directions = [0, 1] # in and out degrees [in, out]
@@ -372,11 +395,11 @@ class FittingDirectedS1:
         cnt = 0
         start_time = time.time()
         if self.verbose:
-            print(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
+            self.logger.info(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
 
         while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
             if self.verbose:
-                print(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
+                self.logger.info(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
                 start_time = time.time()
             for direction in directions:
                 for el in self.degree_histogram[direction].items():
@@ -387,7 +410,7 @@ class FittingDirectedS1:
                 
             #     prob_conn_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
             #     kappa_prod_mat = np.zeros((len(self.degree_histogram[0]), len(self.degree_histogram[1])))
-            #     print(f"kappa_prod_mat: {kappa_prod_mat}")
+            #     self.logger.info(f"kappa_prod_mat: {kappa_prod_mat}")
             for i, (in_deg, count_in) in enumerate(self.degree_histogram[0].items()):
                 for j, (out_deg, count_out) in enumerate(self.degree_histogram[1].items()):
                     prob_conn = self.directed_connection_probability(
@@ -401,8 +424,8 @@ class FittingDirectedS1:
                     self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
             # if self.verbose:
-            #     print(f"prob_conn_mat: {prob_conn_mat}")
-            #     print(f"kappa_prod_mat: {kappa_prod_mat}")
+            #     self.logger.info(f"prob_conn_mat: {prob_conn_mat}")
+            #     self.logger.info(f"kappa_prod_mat: {kappa_prod_mat}")
             error = jnp.inf
             keep_going = False
             for direction in directions:
@@ -412,7 +435,7 @@ class FittingDirectedS1:
                         keep_going = True
                         break
             if self.verbose:
-                print(f"Error: {error}, NUMERICAL_CONVERGENCE_THRESHOLD_1: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
+                self.logger.info(f"Error: {error}, NUMERICAL_CONVERGENCE_THRESHOLD_1: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
                 
             if keep_going:
                 for direction in directions:
@@ -423,7 +446,7 @@ class FittingDirectedS1:
                 cnt += 1
 
             if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
-                print("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
+                self.logger.info("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
 
 
     def infer_nu(self) -> None:
@@ -431,8 +454,8 @@ class FittingDirectedS1:
         Infer the parameter nu.
         """
         if self.verbose:
-            print(f"Infering nu ...")
-            print(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
+            self.logger.info(f"Infering nu ...")
+            self.logger.info(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
             start_time = time.time()    
             #random_ensemble_kappa_per_degree_class
         xi_m1, xi_00, xi_p1 = 0, 0, 0
@@ -482,7 +505,7 @@ class FittingDirectedS1:
         else:
             self.random_ensemble_reciprocity = (xi_m1 + xi_00) * self.nu + xi_00
         if self.verbose:
-            print(f"nu: {self.nu}, random_ensemble_reciprocity: {self.random_ensemble_reciprocity}, time: {time.time() - start_time}")
+            self.logger.info(f"nu: {self.nu}, random_ensemble_reciprocity: {self.random_ensemble_reciprocity}, time: {time.time() - start_time}")
     def infer_parameters(self) -> None:
         """
         Infer the parameters beta, mu, nu, and R.
@@ -500,7 +523,7 @@ class FittingDirectedS1:
             iter = 0
             while True:
                 if self.verbose:
-                    print(f"Beta: {self.beta}, iteration count: {iter}")      
+                    self.logger.info(f"Beta: {self.beta}, iteration count: {iter}")      
                 self.infer_kappas()
                 self.compute_random_ensemble_average_degree()
                 if not self.CUSTOM_NU:
@@ -594,7 +617,7 @@ class FittingDirectedS1:
         self.nb_vertices = len(self.in_degree_sequence)
         self.degree = self.deg_seq
         if self.verbose:
-            print(f"Using degree sequence of length: {self.nb_vertices}")
+            self.logger.info(f"Using degree sequence of length: {self.nb_vertices}")
             
         self._fit(reciprocity, average_local_clustering)
         
@@ -610,7 +633,7 @@ class FittingDirectedS1:
         """
         self.verbose = verbose
         if self.verbose:
-            print(f"Reading degree sequence from file: {filename}")
+            self.logger.info(f"Reading degree sequence from file: {filename}")
         
         # -------------------------------------
         if network_name:
@@ -627,12 +650,12 @@ class FittingDirectedS1:
                         self.in_degree_sequence.append(k_in)
                     except:
                         if self.verbose:
-                            print(f"Skipping: {line}")
+                            self.logger.info(f"Skipping: {line}")
                         pass
 
         self.nb_vertices = len(self.out_degree_sequence)
         if self.verbose:
-            print(f"Number of vertices: {self.nb_vertices}")
+            self.logger.info(f"Number of vertices: {self.nb_vertices}")
 
         self.degree = [self.in_degree_sequence, self.out_degree_sequence]
         
@@ -653,8 +676,8 @@ class FittingDirectedS1:
             "inferred_kappas": []
         }
         if self.verbose:
-            print("Data types:")
-            print(f"beta: {type(self.beta)}, mu: {type(self.mu)}, nu: {type(self.nu)}, R: {type(self.R)}")
+            self.logger.info("Data types:")
+            self.logger.info(f"beta: {type(self.beta)}, mu: {type(self.mu)}, nu: {type(self.nu)}, R: {type(self.R)}")
         
         for in_deg, out_degs in self.degree_class.items():
             for out_deg, count in out_degs.items():
@@ -672,19 +695,11 @@ class FittingDirectedS1:
             json.dump(data, f, indent=4)
 
 
-    def finalize(self) -> None:
-        """
-        Finalize the fitting process.
-        """
-        # Placeholder for any final steps or cleanup
-        pass
-
-
 def main():
     # Initialize the model
     # Ecuador 2015
     start_time = time.time()
-    model = FittingDirectedS1(seed=0, verbose=True)
+    model = FittingDirectedS1(seed=0, verbose=True, log_file="output_small.log")
     #take edge list file name from arguments:
     # Set parameters
     deg_seq_filename = sys.argv[1]
