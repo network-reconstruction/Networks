@@ -9,6 +9,7 @@ import jax
 from functools import partial
 import sys
 import json
+from sortedcontainers import SortedDict
 
 def pochhammer(a: Union[int, float], n: int) -> float:
     """
@@ -252,9 +253,13 @@ class FittingDirectedS1_JAX:
         Returns:
             float: The undirected connection probability.
         """
+        # This whole function is S79 until S82
+        # ------------------------------------------------
+        # Potentially bellow between S81 line and S82 line
         p12 = self.directed_connection_probability(z, kout1kin2)
         p21 = self.directed_connection_probability(z, kout2kin1)
 
+        # S81 of the paper
         conn_prob = 0
         if jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
             conn_prob -= (1 - jnp.abs(self.nu)) * hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
@@ -289,7 +294,8 @@ class FittingDirectedS1_JAX:
 
         Returns:
             float: The minimal angle.
-        """
+        """ 
+        # Equation (S86) of the paper
         z_min = 0
         z_max = self.PI
         while (z_max - z_min) > self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
@@ -314,13 +320,19 @@ class FittingDirectedS1_JAX:
             print(f"self.degree_class: {self.degree_class}")
             start_time = time.time()
         for in_deg, out_degs in self.degree_class.items(): 
+            #Iterating over all nodes,basically but via degree classes
+            #This iteration and inner iteration form point 1 above S86
             self.cumul_prob_kgkp[in_deg] = {}
             for out_deg in out_degs:
+                #for each pair of in and out observed degree classes, (k_1in, k_1out)
+                #nkkp is a dictionary of tuples of in and out degrees, with values as 0
                 nkkp = {(i, j): 0 for i in self.degree_class for j in self.degree_class[i]}
                 tmp_cumul = 0
                 k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg] 
                 kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
+                #We take kappa values from random ensemble
                 for in_deg2, out_degs2 in self.degree_class.items(): 
+                    #iterating over all nodes,basically but via degree classes
                     for out_deg2 in out_degs2:
                         k_in2 = self.random_ensemble_kappa_per_degree_class[0][in_deg2]
                         kout2 = self.random_ensemble_kappa_per_degree_class[1][out_deg2]
@@ -331,10 +343,10 @@ class FittingDirectedS1_JAX:
                         else:
                             nkkp[(in_deg2, out_deg2)] = out_degs2[out_deg2] * tmp_val
                         tmp_cumul += nkkp[(in_deg2, out_deg2)]
-                        
+                #normalizing as we multiplied with counts per degree class, so now we have probabilities in nkkp[key]       
                 for key in nkkp:
                     nkkp[key] /= tmp_cumul 
-                    
+                # For each degree class (in, out), we have nkkp which gives cumulative distribution of probability of connection.
                 tmp_cumul = 0
                 for key in nkkp:
                     tmp_val = nkkp[key]
@@ -370,7 +382,8 @@ class FittingDirectedS1_JAX:
         random_ensemble_average_clustering = 0
         for in_deg, out_degs in self.degree_class.items():
             for out_deg in out_degs:
-                if in_deg + out_deg > 1:
+                if in_deg + out_deg > 1:# only consider degree classes with in and out degrees greater than 1
+                    # basically over all nodes, done in degree class outer summation of S85
                     tmp_val = self.compute_random_ensemble_clustering_for_degree_class(in_deg, out_deg) 
                     random_ensemble_average_clustering += tmp_val * out_degs[out_deg]
         self.random_ensemble_average_clustering = random_ensemble_average_clustering / self.nb_vertices_undir_degree_gt_one
@@ -387,6 +400,7 @@ class FittingDirectedS1_JAX:
         Returns:
             float: The clustering value for the degree class.
         """
+        
         if self.verbose:
             print(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
             print(f"Cumul_prob_kgkp: {self.cumul_prob_kgkp}")
@@ -396,7 +410,7 @@ class FittingDirectedS1_JAX:
         k_in1 = self.random_ensemble_kappa_per_degree_class[0][in_deg]
         kout1 = self.random_ensemble_kappa_per_degree_class[1][out_deg]
 
-        M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS
+        M = self.EXP_CLUST_NB_INTEGRATION_MC_STEPS #this is the value of M in S85
         if self.verbose:
             print(f"In and out pairs for cumul_prob_kgkp:")
             for key1 in self.cumul_prob_kgkp.keys():
@@ -404,7 +418,7 @@ class FittingDirectedS1_JAX:
                     print(f"({key1}, {key2})")
             print(f"just for debugging: {self.cumul_prob_kgkp[2][3]}")
             
-        for i in range(M):
+        for i in range(M): #this is the value of M in S85
             cumul_prob_dict = self.cumul_prob_kgkp[int(in_deg)].get(int(out_deg), SortedDict())
             random_val = random.uniform(self.engine)
             lower_bound_key = cumul_prob_dict.bisect_left(random_val)
@@ -483,9 +497,12 @@ class FittingDirectedS1_JAX:
         """
         Infer the kappa values.
         """
+        # Inference algorithm section B, S67 to S72b of the paper
         if self.verbose:
             print(f"Infering kappas ...")
             print(f"degree_histogram: {self.degree_histogram}")
+        
+        # Computed by in and out degree classes
         self.random_ensemble_kappa_per_degree_class = [{} for _ in range(2)]
         self.random_ensemble_expected_degree_per_degree_class = [{} for _ in range(2)]
         directions = [0, 1]
@@ -517,6 +534,7 @@ class FittingDirectedS1_JAX:
                         self.PI,
                         self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
                     )
+                    #indexing with degree histogram index
                     if self.verbose:
                         prob_conn_mat[i,j] = prob_conn 
                         kappa_prod_mat[i,j] = self.random_ensemble_kappa_per_degree_class[1][out_deg] * self.random_ensemble_kappa_per_degree_class[0][in_deg]
@@ -690,6 +708,8 @@ class FittingDirectedS1_JAX:
         """
         Infer the parameters beta, mu, nu, and R.
         """
+        
+        #Outer iteration of Beta inference of the algorithm, Section E of the algorithm
         if not self.CUSTOM_BETA:
             self.beta = 1 + random.uniform(self.engine)
             if not self.CUSTOM_MU:
@@ -703,17 +723,23 @@ class FittingDirectedS1_JAX:
             iter = 0
             while True:
                 if self.verbose:
-                    print(f"Beta: {self.beta}, iteration count: {iter}")      
+                    print(f"Beta: {self.beta}, iteration count: {iter}")     
+                # Inference algorithms section B
                 self.infer_kappas_vmap()
                 self.compute_random_ensemble_average_degree()
+                
+                # Inference algorithm section C
                 if not self.CUSTOM_NU:
                     self.infer_nu()
+                
+                # Inferencing algorithm section D (Estimating the expected density of triangles)
                 self.build_cumul_dist_for_mc_integration()
                 self.compute_random_ensemble_clustering()
 
                 if jnp.abs(self.random_ensemble_average_clustering - self.average_undir_clustering) < self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
                     break
-
+                
+                #Section E point 6
                 if self.random_ensemble_average_clustering > self.average_undir_clustering:
                     beta_max = self.beta
                     random_ensemble_average_clustering_max = self.random_ensemble_average_clustering

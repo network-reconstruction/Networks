@@ -10,19 +10,22 @@ from typing import List, Tuple
 import logging
 class GeneratingDirectedS1:
     def __init__(self,
+                 hidden_variables_filename,
+                 output_rootname: str = "",
                  theta: List[int] = None,
                  save_coordinates: bool = False,
                  seed: int = 0,
                  verbose: bool = False,
-                 log_file: str = "output.log"):
+                 log_file_path: str = "output.log"):
         
+        self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler(sys.stdout)
-        if log_file:
-            handler = logging.FileHandler(log_file, mode='w')
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
         handler.setLevel(logging.INFO)
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
@@ -39,8 +42,9 @@ class GeneratingDirectedS1:
         self.MU = -10
         self.NU = -10
         self.R = -10
-        self.OUTPUT_ROOTNAME = "default_output_rootname"
-        self.HIDDEN_VARIABLES_FILENAME = ""
+        self.HIDDEN_VARIABLES_FILENAME = hidden_variables_filename
+        if output_rootname == "":
+            self.OUTPUT_ROOTNAME = hidden_variables_filename.split(".")[0]
         
         self.PI = math.pi
         self.NUMERICAL_ZERO = 1e-5
@@ -74,8 +78,7 @@ class GeneratingDirectedS1:
         else:
             self.theta = [2 * self.PI * random.random() for _ in range(self.nb_vertices)]
         
-    def generate_edgelist(self, 
-                          width: int =15):
+    def generate_edgelist(self):
         if self.BETA == -10:
             raise ValueError("The value of parameter beta must be provided.")
         
@@ -137,7 +140,14 @@ class GeneratingDirectedS1:
         
         with open(f"{self.OUTPUT_ROOTNAME}_adjacency_list.json", 'w') as f:
             json.dump(data, f, indent=4)
-    
+            
+    def _save_coordinates(self):
+        #node in_kappa, out_kappa, theta save as dataframe
+        with open(f"{self.OUTPUT_ROOTNAME}_coordinates.csv", 'w') as f:
+            f.write("node,in_kappa,out_kappa,theta\n")
+            for i in range(self.nb_vertices):
+                f.write(f"{self.Num2Name[i]},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
+        
     def get_time(self):
         return datetime.utcnow().strftime("%Y/%m/%d %H:%M UTC")
 
@@ -147,14 +157,11 @@ class GeneratingDirectedS1:
         plt.title("Degree Sequence Distribution")
         plt.xlabel("Degree")
         plt.ylabel("Frequency")
-        plt.show()
+        plt.savefig(f"{self.OUTPUT_ROOTNAME}_degree_sequence.png")
 
 
 if __name__ == "__main__":
-    gen = GeneratingDirectedS1()
-    gen.HIDDEN_VARIABLES_FILENAME = sys.argv[1]
-    gen.OUTPUT_ROOTNAME = sys.argv[2]
-    
+    gen = GeneratingDirectedS1(hidden_variables_filename="deg_seq_test_inferred_parameters.json", output_rootname="deg_seq_test")
     gen.load_hidden_variables()
     gen.generate_edgelist()
     gen.save_adjacency_list()
