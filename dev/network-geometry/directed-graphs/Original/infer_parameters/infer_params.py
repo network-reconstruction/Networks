@@ -34,17 +34,38 @@ def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
 
 
 def hyp2f1a(beta: float, z: float) -> float:
-    """Compute hypergeometric function for parameters beta and z."""
+    """Compute hypergeometric function for parameters beta and z.
+    
+    Parameters:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(1, 1/beta, 1 + 1/beta, z).
+    """
     return hyp2f1(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 
 def hyp2f1b(beta: float, z: float) -> float:
-    """Compute hypergeometric function for parameters beta and z."""
+    """Compute hypergeometric function for parameters beta and z.
+    
+    Parameters:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(1, 2/beta, 1 + 2/beta, z).
+    """
     return hyp2f1(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
 
 
 def hyp2f1c(beta: float, z: float) -> float:
-    """Compute hypergeometric function for parameters beta and z (S75b)."""
+    """Compute hypergeometric function for parameters beta and z (S75b).
+    
+    Parameters:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    """
     return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 
