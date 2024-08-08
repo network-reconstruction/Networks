@@ -1,4 +1,4 @@
-Welcome to MyProject's documentation!
+Welcome to Directed-Network-Geometry's documentation!
 ====================================
 
 Contents:
