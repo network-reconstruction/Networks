@@ -2,14 +2,14 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-from random_generation import GeneratingDirectedS1
+from random_generation import DirectedS1Generator
 import os
 import logging
+from typing import List
 
 class GraphEnsembleAnalysis:
     def __init__(self,
-                 gen: GeneratingDirectedS1,
-                 num_samples: int = 10,
+                 gen: DirectedS1Generator,
                  verbose: bool = False,
                  log_file_path: str = "logs/GraphEnsembleAnalysis/output.log"):
         self.verbose = verbose
@@ -37,12 +37,35 @@ class GraphEnsembleAnalysis:
         self.variance_reciprocity = 0
         self.variance_clustering = 0
         self.average_in_degree = 0
+        self.num_samples = -1
         
-    
+    def set_params(self, 
+                    hidden_variables_filename,
+                    output_rootname: str = "",
+                    theta: List[int] = None,
+                    save_coordinates: bool = False, 
+                    num_samples: int = 10):
+        """
+        Set the parameters for the underlying generator for ensemble analysis.
+        """
+        self.num_samples = num_samples
+        self.gen.set_params(hidden_variables_filename, output_rootname, theta, save_coordinates)
+        
+        
     def run_analysis(self):
+        """
+        Run the ensemble analysis on the generated networks.
+        
+        The analysis includes:
+        - Generating the edgelist
+        - Calculating the reciprocity and clustering coefficient
+        - Calculating the in-degree and out-degree sequences
+        - Saving the results to a json file
+        - Plotting the degree distribution
+        """
         for _ in range(self.num_samples):
             self.gen.network.clear()
-            self.gen.generate_edgelist()
+            self.gen.generate()
             reciprocity, clustering, in_degree_sequence, out_degree_sequence = self.gen.calculate_metrics()
             self.reciprocity_list.append(reciprocity)
             self.clustering_list.append(clustering)
@@ -79,7 +102,16 @@ class GraphEnsembleAnalysis:
             json.dump(results, f, indent=4)
     
     def plot_degree_distribution(self):
+        """
+        Plot the degree distribution of the generated networks.
         
+        Plots:
+        - Complementary cumulative degree distributions for in-degree and out-degree
+        - In-degree vs out-degree distribution
+        """
+        #create directory for figure outputs
+        if not os.path.exists(f"outputs/{self.gen.output_rootname}/figs"):
+            os.makedirs(f"outputs/{self.gen.output_rootname}/figs")
         all_in_degrees = np.concatenate(self.in_degree_sequences)
         all_out_degrees = np.concatenate(self.out_degree_sequences)
         
@@ -104,10 +136,8 @@ class GraphEnsembleAnalysis:
         plt.ylabel("CCDF")
         plt.xscale('log')
         plt.yscale('log')
-        
         plt.tight_layout()
-        plt.savefig(f"{self.gen.output_rootname}_complementary_cumulative_degree_distribution.png")
-        # plt.show()
+        plt.savefig(f"outputs/{self.gen.output_rootname}/figs/complementary_cumulative_degree_distribution.png")
 
         # Plotting in-degree vs out-degree
         plt.figure(figsize=(8, 6))
@@ -118,8 +148,7 @@ class GraphEnsembleAnalysis:
         plt.xlabel("In-Degree")
         plt.ylabel("Out-Degree")
         plt.grid(True)
-        plt.savefig(f"{self.gen.output_rootname}_in_vs_out_degree_distribution.png")
-        # plt.show()
+        plt.savefig(f"outputs/{self.gen.output_rootname}/figs/in_vs_out_degree_distribution.png")
         
         # print reciprocity, clustering, in_degree_sequence, out_degree_sequence averages
         print(f"Average Reciprocity: {self.average_reciprocity}")
@@ -156,18 +185,10 @@ class GraphEnsembleAnalysis:
 
 
 if __name__ == "__main__":
-    gen = GeneratingDirectedS1()
-    gen.CUSTOM_output_rootname = False
-    gen.NAME_PROVIDED = False
-    gen.NATIVE_INPUT_FILE = True
-    gen.THETA_PROVIDED = False
-    gen.SAVE_COORDINATES = False
-    gen.HIDDEN_VARIABLES_FILENAME = sys.argv[1]
-    gen.output_rootname = sys.argv[2]
+    gen = DirectedS1Generator()
+
     
-    gen.load_hidden_variables()
-    
-    num_samples = int(sys.argv[3])
+    num_samples = 10    
     
     analysis = GraphEnsembleAnalysis(gen, num_samples)
     analysis.run_analysis()

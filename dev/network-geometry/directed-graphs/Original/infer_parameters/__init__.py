@@ -1,4 +1,4 @@
 #__init__ file 
-from .infer_params import FittingDirectedS1
+from .infer_params import DirectedS1Fitter
 
-__all__ = ['FittingDirectedS1']
+__all__ = ['DirectedS1Fitter']

@@ -53,7 +53,7 @@ def hyp2f1c(beta: float, z: float) -> float:
     return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 
-class FittingDirectedS1:
+class DirectedS1Fitter:
     """
     A class used to represent the parameter inference model for directed hyperbolic networks.
     .. attribute:: PI
@@ -69,7 +69,7 @@ class FittingDirectedS1:
                  EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 50, 
                  NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
                  NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
-                 log_file_path: str = "logs/FittingDirectedS1/output.log"): 
+                 log_file_path: str = "logs/DirectedS1Fitter/output.log"): 
         """
         Initialize the parameter inference model for directed hyperbolic networks.
 
@@ -808,7 +808,7 @@ def main():
     Main function to initialize the model and fit it to the network data.
     """
     start_time = time.time()
-    model = FittingDirectedS1(seed=0, verbose=True, log_file_path="output_small.log")
+    model = DirectedS1Fitter(seed=0, verbose=True, log_file_path="output_small.log")
     deg_seq_filename = sys.argv[1]
     reciprocity = 0.05  # Example value, set appropriately
     average_local_clustering = 0.25  # Example value, set appropriately

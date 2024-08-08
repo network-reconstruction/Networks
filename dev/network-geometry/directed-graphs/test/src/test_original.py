@@ -42,8 +42,8 @@ def test_imports(imported_modules):
     
     # Test random_generation functionality
     random_generation = imported_modules['random_generation']
-    assert hasattr(random_generation, 'GeneratingDirectedS1'), "GeneratingDirectedS1 not found in random_generation"
-    # print("GeneratingDirectedS1 is available in random_generation")
+    assert hasattr(random_generation, 'DirectedS1Generator'), "DirectedS1Generator not found in random_generation"
+    # print("DirectedS1Generator is available in random_generation")
 
 
     # Test ensemble_analysis functionality
@@ -53,8 +53,8 @@ def test_imports(imported_modules):
     
     # Test infer_params functionality
     infer_params = imported_modules['infer_params']
-    assert hasattr(infer_params, 'FittingDirectedS1'), "FittingDirectedS1 not found in infer_params"
-    # print("FittingDirectedS1 is available in infer_params")
+    assert hasattr(infer_params, 'DirectedS1Fitter'), "DirectedS1Fitter not found in infer_params"
+    # print("DirectedS1Fitter is available in infer_params")
     
     
 @pytest.fixture(scope='module')
@@ -79,9 +79,9 @@ def deg_seq_filename():
 @pytest.fixture(scope='module')
 def quick_fit_model():
     """
-    Fixture to instantiate the FittingDirectedS1 class converging fast just to test the functionality runs.
+    Fixture to instantiate the DirectedS1Fitter class converging fast just to test the functionality runs.
     """
-    from infer_params import FittingDirectedS1
+    from infer_params import DirectedS1Fitter
     # def __init__(self, 
     #              seed: int = 0, 
     #              verbose: bool = False, 
@@ -90,10 +90,10 @@ def quick_fit_model():
     #              NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
     #              NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
     #              log_file_path: str = "logs/output.log")
-    return FittingDirectedS1(verbose = True,
+    return DirectedS1Fitter(verbose = True,
                              KAPPA_MAX_NB_ITER_CONV = 10,
                              EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10,
-                             log_file_path = "logs/FittingDirectedS1/test_infer_params_quick_fit_from_file.log")
+                             log_file_path = "logs/DirectedS1Fitter/test_infer_params_quick_fit_from_file.log")
 
 def test_import_data(network_data):
     """
@@ -110,7 +110,7 @@ def test_import_data(network_data):
 
 def test_infer_params_quick_fit_from_file(setup_paths, quick_fit_model, deg_seq_filename):
     """
-    Test that the FittingDirectedS1 class can be instantiated and fit works as expected from deg_seq_filename
+    Test that the DirectedS1Fitter class can be instantiated and fit works as expected from deg_seq_filename
     """
     #TODO: TEST (Works on script)
     # def fit_from_file(self, 
@@ -127,12 +127,12 @@ def test_infer_params_quick_fit_from_file(setup_paths, quick_fit_model, deg_seq_
                         network_name = "TestNetwork",
                         verbose = True)
     assert os.path.exists("outputs/TestNetwork/inferred_params.json"), "Inferred parameters file not found"
-    # print("FittingDirectedS1 class fits from file successfully")
+    # print("DirectedS1Fitter class fits from file successfully")
 
         
 def test_infer_params_quick_fit_from_deg_seq(setup_paths, quick_fit_model, network_data):
     """
-    Test that the FittingDirectedS1 class can be instantiated and fit works as expected.
+    Test that the DirectedS1Fitter class can be instantiated and fit works as expected.
     """
     #TODO: TEST (Works on script)
     # take the first network in network data
@@ -149,7 +149,7 @@ def test_infer_params_quick_fit_from_deg_seq(setup_paths, quick_fit_model, netwo
     #shouldn't happen theoretically
     assert len(deg_seq[0]) == len(deg_seq[1]), "TEST DATA ERROR: In and out degree sequences are not of the same length" 
     
-    quick_fit_model.modify_log_file_path("logs/FittingDirectedS1/output_test_infer_params_quick_fit_from_deg_seq.log")
+    quick_fit_model.modify_log_file_path("logs/DirectedS1Fitter/output_test_infer_params_quick_fit_from_deg_seq.log")
     quick_fit_model.fit_from_deg_seq(deg_seq = deg_seq,
                                 reciprocity = network_data[network]['reciprocity'],
                                 average_local_clustering = network_data[network]['average_clustering'],
@@ -158,24 +158,24 @@ def test_infer_params_quick_fit_from_deg_seq(setup_paths, quick_fit_model, netwo
     
     #assert that the output name network name is correct
     assert os.path.exists(f"outputs/{network}/inferred_params.json"), "Inferred parameters file not found"
-    # print("FittingDirectedS1 class fits from degree sequence successfully")
+    # print("DirectedS1Fitter class fits from degree sequence successfully")
 
 @pytest.fixture(scope='module')
 def quick_random_generation_model():
     """
-    Fixture to instantiate the GeneratingDirectedS1 class converging fast just to test the functionality runs.
+    Fixture to instantiate the DirectedS1Generator class converging fast just to test the functionality runs.
     """
-    from random_generation import GeneratingDirectedS1
+    from random_generation import DirectedS1Generator
     # def __init__(self,
     #              seed: int = 0,
     #              verbose: bool = False,
-    #              log_file_path: str = "logs/GeneratingDirectedS1/output.log"):
-    return GeneratingDirectedS1(verbose=True,
-                             log_file_path = "logs/GeneratingDirectedS1/output_test_generation_fast.log")
+    #              log_file_path: str = "logs/DirectedS1Generator/output.log"):
+    return DirectedS1Generator(verbose=True,
+                             log_file_path = "logs/DirectedS1Generator/output_test_generation_fast.log")
 
 def test_random_generation_quick_generate(setup_paths, quick_random_generation_model):
     """
-    Test that the GeneratingDirectedS1 class can be instantiated and generate works as expected.
+    Test that the DirectedS1Generator class can be instantiated and generate works as expected.
     """
     # def generate(self, 
     #              hidden_variables_filename,
@@ -187,6 +187,29 @@ def test_random_generation_quick_generate(setup_paths, quick_random_generation_m
     assert os.path.exists("outputs/TestNetwork/generation_data.json"), "Generation data file not found"
 
 #TODO test the ensemble analysis
+@pytest.fixture(scope='module')
+def quick_ensemble_analysis_model(quick_random_generation_model):
+    """
+    Fixture to instantiate the GraphEnsembleAnalysis class converging fast just to test the functionality runs.
+    """
+    from ensemble_analysis import GraphEnsembleAnalysis
+    # def __init__(self, 
+    #              gen: DirectedS1Generator,
+    #              num_samples: int,
+    #              verbose: bool = False,
+    #              log_file_path: str = "logs/GraphEnsembleAnalysis/output.log"):
+    return GraphEnsembleAnalysis(gen = quick_random_generation_model,
+                                 verbose = True,
+                                 log_file_path = "logs/GraphEnsembleAnalysis/output_test_ensemble_analysis_quick.log")
+
+def test_ensemble_analysis_quick_analysis(setup_paths, quick_ensemble_analysis_model):
+    """
+    Test that the GraphEnsembleAnalysis class can be instantiated and run_analysis works as expected.
+    """
+    # def run_analysis(self):
+    quick_ensemble_analysis_model.run_analysis()
+    assert os.path.exists("outputs/ensemble_analysis/degree_distribution.png"), "Degree distribution plot not found"
+
 #TODO test whole pipeline with accuracy
 #TODO large test on whole pipeline
 

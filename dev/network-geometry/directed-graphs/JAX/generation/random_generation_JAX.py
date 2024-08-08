@@ -4,7 +4,7 @@ import json
 import time
 from datetime import datetime
 
-class GeneratingDirectedS1JAX:
+class DirectedS1GeneratorJAX:
     def __init__(self):
         self.CUSTOM_OUTPUT_ROOTNAME = False
         self.NAME_PROVIDED = False

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 import logging
 import os
-class GeneratingDirectedS1:
+class DirectedS1Generator:
     """
     Class to generate a directed network using the S1 model.
     
@@ -25,7 +25,7 @@ class GeneratingDirectedS1:
     def __init__(self,
                  seed: int = 0,
                  verbose: bool = False,
-                 log_file_path: str = "logs/GeneratingDirectedS1/output.log"):
+                 log_file_path: str = "logs/DirectedS1Generator/output.log"):
         
         self.verbose = verbose
         # Set up logging
@@ -76,6 +76,8 @@ class GeneratingDirectedS1:
         """
         Load the hidden variables from the hidden variables file.
         """
+        if self.verbose:
+            self.logger.info(f"Loading hidden variables from {self.hidden_variables_filename}")
         with open(self.hidden_variables_filename, 'r') as file:
             data = json.load(file)
         
@@ -100,6 +102,8 @@ class GeneratingDirectedS1:
         """
         Generate the edgelist of the network using the hidden variables.
         """
+        if self.verbose:
+            self.logger.info(f"Generating edgelist of length {self.nb_vertices}")
         if self.BETA == -10:
             raise ValueError("The value of parameter beta must be provided.")
         
@@ -140,6 +144,8 @@ class GeneratingDirectedS1:
         """
         Calculate the reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence of the network.
         """
+        if self.verbose:
+            self.logger.info("Calculating metrics")
         self.reciprocity = nx.reciprocity(self.network)
         self.clustering = nx.average_clustering(self.network.to_undirected())
         self.in_degree_sequence = [d for n, d in self.network.in_degree()]
@@ -150,7 +156,8 @@ class GeneratingDirectedS1:
         """
         Saves data to outputs/<output_rootname>/generation_data.json
         """
-        
+        if self.verbose:
+            self.logger.info(f"Saving data to outputs/{self.output_rootname}/generation_data.json")
         adjacency_list = [list(self.network.neighbors(node)) for node in self.network.nodes()]
         self.calculate_metrics()
         data = {
@@ -180,6 +187,12 @@ class GeneratingDirectedS1:
             json.dump(data, f, indent=4)
             
     def _save_coordinates(self) -> None:
+        """
+        Save the coordinates of the nodes to outputs/<output_rootname>/coordinates.csv
+        """
+        if self.verbose:
+            self.logger.info(f"Current working directory: {os.getcwd()}")
+            self.logger.info(f"Saving coordinates to outputs/{self.output_rootname}/coordinates.csv")
         #node in_kappa, out_kappa, theta save as dataframe
         if not os.path.exists("outputs"):
             os.makedirs("outputs")  
@@ -190,6 +203,36 @@ class GeneratingDirectedS1:
             for i in range(self.nb_vertices):
                 f.write(f"{self.Num2Name[i]},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
                 
+    def set_params(self,
+                    hidden_variables_filename,
+                    output_rootname: str = "",
+                    theta: List[int] = None,
+                    save_coordinates: bool = False) -> None:  
+        """
+        Set the parameters for the generator.
+        
+        Params:
+        -------
+        hidden_variables_filename: str
+            The filename of the hidden variables json file
+        output_rootname: str
+            The rootname of the output files, if not assigned it will be the same as the hidden variables subdirectory without file name and parent directories.
+        theta: List[int]
+            The theta values for the network
+        save_coordinates: bool
+            Whether to save the coordinates of the nodes
+        
+        """
+        if self.verbose:
+            self.logger.info(f"Setting parameters: hidden_variables_filename: {hidden_variables_filename}, output_rootname: {output_rootname}, theta: {theta}, save_coordinates: {save_coordinates}")
+        self.save_coordinates = save_coordinates
+        self.theta = theta
+        self.hidden_variables_filename = hidden_variables_filename
+        if output_rootname == "":
+            self.output_rootname = hidden_variables_filename.split(".")[0].split("/")[-2]
+            if self.verbose:
+                self.logger.info(f"Output rootname set to {self.output_rootname}")
+           
     def generate(self, 
                  hidden_variables_filename,
                  output_rootname: str = "",
@@ -209,17 +252,16 @@ class GeneratingDirectedS1:
         save_coordinates: bool
             Whether to save the coordinates of the nodes
         """
-        
-        self.save_coordinates = save_coordinates
-        self.theta = theta
-        self.hidden_variables_filename = hidden_variables_filename
-        if output_rootname == "":
-            self.output_rootname = hidden_variables_filename.split(".")[0]
+        if self.verbose:
+            self.logger.info(f"Generating network with hidden variables from {hidden_variables_filename}")
+        self.set_params(hidden_variables_filename, output_rootname, theta, save_coordinates)
         self._load_hidden_variables()
         self._generate_edgelist()
         self._save_data()
         if self.save_coordinates:
             self._save_coordinates()
+        if self.verbose:
+            self.logger.info(f"Finished generating network at {self.get_time()}")
     
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
@@ -257,6 +299,8 @@ class GeneratingDirectedS1:
 
 
 if __name__ == "__main__":
-    gen = GeneratingDirectedS1()
+    gen = DirectedS1Generator()
+    gen.generate(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json",
+                 save_coordinates = True)
     
     print(f"Finished at {gen.get_time()}")

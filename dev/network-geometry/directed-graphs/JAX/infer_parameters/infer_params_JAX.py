@@ -94,7 +94,7 @@ def hyp2f1c(beta: float, z: float) -> float:
     """
     return hyp2f1_approx(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
-class FittingDirectedS1_JAX:
+class DirectedS1Fitter_JAX:
     """
     A class to fit the directed S1 model using JAX for numerical computations.
 
@@ -112,7 +112,7 @@ class FittingDirectedS1_JAX:
 
     def __init__(self, seed: int = 0, verbose: bool = False):
         """
-        Initializes the FittingDirectedS1_JAX class.
+        Initializes the DirectedS1Fitter_JAX class.
 
         Args:
             seed (int): The random seed for reproducibility.
@@ -854,10 +854,10 @@ class FittingDirectedS1_JAX:
 
 def main():
     """
-    The main function to run the FittingDirectedS1_JAX model.
+    The main function to run the DirectedS1Fitter_JAX model.
     """
     start_time = time.time()
-    model = FittingDirectedS1_JAX(seed=0, verbose=True)
+    model = DirectedS1Fitter_JAX(seed=0, verbose=True)
 
     edgelist_filename = sys.argv[1]  # Example value, set appropriately
     reciprocity = 0.046  # Example value, set appropriately
