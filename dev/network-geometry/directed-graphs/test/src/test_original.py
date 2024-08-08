@@ -6,6 +6,8 @@ import sys
 import pytest
 # import logging
 
+#TODO make the tests more rigorous checking the data.
+
 @pytest.fixture(scope='module')
 def setup_paths():
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -76,9 +78,9 @@ def deg_seq_filename():
     """
     return '../data/deg_seq_test.txt'
 
-#quick tests are tests for functionality only, not accuracy
+#functional tests are tests for functionality only, not accuracy
 @pytest.fixture(scope='module')
-def quick_fit_model():
+def functional_fit_model():
     """
     Fixture to instantiate the DirectedS1Fitter class converging fast just to test the functionality runs.
     """
@@ -94,7 +96,7 @@ def quick_fit_model():
     return DirectedS1Fitter(verbose = True,
                              KAPPA_MAX_NB_ITER_CONV = 10,
                              EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10,
-                             log_file_path = "logs/DirectedS1Fitter/test_infer_params_quick_fit_from_file.log")
+                             log_file_path = "logs/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log")
 
 def test_import_data(network_data):
     """
@@ -109,7 +111,7 @@ def test_import_data(network_data):
 
     # print("Data imported successfully")
 
-def test_infer_params_quick_fit_from_file(setup_paths, quick_fit_model, deg_seq_filename):
+def test_infer_params_functional_fit_from_file(setup_paths, functional_fit_model, deg_seq_filename):
     """
     Test that the DirectedS1Fitter class can be instantiated and fit works as expected from deg_seq_filename
     """
@@ -122,16 +124,32 @@ def test_infer_params_quick_fit_from_file(setup_paths, quick_fit_model, deg_seq_
     #               verbose: bool = False
     #               ) -> None:
     
-    quick_fit_model.fit_from_file(filename = deg_seq_filename,
+    functional_fit_model.fit_from_file(filename = deg_seq_filename,
                         reciprocity = 0.5,
                         average_local_clustering = 0.5,
                         network_name = "TestNetwork",
                         verbose = True)
     assert os.path.exists("outputs/TestNetwork/inferred_params.json"), "Inferred parameters file not found"
-    # print("DirectedS1Fitter class fits from file successfully")
+
+    """Check if data is saved as expected
+     data = {
+            "beta": float(self.beta),
+            "mu": float(self.mu),
+            "nu": float(self.nu),
+            "R": float(self.R),
+            "inferred_kappas": []
+        }"""
+    with open(f"outputs/TestNetwork/inferred_params.json", 'r') as file:
+        data = json.load(file)
+    assert 'beta' in data and isinstance(data['beta'], float)
+    assert 'mu' in data and isinstance(data['mu'], float)
+    assert 'nu' in data and isinstance(data['nu'], float)
+    assert 'R' in data and isinstance(data['R'], float)
+    assert 'inferred_kappas' in data and isinstance(data['inferred_kappas'], list)
+    
 
         
-def test_infer_params_quick_fit_from_deg_seq(setup_paths, quick_fit_model, network_data):
+def test_infer_params_functional_fit_from_deg_seq(setup_paths, functional_fit_model, network_data):
     """
     Test that the DirectedS1Fitter class can be instantiated and fit works as expected.
     """
@@ -150,19 +168,32 @@ def test_infer_params_quick_fit_from_deg_seq(setup_paths, quick_fit_model, netwo
     #shouldn't happen theoretically
     assert len(deg_seq[0]) == len(deg_seq[1]), "TEST DATA ERROR: In and out degree sequences are not of the same length" 
     
-    quick_fit_model.modify_log_file_path("logs/DirectedS1Fitter/output_test_infer_params_quick_fit_from_deg_seq.log")
-    quick_fit_model.fit_from_deg_seq(deg_seq = deg_seq,
+    functional_fit_model.modify_log_file_path("logs/DirectedS1Fitter/output_test_infer_params_functional_fit_from_deg_seq.log")
+    functional_fit_model.fit_from_deg_seq(deg_seq = deg_seq,
                                 reciprocity = network_data[network]['reciprocity'],
                                 average_local_clustering = network_data[network]['average_clustering'],
                                 network_name = network,
                                 verbose = True)
-    
-    #assert that the output name network name is correct
     assert os.path.exists(f"outputs/{network}/inferred_params.json"), "Inferred parameters file not found"
-    # print("DirectedS1Fitter class fits from degree sequence successfully")
-
+    
+    """Check if data is saved as expected
+     data = {
+            "beta": float(self.beta),
+            "mu": float(self.mu),
+            "nu": float(self.nu),
+            "R": float(self.R),
+            "inferred_kappas": []
+        }"""
+    with open(f"outputs/{network}/inferred_params.json", 'r') as file:
+        data = json.load(file)
+    assert 'beta' in data and isinstance(data['beta'], float)
+    assert 'mu' in data and isinstance(data['mu'], float)
+    assert 'nu' in data and isinstance(data['nu'], float)
+    assert 'R' in data and isinstance(data['R'], float)
+    assert 'inferred_kappas' in data and isinstance(data['inferred_kappas'], list)
+    
 @pytest.fixture(scope='module')
-def quick_random_generation_model():
+def functional_random_generation_model():
     """
     Fixture to instantiate the DirectedS1Generator class converging fast just to test the functionality runs.
     """
@@ -174,7 +205,7 @@ def quick_random_generation_model():
     return DirectedS1Generator(verbose=True,
                              log_file_path = "logs/DirectedS1Generator/output_test_generation_fast.log")
 
-def test_random_generation_quick_generate(setup_paths, quick_random_generation_model):
+def test_random_generation_functional_generate(setup_paths, functional_random_generation_model):
     """
     Test that the DirectedS1Generator class can be instantiated and generate works as expected.
     """
@@ -183,12 +214,45 @@ def test_random_generation_quick_generate(setup_paths, quick_random_generation_m
     #              output_rootname: str = "",
     #              theta: List[int] = None,
     #              save_coordinates: bool = False):
-    quick_random_generation_model.generate(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json")
+    functional_random_generation_model.generate(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json")
     assert os.path.exists("outputs/TestNetwork/generation_data.json"), "Generation data file not found"
+    
+    """Check if data is saved as expected
+    data = {
+            "parameters": {
+                "beta": self.BETA,
+                "mu": self.MU,
+                "nu": self.NU,
+                "N": self.nb_vertices,
+                "R": self.R,
+                "seed": self.SEED,
+                "hidden_variables_file": self.hidden_variables_filename
+            },
+            "adjacency_list": adjacency_list,
+            "network_data": {
+                "reciprocity": self.reciprocity,
+                "clustering": self.clustering,
+                "in_degree_sequence": self.in_degree_sequence,
+                "out_degree_sequence": self.out_degree_sequence
+            }
+        }
+    """
+    with open("outputs/TestNetwork/generation_data.json", 'r') as file:
+        data = json.load(file)
+        
+    #TODO enforce types
+    assert 'parameters' in data and isinstance(data['parameters'], dict)
+    assert 'adjacency_list' in data and isinstance(data['adjacency_list'], list)
+    assert 'network_data' in data and isinstance(data['network_data'], dict)
+    assert 'reciprocity' in data['network_data'] and isinstance(data['network_data']['reciprocity'], float)
+    assert 'clustering' in data['network_data'] and isinstance(data['network_data']['clustering'], float)
+    assert 'in_degree_sequence' in data['network_data'] and isinstance(data['network_data']['in_degree_sequence'], list)
+    assert 'out_degree_sequence' in data['network_data'] and isinstance(data['network_data']['out_degree_sequence'], list)
+
 
 #TODO test the ensemble analysis
 @pytest.fixture(scope='module')
-def quick_ensemble_analysis_model(quick_random_generation_model):
+def functional_ensemble_analysis_model(functional_random_generation_model):
     """
     Fixture to instantiate the DirectedS1EnsembleAnalyser class converging fast just to test the functionality runs.
     """
@@ -198,17 +262,17 @@ def quick_ensemble_analysis_model(quick_random_generation_model):
     #              num_samples: int,
     #              verbose: bool = False,
     #              log_file_path: str = "logs/DirectedS1EnsembleAnalyser/output.log"):
-    return DirectedS1EnsembleAnalyser(gen = quick_random_generation_model,
+    return DirectedS1EnsembleAnalyser(gen = functional_random_generation_model,
                                  verbose = True,
-                                 log_file_path = "logs/DirectedS1EnsembleAnalyser/output_test_ensemble_analysis_quick.log")
+                                 log_file_path = "logs/DirectedS1EnsembleAnalyser/output_test_ensemble_analysis_functional.log")
 
-def test_ensemble_analysis_quick_analysis(setup_paths, quick_ensemble_analysis_model):
+def test_ensemble_analysis_functional_analysis(setup_paths, functional_ensemble_analysis_model):
     """
     Test that the DirectedS1EnsembleAnalyser class can be instantiated and run_analysis works as expected.
     """
     # def run_analysis(self):
 
-    quick_ensemble_analysis_model.run_analysis(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json",
+    functional_ensemble_analysis_model.run_analysis(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json",
                                                num_samples = 10,
                                                save_results = True,
                                                plot_degree_distribution = True)
@@ -216,6 +280,30 @@ def test_ensemble_analysis_quick_analysis(setup_paths, quick_ensemble_analysis_m
     assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/in_vs_out_degree_distribution.png"), "In vs Out degree distribution plot not found"
     assert os.path.exists("outputs/TestNetwork/ensemble_analysis/results.json"), "Ensemble analysis results file not found"
 
+    """Check if data is saved as expected
+    results = {
+            "average_reciprocity": self.average_reciprocity,
+            "average_clustering": self.average_clustering,
+            "variance_reciprocity": self.variance_reciprocity,
+            "variance_clustering": self.variance_clustering,
+            "reciprocity_list": self.reciprocity_list,
+            "clustering_list": self.clustering_list,
+            "average_in_degree": self.average_in_degree,
+            "in_degree_sequences": self.in_degree_sequences,
+            "out_degree_sequences": self.out_degree_sequences
+        }
+    """
+    with open("outputs/TestNetwork/ensemble_analysis/results.json", 'r') as file:
+        data = json.load(file)
+    assert 'average_reciprocity' in data and isinstance(data['average_reciprocity'], float)
+    assert 'average_clustering' in data and isinstance(data['average_clustering'], float)
+    assert 'variance_reciprocity' in data and isinstance(data['variance_reciprocity'], float)
+    assert 'variance_clustering' in data and isinstance(data['variance_clustering'], float)
+    assert 'reciprocity_list' in data and isinstance(data['reciprocity_list'], list)
+    assert 'clustering_list' in data and isinstance(data['clustering_list'], list)
+    assert 'average_in_degree' in data and isinstance(data['average_in_degree'], float)
+    assert 'in_degree_sequences' in data and isinstance(data['in_degree_sequences'], list)
+    assert 'out_degree_sequences' in data and isinstance(data['out_degree_sequences'], list)
 
 #TODO test whole pipeline with accuracy
 #TODO large test on whole pipeline
