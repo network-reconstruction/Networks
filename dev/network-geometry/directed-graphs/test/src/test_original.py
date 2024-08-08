@@ -7,6 +7,7 @@ import pytest
 # import logging
 
 #TODO make the tests more rigorous checking the data.
+#TODO Make testing into class.
 
 @pytest.fixture(scope='module')
 def setup_paths():

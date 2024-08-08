@@ -170,10 +170,8 @@ class DirectedS1(Model):
         """
         Generate the DirectedS1 Model.
         
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters.
+        Args:
+            **kwargs (dict): Parameters.
         """
         self.logger.info("Generating DirectedS1 Model.")
         for key, value in kwargs.items():
@@ -184,10 +182,8 @@ class DirectedS1(Model):
         """
         Infer the parameters of the DirectedS1 Model.
         
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters.
+        Args:
+            **kwargs (dict): Parameters
         """
         self.logger.info("Inferring parameters of the DirectedS1 Model.")
         for key, value in kwargs.items():
@@ -198,10 +194,8 @@ class DirectedS1(Model):
         """
         Analyse the ensemble of the DirectedS1 Model.
         
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters.
+        Args:
+            **kwargs (dict): Parameters
         """
         self.logger.info("Analysing the ensemble of the DirectedS1 Model.")
         for key, value in kwargs.items():
@@ -212,10 +206,8 @@ class DirectedS1(Model):
         """
         Fit the DirectedS1 Model.
         
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters.
+        Args:
+            **kwargs (dict): Parameters
         """
         self.logger.info("Fitting the DirectedS1 Model.")
         for key, value in kwargs.items():
@@ -226,10 +218,8 @@ class DirectedS1(Model):
         """
         Test the DirectedS1 Model.
         
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters.
+        Args:
+            **kwargs (dict): Parameters
         """
         self.logger.info("Testing the DirectedS1 Model.")
         for key, value in kwargs.items():
@@ -239,10 +229,8 @@ class DirectedS1(Model):
     def evaluate(self, **kwargs):
         """
         Evaluate the DirectedS1 Model.
-        Parameters
-        ----------
-        **kwargs : dict
-            Parameters
+        Args:
+            **kwargs (dict): Parameters
         """
         self.logger.info("Evaluating the DirectedS1 Model.")
         for key, value in kwargs.items():
