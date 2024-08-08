@@ -1,3 +1,4 @@
+
 import json
 import math
 import random
@@ -10,27 +11,47 @@ from typing import List, Tuple
 import logging
 import os
 
-#TODO unify Params and Parameters
+#TODO unify Parameters and Parameters
 #TODO fix set_params log_file_path to be more rebust.
 #TODO save coordinates and data should it be in generate or take in parameter for where to save to?
 class DirectedS1Generator:
     """
     Class to generate a directed network using the S1 model.
-    
-    Params:
-    -------
-    seed: int (default = 0)
-        The seed for the random number generator
-    verbose: bool (default = False)
-        Whether to print log messages
-    log_file_path: str (default = "logs/DirectedS1Generator/output.log")
-        The path to the log file
+
+    Attributes:
+        PI (float): The value of Pi.
+        SEED (int): The random seed.
+        BETA (float): Parameter for the model.
+        MU (float): Parameter for the model.
+        NU (float): Parameter for the model.
+        R (float): Parameter for the model.
+        hidden_variables_filename (str): The filename for hidden variables.
+        output_rootname (str): The rootname for output files.
+        NUMERICAL_ZERO (float): A small numerical value considered as zero.
+        Num2Name (List[str]): List of node names.
+        nb_vertices (int): Number of vertices.
+        in_Kappa (List[float]): In-degree distribution.
+        outKappa (List[float]): Out-degree distribution.
+        theta (List[float]): Angular positions of nodes.
+        network (nx.DiGraph): The generated network.
+        reciprocity (float): Network reciprocity.
+        clustering (float): Network clustering coefficient.
+        in_degree_sequence (List[int]): In-degree sequence.
+        out_degree_sequence (List[int]): Out-degree sequence.
+
     """
     def __init__(self,
                  seed: int = 0,
                  verbose: bool = False,
                  log_file_path: str = "logs/DirectedS1Generator/output.log"):
-        
+        """
+        Initializes the model with default parameters and attributes.
+
+        Args:
+            seed (int): The seed for the random number generator.
+            verbose (bool): Whether to print log messages.
+            log_file_path (str): The path to the log file.
+        """
         self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
@@ -65,16 +86,12 @@ class DirectedS1Generator:
     def _setup_logging(self, log_file_path: str) -> logging.Logger:
         """
         Setup logging with the given log file path.
-        
-        Parameters
-        ----------
-        log_file_path : str
-            Path to the log file.
-        
-        Returns
-        -------
-        logging.Logger
-            Logger
+
+        Args:
+            log_file_path (str): Path to the log file.
+
+        Returns:
+            logging.Logger: Logger
         """
         for i in range(1, len(log_file_path.split("/"))):
             if not os.path.exists("/".join(log_file_path.split("/")[:i])):
@@ -157,11 +174,16 @@ class DirectedS1Generator:
                 elif r < p21:
                     self.network.add_edge(self.Num2Name[v2], self.Num2Name[v1])
                 elif r < (p21 + p12 - p11):
-                    self.network.add_edge(self.Num2Name[v1], self.Num2Name[v2])
+                    self.network.add_edge(self
+
+.Num2Name[v1], self.Num2Name[v2])
         
     def calculate_metrics(self) -> Tuple[float, float, List[int], List[int]]:
         """
         Calculate the reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence of the network.
+
+        Returns:
+            Tuple[float, float, List[int], List[int]]: The reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence.
         """
         if self.verbose:
             self.logger.info("Calculating metrics")
@@ -173,7 +195,7 @@ class DirectedS1Generator:
     
     def _save_data(self) -> None:
         """
-        Saves data to outputs/<output_rootname>/generation_data.json
+        Saves data to outputs/<output_rootname>/generation_data.json.
         """
         if self.verbose:
             self.logger.info(f"Saving data to outputs/{self.output_rootname}/generation_data.json")
@@ -207,7 +229,7 @@ class DirectedS1Generator:
             
     def _save_coordinates(self) -> None:
         """
-        Save the coordinates of the nodes to outputs/<output_rootname>/coordinates.csv
+        Save the coordinates of the nodes to outputs/<output_rootname>/coordinates.csv.
         """
         if self.verbose:
             self.logger.info(f"Current working directory: {os.getcwd()}")
@@ -222,22 +244,18 @@ class DirectedS1Generator:
             for i in range(self.nb_vertices):
                 f.write(f"{self.Num2Name[i]},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
                 
-    def set_params(self, **kwargs):
+    def set_params(self, **kwargs) -> None:
         """
         Set the DirectedS1Generator parameters.
         
-        Params:
-        -------
-        **kwargs: dict
-            The parameters to set
+        Args:
+            **kwargs (dict): The parameters to set.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
         
-        
-           
     def generate(self, 
-                 hidden_variables_filename,
+                 hidden_variables_filename: str,
                  output_rootname: str = "",
                  theta: List[int] = None,
                  save_data: bool = True,
@@ -245,19 +263,12 @@ class DirectedS1Generator:
         """
         Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.
         
-        Params:
-        -------
-        hidden_variables_filename: str
-            The filename of the hidden variables json file
-        output_rootname: str (default = "")
-            The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.
-        theta: List[int] (default = None)
-            The theta values for the network
-        save_data: bool (default = True)
-            Whether to save the data
-        save_coordinates: bool (default = True)
-            Whether to save the coordinates of the nodes
-            
+        Args:
+            hidden_variables_filename (str): The filename of the hidden variables json file.
+            output_rootname (str): The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.
+            theta (List[int], optional): The theta values for the network. Defaults to None.
+            save_data (bool, optional): Whether to save the data. Defaults to True.
+            save_coordinates (bool, optional): Whether to save the coordinates of the nodes. Defaults to True.
         """
         if self.verbose:
             self.logger.info(f"Generating network with hidden variables from {hidden_variables_filename}")
@@ -278,11 +289,9 @@ class DirectedS1Generator:
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
         Modify the log file path for the logger.
-        
-        Params:
-        -------
-        log_file_path: str
-            The new log file path
+
+        Args:
+            log_file_path (str): The new log file path.
         """
         #create directory if doesn't exist
         for i in range(1, len(log_file_path.split("/"))):
@@ -298,10 +307,23 @@ class DirectedS1Generator:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
+    
     def get_time(self) -> str:
+        """
+        Get the current UTC time as a string.
+
+        Returns:
+            str: The current UTC time.
+        """
         return datetime.utcnow().strftime("%Y/%m/%d %H:%M UTC")
 
-    def plot_degree_sequence(self, degree_sequence) -> None:
+    def plot_degree_sequence(self, degree_sequence: List[int]) -> None:
+        """
+        Plot the degree sequence distribution and save it as a PNG file.
+
+        Args:
+            degree_sequence (List[int]): The degree sequence to plot.
+        """
         plt.figure()
         plt.hist(degree_sequence, bins='auto')
         plt.title("Degree Sequence Distribution")

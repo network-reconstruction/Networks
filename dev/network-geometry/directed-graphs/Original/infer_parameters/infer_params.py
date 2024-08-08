@@ -19,17 +19,12 @@ def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
     """
     Compute the lower bound of a key in a sorted dictionary.
 
-    Parameters
-    ----------
-    d : SortedDict
-        Sorted dictionary.
-    key : Any
-        Key to search.
+    Parameters:
+        d (SortedDict): Sorted dictionary.
+        key (Any): Key to search.
 
-    Returns
-    -------
-    Optional[Tuple]
-        Lower bound of the key, or None if the key is not found.
+    Returns:
+        Optional[Tuple]: Lower bound of the key, or None if the key is not found.
     """
     index = d.bisect_left(key)
     if index < len(d):
@@ -56,8 +51,46 @@ def hyp2f1c(beta: float, z: float) -> float:
 class DirectedS1Fitter:
     """
     A class used to represent the parameter inference model for directed hyperbolic networks.
-    .. attribute:: PI
-       :noindex:
+
+    Attributes:
+        PI (float): The value of Pi.
+        CUSTOM_BETA (bool): Flag indicating if beta is custom-set.
+        CUSTOM_MU (bool): Flag indicating if mu is custom-set.
+        CUSTOM_NU (bool): Flag indicating if nu is custom-set.
+        BETA_ABS_MAX (float): Maximum absolute value of beta.
+        BETA_ABS_MIN (float): Minimum absolute value of beta.
+        deg_seq_filename (str): Filename for degree sequence.
+        EXP_CLUST_NB_INTEGRATION_MC_STEPS (int): Number of Monte Carlo steps for clustering integration.
+        KAPPA_MAX_NB_ITER_CONV (int): Maximum iterations for kappa convergence.
+        NUMERICAL_CONVERGENCE_THRESHOLD_1 (float): Numerical convergence threshold 1.
+        NUMERICAL_CONVERGENCE_THRESHOLD_2 (float): Numerical convergence threshold 2.
+        NUMERICAL_ZERO (float): Small value considered as zero.
+        output_rootname (str): Rootname for output files.
+        SEED (int): Random seed.
+        nb_vertices (int): Number of vertices.
+        nb_vertices_undir_degree_gt_one (int): Number of vertices with undirected degree greater than one.
+        nb_edges (int): Number of edges.
+        nb_reciprocal_edges (int): Number of reciprocal edges.
+        nb_triangles (int): Number of triangles.
+        reciprocity (float): Reciprocity of the network.
+        average_undir_clustering (float): Average undirected clustering.
+        beta (float): Parameter beta.
+        mu (float): Parameter mu.
+        nu (float): Parameter nu.
+        R (float): Radius of the hyperbolic space.
+        random_ensemble_average_degree (float): Average degree of the random ensemble.
+        random_ensemble_average_clustering (float): Average clustering of the random ensemble.
+        random_ensemble_reciprocity (float): Reciprocity of the random ensemble.
+        random_ensemble_expected_degree_per_degree_class (List[float]): Expected degree per degree class.
+        random_ensemble_kappa_per_degree_class (List[float]): Kappa values per degree class.
+        cumul_prob_kgkp (Dict): Cumulative probability distribution for Monte Carlo integration.
+        engine (random.PRNGKey): Random number generator key.
+        out_degree_sequence (List[float]): Sequence of out-degrees.
+        in_degree_sequence (List[float]): Sequence of in-degrees.
+        degree (Tuple[List[float], List[float]]): Tuple of in-degree and out-degree sequences.
+        degree_histogram (List[Dict[int, int]]): Histograms of in-degrees and out-degrees.
+        degree_class (Dict[int, Dict[int, int]]): Classification of nodes by their in-degree and out-degree.
+
     """
 
     PI = jnp.pi
@@ -73,22 +106,14 @@ class DirectedS1Fitter:
         """
         Initialize the parameter inference model for directed hyperbolic networks.
 
-        Parameters
-        ----------
-        seed : int, optional
-            Seed for random number generation (default = 0).
-        verbose : bool, optional
-            Whether to print verbose output (default = False).
-        KAPPA_MAX_NB_ITER_CONV : int, optional
-            Maximum number of iterations for convergence of kappa (default = 100).
-        EXP_CLUST_NB_INTEGRATION_MC_STEPS : int, optional
-            Number of Monte Carlo steps for integration of expected clustering (default = 50).
-        NUMERICAL_CONVERGENCE_THRESHOLD_1 : float, optional
-            Threshold for numerical convergence of kappa (default = 1e-2).
-        NUMERICAL_CONVERGENCE_THRESHOLD_2 : float, optional
-            Threshold for numerical convergence of clustering (default = 1e-2).
-        log_file_path : str, optional
-            Path to the log file (default = "output.log").
+        Parameters:
+            seed (int): Seed for random number generation (default = 0).
+            verbose (bool): Whether to print verbose output (default = False).
+            KAPPA_MAX_NB_ITER_CONV (int): Maximum number of iterations for convergence of kappa (default = 100).
+            EXP_CLUST_NB_INTEGRATION_MC_STEPS (int): Number of Monte Carlo steps for integration of expected clustering (default = 50).
+            NUMERICAL_CONVERGENCE_THRESHOLD_1 (float): Threshold for numerical convergence of kappa (default = 1e-2).
+            NUMERICAL_CONVERGENCE_THRESHOLD_2 (float): Threshold for numerical convergence of clustering (default = 1e-2).
+            log_file_path (str): Path to the log file (default = "logs/DirectedS1Fitter/output.log").
         """
         
         # for loop create folders in log file path if they don't exist
@@ -141,16 +166,12 @@ class DirectedS1Fitter:
     def _setup_logging(self, log_file_path: str) -> logging.Logger:
         """
         Setup logging with the given log file path.
-        
-        Parameters
-        ----------
-        log_file_path : str
-            Path to the log file.
-        
-        Returns
-        -------
-        logging.Logger
-            Logger
+
+        Parameters:
+            log_file_path (str): Path to the log file.
+
+        Returns:
+            logging.Logger: Logger
         """
         for i in range(1, len(log_file_path.split("/"))):
             if not os.path.exists("/".join(log_file_path.split("/")[:i])):
@@ -166,32 +187,25 @@ class DirectedS1Fitter:
         logger.addHandler(handler) 
         return logger
     
-    def set_params(self, **kwargs):
+    def set_params(self, **kwargs) -> None:
         """
-        Set the DirectedS1Generator parameters.
-        
-        Params:
-        -------
-        **kwargs: dict
-            The parameters to set
+        Set the DirectedS1Fitter parameters.
+
+        Parameters:
+            **kwargs (dict): The parameters to set.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
         """
         Compute the degree histogram.
 
-        Parameters
-        ----------
-        degrees : List[float]
-            List of degrees.
+        Parameters:
+            degrees (List[float]): List of degrees.
 
-        Returns
-        -------
-        Dict[int, int]
-            Degree histogram.
+        Returns:
+            Dict[int, int]: Degree histogram.
         """
         histogram = {}
         for degree in degrees:
@@ -205,11 +219,8 @@ class DirectedS1Fitter:
         """
         Classify nodes based on their in-degrees and out-degrees.
 
-        Returns
-        -------
-        Dict[int, Dict[int, int]]
-            Degree class, outer key is in-degree, 
-            inner key is out-degree, inner value is count.
+        Returns:
+            Dict[int, Dict[int, int]]: Degree class, outer key is in-degree, inner key is out-degree, inner value is count.
         """
         degree_class = {}
         for k_in, k_out in zip(self.in_degree_sequence, self.out_degree_sequence):
@@ -225,17 +236,12 @@ class DirectedS1Fitter:
         """
         Compute the directed connection probability using hypergeometric function.
 
-        Parameters
-        ----------
-        z : float
-            Angle between two nodes.
-        koutkin : float
-            Product of out-degree and in-degree.
+        Parameters:
+            z (float): Angle between two nodes.
+            koutkin (float): Product of out-degree and in-degree.
 
-        Returns
-        -------
-        float
-            Directed connection probability.
+        Returns:
+            float: Directed connection probability.
         """
         return (z / self.PI) * hyp2f1a(self.beta, -((self.R * z) / (self.mu * koutkin)) ** self.beta)
 
@@ -243,19 +249,13 @@ class DirectedS1Fitter:
         """
         Compute the undirected connection probability.
 
-        Parameters
-        ----------
-        z : float
-            Angle between two nodes.
-        kout1kin2 : float
-            Product of out-degree of node 1 and in-degree of node 2.
-        kout2kin1 : float
-            Product of out-degree of node 2 and in-degree of node 1.
+        Parameters:
+            z (float): Angle between two nodes.
+            kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
+            kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
 
-        Returns
-        -------
-        float
-            Undirected connection probability.
+        Returns:
+            float: Undirected connection probability.
         """
         p12 = self.directed_connection_probability(z, kout1kin2)
         p21 = self.directed_connection_probability(z, kout2kin1)
@@ -287,17 +287,12 @@ class DirectedS1Fitter:
         """
         Find the minimal angle by bisection.
 
-        Parameters
-        ----------
-        kout1kin2 : float
-            Product of out-degree of node 1 and in-degree of node 2.
-        kout2kin1 : float
-            Product of out-degree of node 2 and in-degree of node 1.
+        Parameters:
+            kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
+            kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
 
-        Returns
-        -------
-        float
-            Minimal angle by bisection.
+        Returns:
+            float: Minimal angle by bisection.
         """
         z_min = 0
         z_max = self.PI
@@ -386,17 +381,12 @@ class DirectedS1Fitter:
         """
         Compute the random ensemble clustering for a given degree class.
 
-        Parameters
-        ----------
-        in_deg : int
-            In-degree.
-        out_deg : int
-            Out-degree.
+        Parameters:
+            in_deg (int): In-degree.
+            out_deg (int): Out-degree.
 
-        Returns
-        -------
-        float
-            Random ensemble clustering for the given degree class.
+        Returns:
+            float: Random ensemble clustering for the given degree class.
         """
         if self.verbose:
             self.logger.info(f"Computing random ensemble clustering for degree class: {in_deg}, {out_deg} ...")
@@ -685,12 +675,9 @@ class DirectedS1Fitter:
         """
         Fit the model to the network data.
 
-        Parameters
-        ----------
-        reciprocity : float
-            Reciprocity of the network.
-        average_local_clustering : float
-            Average local clustering coefficient of the network.
+        Parameters:
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
         """
         self.reciprocity = reciprocity
         self.average_undir_clustering = average_local_clustering
@@ -698,23 +685,16 @@ class DirectedS1Fitter:
         self.infer_parameters()
         self.save_inferred_parameters()
 
-    def fit_from_deg_seq(self, deg_seq: Tuple[List[float], List[float]], reciprocity: float, average_local_clustering: float,
-                         network_name: str = "", verbose: bool = False) -> None:
+    def fit_from_deg_seq(self, deg_seq: Tuple[List[float], List[float]], reciprocity: float, average_local_clustering: float, network_name: str = "", verbose: bool = False) -> None:
         """
         Fit the model to the network data from a degree sequence, reciprocity, and average local clustering coefficient.
 
-        Parameters
-        ----------
-        deg_seq : Tuple[List[float], List[float]]
-            Tuple of two lists of integers/float representing in-degree and out-degree sequences.
-        reciprocity : float
-            Reciprocity of the network.
-        average_local_clustering : float
-            Average local clustering coefficient of the network.
-        network_name : str, optional
-            Name of the network (default = "").
-        verbose : bool, optional
-            Verbosity (default = False).
+        Parameters:
+            deg_seq (Tuple[List[float], List[float]]): Tuple of two lists of integers/float representing in-degree and out-degree sequences.
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
+            network_name (str): Name of the network (default = "").
+            verbose (bool): Verbosity (default = False).
         """
         self.verbose = verbose
         self.output_rootname = network_name
@@ -735,18 +715,12 @@ class DirectedS1Fitter:
         """
         Fit the model to the network data from a file.
 
-        Parameters
-        ----------
-        filename : str
-            Filename containing the degree sequence.
-        reciprocity : float
-            Reciprocity of the network.
-        average_local_clustering : float
-            Average local clustering coefficient of the network.
-        network_name : str, optional
-            Name of the network (default = "").
-        verbose : bool, optional
-            Verbosity (default = False).
+        Parameters:
+            filename (str): Filename containing the degree sequence.
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
+            network_name (str): Name of the network (default = "").
+            verbose (bool): Verbosity (default = False).
         """
         self.verbose = verbose
         if self.verbose:
@@ -813,10 +787,9 @@ class DirectedS1Fitter:
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
         Modify the log file path for the logger.
-        Parameters
-        ----------
-        log_file_path: str 
-            Path to the log file.
+
+        Parameters:
+            log_file_path (str): Path to the log file.
         """
         #create directory if doesn't exist
         for i in range(1, len(log_file_path.split("/"))):
@@ -842,7 +815,7 @@ def main():
     deg_seq_filename = sys.argv[1]
     reciprocity = 0.05  # Example value, set appropriately
     average_local_clustering = 0.25  # Example value, set appropriately
-    print(f"Inferring params with inputs: {deg_seq_filename}, reciprocity: {reciprocity}, average_local_clustering: {average_local_clustering}")
+    print(f"Inferring params with inputs: {deg_seq_filename, reciprocity, average_local_clustering}")
     print("Fitting ...")
     model.fit_from_file(deg_seq_filename, reciprocity, average_local_clustering, verbose=True)
     print("Fitted! Inferring parameters")

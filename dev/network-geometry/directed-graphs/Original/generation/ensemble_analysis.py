@@ -10,10 +10,35 @@ from typing import List
 #TODO perhaps save multiple coordinates for everything generated?
 #TODO plots with customizable directories and features
 class DirectedS1EnsembleAnalyser:
+    """
+    Class to analyze an ensemble of directed networks generated using the S1 model.
+
+    Attributes:
+        gen (DirectedS1Generator): The generator used to create the networks.
+        verbose (bool): Whether to print log messages.
+        reciprocity_list (List[float]): List of reciprocity values for each generated network.
+        clustering_list (List[float]): List of clustering coefficients for each generated network.
+        in_degree_sequences (List[List[int]]): List of in-degree sequences for each generated network.
+        out_degree_sequences (List[List[int]]): List of out-degree sequences for each generated network.
+        average_reciprocity (float): Average reciprocity across the ensemble.
+        average_clustering (float): Average clustering coefficient across the ensemble.
+        variance_reciprocity (float): Variance of reciprocity across the ensemble.
+        variance_clustering (float): Variance of clustering coefficient across the ensemble.
+        average_in_degree (float): Average in-degree across the ensemble.
+
+    """
     def __init__(self,
                  gen: DirectedS1Generator,
                  verbose: bool = False,
                  log_file_path: str = "logs/DirectedS1EnsembleAnalyser/output.log"):
+        """
+        Initializes the analyzer with a generator and default attributes.
+
+        Args:
+            gen (DirectedS1Generator): The generator used to create the networks.
+            verbose (bool): Whether to print log messages.
+            log_file_path (str): The path to the log file.
+        """
         self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
@@ -34,17 +59,13 @@ class DirectedS1EnsembleAnalyser:
         
     def _setup_logging(self, log_file_path: str) -> logging.Logger:
         """
-        Setup logging with the given log file path.
-        
-        Parameters
-        ----------
-        log_file_path : str
-            Path to the log file.
-        
-        Returns
-        -------
-        logging.Logger
-            Logger
+        Sets up logging with the specified log file path.
+
+        Args:
+            log_file_path (str): Path to the log file.
+
+        Returns:
+            logging.Logger: Configured logger.
         """
         for i in range(1, len(log_file_path.split("/"))):
             if not os.path.exists("/".join(log_file_path.split("/")[:i])):
@@ -60,41 +81,32 @@ class DirectedS1EnsembleAnalyser:
         logger.addHandler(handler) 
         return logger
         
-    def set_params(self, **kwargs):
+    def set_params(self, **kwargs) -> None:
         """
-        Set the DirectedS1Generator parameters.
-        
-        Params:
-        -------
-        **kwargs: dict
-            The parameters to set
+        Sets parameters for the DirectedS1Generator.
+
+        Args:
+            **kwargs (dict): The parameters to set.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-
-    def run_analysis(self, hidden_variables_filename: str, num_samples: int, save_results: bool = False, plot_degree_distribution: bool = False):
+    def run_analysis(self, hidden_variables_filename: str, num_samples: int, save_results: bool = False, plot_degree_distribution: bool = False) -> None:
         """
-        Run the ensemble analysis on the generated networks.
-        
-        Parameters
-        ----------
-        hidden_variables_filename : str (default = "outputs/TestNetwork/inferred_params.json")
-            Path to the hidden variables file.
-        num_samples : int (default = 10)
-            Number of samples to generate.
-        save_results : bool (default = False)
-            Save the results to a json file.
-        plot_degree_distribution : bool (default = False)
-            Plot the degree distribution.
-        
+        Runs the ensemble analysis on the generated networks.
+
+        Args:
+            hidden_variables_filename (str): Path to the hidden variables file.
+            num_samples (int): Number of samples to generate.
+            save_results (bool): Whether to save the results to a JSON file. Defaults to False.
+            plot_degree_distribution (bool): Whether to plot the degree distribution. Defaults to False.
+
         The analysis includes:
         - Generating the edgelist
         - Calculating the reciprocity and clustering coefficient
         - Calculating the in-degree and out-degree sequences
-        - Saving the results to a json file
+        - Saving the results to a JSON file
         - Plotting the degree distribution
-        
         """
         for _ in range(num_samples):
             self.gen.network.clear()
@@ -116,18 +128,21 @@ class DirectedS1EnsembleAnalyser:
         if plot_degree_distribution:
             self._plot_degree_distribution()
     
-    def _save_results(self):
-        """Saves the results:
-            - Average reciprocity
-            - Average clustering
-            - Variance reciprocity
-            - Variance clustering
-            - Reciprocity list
-            - Clustering list
-            - Average in-degree
-            - In-degree sequences
-            - Out-degree sequences
-            to a json file."""
+    def _save_results(self) -> None:
+        """
+        Saves the analysis results to a JSON file.
+
+        The results include:
+        - Average reciprocity
+        - Average clustering
+        - Variance reciprocity
+        - Variance clustering
+        - Reciprocity list
+        - Clustering list
+        - Average in-degree
+        - In-degree sequences
+        - Out-degree sequences
+        """
         self.average_reciprocity = np.mean(self.reciprocity_list)
         self.average_clustering = np.mean(self.clustering_list) 
         self.variance_reciprocity = np.var(self.reciprocity_list)
@@ -150,10 +165,10 @@ class DirectedS1EnsembleAnalyser:
         with open(f"outputs/{self.gen.output_rootname}/ensemble_analysis/results.json", 'w') as f:
             json.dump(results, f, indent=4)
     
-    def _plot_degree_distribution(self):
+    def _plot_degree_distribution(self) -> None:
         """
-        Plot the degree distribution of the generated networks.
-        
+        Plots the degree distribution of the generated networks.
+
         Plots:
         - Complementary cumulative degree distributions for in-degree and out-degree
         - In-degree vs out-degree distribution
@@ -209,12 +224,10 @@ class DirectedS1EnsembleAnalyser:
 
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
-        Modify the log file path for the logger.
-        
-        Parameters
-        ----------
-        log_file_path: str 
-            Path to the log file.
+        Modifies the log file path for the logger.
+
+        Args:
+            log_file_path (str): Path to the log file.
         """
         #create directory if doesn't exist
         for i in range(1, len(log_file_path.split("/"))):
@@ -231,13 +244,8 @@ class DirectedS1EnsembleAnalyser:
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
 
-
-
-
 if __name__ == "__main__":
     gen = DirectedS1Generator()
-
-    
     num_samples = 10    
     
     analysis = DirectedS1EnsembleAnalyser(gen = gen, verbose = True)

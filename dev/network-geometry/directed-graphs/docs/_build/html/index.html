@@ -421,80 +421,293 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Original.generation.random_generation.</span></span><span class="sig-name descname"><span class="pre">DirectedS1Generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'logs/DirectedS1Generator/output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to generate a directed network using the S1 model.</p>
-<section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>seed: int (default = 0)</dt><dd><p>The seed for the random number generator</p>
-</dd>
-<dt>verbose: bool (default = False)</dt><dd><p>Whether to print log messages</p>
-</dd>
-<dt>log_file_path: str (default = “logs/DirectedS1Generator/output.log”)</dt><dd><p>The path to the log file</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.PI">
+<span class="sig-name descname"><span class="pre">PI</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.PI" title="Link to this definition">¶</a></dt>
+<dd><p>The value of Pi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.SEED">
+<span class="sig-name descname"><span class="pre">SEED</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.SEED" title="Link to this definition">¶</a></dt>
+<dd><p>The random seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.BETA">
+<span class="sig-name descname"><span class="pre">BETA</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.BETA" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.MU">
+<span class="sig-name descname"><span class="pre">MU</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.MU" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.NU">
+<span class="sig-name descname"><span class="pre">NU</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.NU" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.R">
+<span class="sig-name descname"><span class="pre">R</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.R" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter for the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.hidden_variables_filename">
+<span class="sig-name descname"><span class="pre">hidden_variables_filename</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.hidden_variables_filename" title="Link to this definition">¶</a></dt>
+<dd><p>The filename for hidden variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.output_rootname">
+<span class="sig-name descname"><span class="pre">output_rootname</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.output_rootname" title="Link to this definition">¶</a></dt>
+<dd><p>The rootname for output files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.NUMERICAL_ZERO">
+<span class="sig-name descname"><span class="pre">NUMERICAL_ZERO</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.NUMERICAL_ZERO" title="Link to this definition">¶</a></dt>
+<dd><p>A small numerical value considered as zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.Num2Name">
+<span class="sig-name descname"><span class="pre">Num2Name</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.Num2Name" title="Link to this definition">¶</a></dt>
+<dd><p>List of node names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.nb_vertices">
+<span class="sig-name descname"><span class="pre">nb_vertices</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.nb_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Number of vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.in_Kappa">
+<span class="sig-name descname"><span class="pre">in_Kappa</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.in_Kappa" title="Link to this definition">¶</a></dt>
+<dd><p>In-degree distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.outKappa">
+<span class="sig-name descname"><span class="pre">outKappa</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.outKappa" title="Link to this definition">¶</a></dt>
+<dd><p>Out-degree distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.theta">
+<span class="sig-name descname"><span class="pre">theta</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.theta" title="Link to this definition">¶</a></dt>
+<dd><p>Angular positions of nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.network">
+<span class="sig-name descname"><span class="pre">network</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.network" title="Link to this definition">¶</a></dt>
+<dd><p>The generated network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>nx.DiGraph</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.reciprocity">
+<span class="sig-name descname"><span class="pre">reciprocity</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.reciprocity" title="Link to this definition">¶</a></dt>
+<dd><p>Network reciprocity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.clustering">
+<span class="sig-name descname"><span class="pre">clustering</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.clustering" title="Link to this definition">¶</a></dt>
+<dd><p>Network clustering coefficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.in_degree_sequence">
+<span class="sig-name descname"><span class="pre">in_degree_sequence</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.in_degree_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>In-degree sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.out_degree_sequence">
+<span class="sig-name descname"><span class="pre">out_degree_sequence</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.out_degree_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Out-degree sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.calculate_metrics">
 <span class="sig-name descname"><span class="pre">calculate_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.calculate_metrics" title="Link to this definition">¶</a></dt>
 <dd><p>Calculate the reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[float, float, List[int], List[int]]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.</p>
-<section id="id1">
-<h3>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>hidden_variables_filename: str</dt><dd><p>The filename of the hidden variables json file</p>
-</dd>
-<dt>output_rootname: str (default = “”)</dt><dd><p>The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.</p>
-</dd>
-<dt>theta: List[int] (default = None)</dt><dd><p>The theta values for the network</p>
-</dd>
-<dt>save_data: bool (default = True)</dt><dd><p>Whether to save the data</p>
-</dd>
-<dt>save_coordinates: bool (default = True)</dt><dd><p>Whether to save the coordinates of the nodes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hidden_variables_filename</strong> (<em>str</em>) – The filename of the hidden variables json file.</p></li>
+<li><p><strong>output_rootname</strong> (<em>str</em>) – The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.</p></li>
+<li><p><strong>theta</strong> (<em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The theta values for the network. Defaults to None.</p></li>
+<li><p><strong>save_data</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the data. Defaults to True.</p></li>
+<li><p><strong>save_coordinates</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the coordinates of the nodes. Defaults to True.</p></li>
+</ul>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.get_time">
 <span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.get_time" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the current UTC time as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current UTC time.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.modify_log_file_path">
 <span class="sig-name descname"><span class="pre">modify_log_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.modify_log_file_path" title="Link to this definition">¶</a></dt>
 <dd><p>Modify the log file path for the logger.</p>
-<section id="id2">
-<h3>Parameters:<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>log_file_path: str</dt><dd><p>The new log file path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>log_file_path</strong> (<em>str</em>) – The new log file path.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.plot_degree_sequence">
-<span class="sig-name descname"><span class="pre">plot_degree_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree_sequence</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.plot_degree_sequence" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">plot_degree_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.plot_degree_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Plot the degree sequence distribution and save it as a PNG file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>degree_sequence</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – The degree sequence to plot.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.set_params">
-<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_params" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_params" title="Link to this definition">¶</a></dt>
 <dd><p>Set the DirectedS1Generator parameters.</p>
-<section id="id3">
-<h3>Parameters:<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt><a href="#id4"><span class="problematic" id="id5">**</span></a>kwargs: dict</dt><dd><p>The parameters to set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<em>dict</em>) – The parameters to set.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
-</section>
 </dd></dl>
 
 <p id="module-Original.infer_parameters.infer_params">Model from Supplementary Information of the paper: Geometric description of clustering in directed networks: Antoine Allard et al.</p>
@@ -502,17 +715,417 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">DirectedS1Fitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">KAPPA_MAX_NB_ITER_CONV</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXP_CLUST_NB_INTEGRATION_MC_STEPS</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'logs/DirectedS1Fitter/output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class used to represent the parameter inference model for directed hyperbolic networks.
-.. attribute:: PI</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">noindex<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-</div></blockquote>
+<p>A class used to represent the parameter inference model for directed hyperbolic networks.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.PI">
-<span class="sig-name descname"><span class="pre">PI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.141592653589793</span></em><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.PI" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PI</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.PI" title="Link to this definition">¶</a></dt>
+<dd><p>The value of Pi.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_BETA">
+<span class="sig-name descname"><span class="pre">CUSTOM_BETA</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_BETA" title="Link to this definition">¶</a></dt>
+<dd><p>Flag indicating if beta is custom-set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_MU">
+<span class="sig-name descname"><span class="pre">CUSTOM_MU</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_MU" title="Link to this definition">¶</a></dt>
+<dd><p>Flag indicating if mu is custom-set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_NU">
+<span class="sig-name descname"><span class="pre">CUSTOM_NU</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.CUSTOM_NU" title="Link to this definition">¶</a></dt>
+<dd><p>Flag indicating if nu is custom-set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.BETA_ABS_MAX">
+<span class="sig-name descname"><span class="pre">BETA_ABS_MAX</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.BETA_ABS_MAX" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum absolute value of beta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.BETA_ABS_MIN">
+<span class="sig-name descname"><span class="pre">BETA_ABS_MIN</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.BETA_ABS_MIN" title="Link to this definition">¶</a></dt>
+<dd><p>Minimum absolute value of beta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.deg_seq_filename">
+<span class="sig-name descname"><span class="pre">deg_seq_filename</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.deg_seq_filename" title="Link to this definition">¶</a></dt>
+<dd><p>Filename for degree sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.EXP_CLUST_NB_INTEGRATION_MC_STEPS">
+<span class="sig-name descname"><span class="pre">EXP_CLUST_NB_INTEGRATION_MC_STEPS</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.EXP_CLUST_NB_INTEGRATION_MC_STEPS" title="Link to this definition">¶</a></dt>
+<dd><p>Number of Monte Carlo steps for clustering integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.KAPPA_MAX_NB_ITER_CONV">
+<span class="sig-name descname"><span class="pre">KAPPA_MAX_NB_ITER_CONV</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.KAPPA_MAX_NB_ITER_CONV" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum iterations for kappa convergence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_CONVERGENCE_THRESHOLD_1">
+<span class="sig-name descname"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_1</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_CONVERGENCE_THRESHOLD_1" title="Link to this definition">¶</a></dt>
+<dd><p>Numerical convergence threshold 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_CONVERGENCE_THRESHOLD_2">
+<span class="sig-name descname"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_2</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_CONVERGENCE_THRESHOLD_2" title="Link to this definition">¶</a></dt>
+<dd><p>Numerical convergence threshold 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_ZERO">
+<span class="sig-name descname"><span class="pre">NUMERICAL_ZERO</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.NUMERICAL_ZERO" title="Link to this definition">¶</a></dt>
+<dd><p>Small value considered as zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.output_rootname">
+<span class="sig-name descname"><span class="pre">output_rootname</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.output_rootname" title="Link to this definition">¶</a></dt>
+<dd><p>Rootname for output files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.SEED">
+<span class="sig-name descname"><span class="pre">SEED</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.SEED" title="Link to this definition">¶</a></dt>
+<dd><p>Random seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nb_vertices">
+<span class="sig-name descname"><span class="pre">nb_vertices</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nb_vertices" title="Link to this definition">¶</a></dt>
+<dd><p>Number of vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nb_vertices_undir_degree_gt_one">
+<span class="sig-name descname"><span class="pre">nb_vertices_undir_degree_gt_one</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nb_vertices_undir_degree_gt_one" title="Link to this definition">¶</a></dt>
+<dd><p>Number of vertices with undirected degree greater than one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nb_edges">
+<span class="sig-name descname"><span class="pre">nb_edges</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nb_edges" title="Link to this definition">¶</a></dt>
+<dd><p>Number of edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nb_reciprocal_edges">
+<span class="sig-name descname"><span class="pre">nb_reciprocal_edges</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nb_reciprocal_edges" title="Link to this definition">¶</a></dt>
+<dd><p>Number of reciprocal edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nb_triangles">
+<span class="sig-name descname"><span class="pre">nb_triangles</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nb_triangles" title="Link to this definition">¶</a></dt>
+<dd><p>Number of triangles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.reciprocity">
+<span class="sig-name descname"><span class="pre">reciprocity</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.reciprocity" title="Link to this definition">¶</a></dt>
+<dd><p>Reciprocity of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.average_undir_clustering">
+<span class="sig-name descname"><span class="pre">average_undir_clustering</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.average_undir_clustering" title="Link to this definition">¶</a></dt>
+<dd><p>Average undirected clustering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.beta">
+<span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.beta" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter beta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.mu">
+<span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.mu" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter mu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.nu">
+<span class="sig-name descname"><span class="pre">nu</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.nu" title="Link to this definition">¶</a></dt>
+<dd><p>Parameter nu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.R">
+<span class="sig-name descname"><span class="pre">R</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.R" title="Link to this definition">¶</a></dt>
+<dd><p>Radius of the hyperbolic space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_average_degree">
+<span class="sig-name descname"><span class="pre">random_ensemble_average_degree</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_average_degree" title="Link to this definition">¶</a></dt>
+<dd><p>Average degree of the random ensemble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_average_clustering">
+<span class="sig-name descname"><span class="pre">random_ensemble_average_clustering</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_average_clustering" title="Link to this definition">¶</a></dt>
+<dd><p>Average clustering of the random ensemble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_reciprocity">
+<span class="sig-name descname"><span class="pre">random_ensemble_reciprocity</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_reciprocity" title="Link to this definition">¶</a></dt>
+<dd><p>Reciprocity of the random ensemble.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_expected_degree_per_degree_class">
+<span class="sig-name descname"><span class="pre">random_ensemble_expected_degree_per_degree_class</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_expected_degree_per_degree_class" title="Link to this definition">¶</a></dt>
+<dd><p>Expected degree per degree class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_kappa_per_degree_class">
+<span class="sig-name descname"><span class="pre">random_ensemble_kappa_per_degree_class</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.random_ensemble_kappa_per_degree_class" title="Link to this definition">¶</a></dt>
+<dd><p>Kappa values per degree class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.cumul_prob_kgkp">
+<span class="sig-name descname"><span class="pre">cumul_prob_kgkp</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.cumul_prob_kgkp" title="Link to this definition">¶</a></dt>
+<dd><p>Cumulative probability distribution for Monte Carlo integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.engine">
+<span class="sig-name descname"><span class="pre">engine</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.engine" title="Link to this definition">¶</a></dt>
+<dd><p>Random number generator key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>random.PRNGKey</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.out_degree_sequence">
+<span class="sig-name descname"><span class="pre">out_degree_sequence</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.out_degree_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Sequence of out-degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.in_degree_sequence">
+<span class="sig-name descname"><span class="pre">in_degree_sequence</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.in_degree_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Sequence of in-degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.degree" title="Link to this definition">¶</a></dt>
+<dd><p>Tuple of in-degree and out-degree sequences.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[List[float], List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.degree_histogram">
+<span class="sig-name descname"><span class="pre">degree_histogram</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.degree_histogram" title="Link to this definition">¶</a></dt>
+<dd><p>Histograms of in-degrees and out-degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[int, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.degree_class">
+<span class="sig-name descname"><span class="pre">degree_class</span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.degree_class" title="Link to this definition">¶</a></dt>
+<dd><p>Classification of nodes by their in-degree and out-degree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[int, Dict[int, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">PI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.141592653589793</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -603,8 +1216,8 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <li><p><strong>deg_seq</strong> (<em>Tuple</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Tuple of two lists of integers/float representing in-degree and out-degree sequences.</p></li>
 <li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
 <li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
-<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default = “”).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default = False).</p></li>
+<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Verbosity (default = False).</p></li>
 </ul>
 </dd>
 </dl>
@@ -620,8 +1233,8 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <li><p><strong>filename</strong> (<em>str</em>) – Filename containing the degree sequence.</p></li>
 <li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
 <li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
-<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default = “”).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default = False).</p></li>
+<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Verbosity (default = False).</p></li>
 </ul>
 </dd>
 </dl>
@@ -668,9 +1281,12 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.modify_log_file_path">
 <span class="sig-name descname"><span class="pre">modify_log_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.modify_log_file_path" title="Link to this definition">¶</a></dt>
-<dd><p>Modify the log file path for the logger.
-:param log_file_path: Path to the log file.
-:type log_file_path: str</p>
+<dd><p>Modify the log file path for the logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>log_file_path</strong> (<em>str</em>) – Path to the log file.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -681,15 +1297,13 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.set_params">
-<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.set_params" title="Link to this definition">¶</a></dt>
-<dd><p>Set the DirectedS1Generator parameters.</p>
-<section id="params">
-<h2>Params:<a class="headerlink" href="#params" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt><a href="#id6"><span class="problematic" id="id7">**</span></a>kwargs: dict</dt><dd><p>The parameters to set</p>
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.set_params" title="Link to this definition">¶</a></dt>
+<dd><p>Set the DirectedS1Fitter parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<em>dict</em>) – The parameters to set.</p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 <dl class="py method">
