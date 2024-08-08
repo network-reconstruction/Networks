@@ -237,6 +237,12 @@ def random_generation_model():
                              EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10,
                              log_file = "output_test_fast.log")
 
+
+#TODO test the random generation
+#TODO test the ensemble analysis
+#TODO test whole pipeline with accuracy
+#TODO large test on whole pipeline
+
 if __name__ == '__main__':
     # Test all
     exit_code = pytest.main(['-v', '-s'])

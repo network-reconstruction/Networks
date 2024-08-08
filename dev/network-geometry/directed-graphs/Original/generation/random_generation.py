@@ -6,16 +6,33 @@ from datetime import datetime
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
-
+from typing import List, Tuple
+import logging
 class GeneratingDirectedS1:
-    def __init__(self):
-        self.CUSTOM_OUTPUT_ROOTNAME = False
-        self.NAME_PROVIDED = False
-        self.NATIVE_INPUT_FILE = False
-        self.THETA_PROVIDED = False
-        self.SAVE_COORDINATES = False
+    def __init__(self,
+                 theta: List[int] = None,
+                 save_coordinates: bool = False,
+                 seed: int = 0,
+                 verbose: bool = False,
+                 log_file: str = "output.log"):
         
-        self.SEED = int(time.time())
+        # Set up logging
+        # -----------------------------------------------------
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file:
+            handler = logging.FileHandler(log_file, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+        # -----------------------------------------------------
+        
+        self.theta = theta
+        self.save_coordinates = save_coordinates
+        
+        self.SEED = seed
         random.seed(self.SEED)
         
         self.BETA = -10
@@ -40,11 +57,10 @@ class GeneratingDirectedS1:
         with open(self.HIDDEN_VARIABLES_FILENAME, 'r') as file:
             data = json.load(file)
         
-        if self.NATIVE_INPUT_FILE:
-            self.BETA = data.get("beta", self.BETA)
-            self.MU = data.get("mu", self.MU)
-            self.NU = data.get("nu", self.NU)
-            self.R = data.get("R", self.R)
+        self.BETA = data.get("beta", self.BETA)
+        self.MU = data.get("mu", self.MU)
+        self.NU = data.get("nu", self.NU)
+        self.R = data.get("R", self.R)
         
         inferred_kappas = data.get("inferred_kappas", [])
         self.nb_vertices = len(inferred_kappas)
@@ -58,7 +74,8 @@ class GeneratingDirectedS1:
         else:
             self.theta = [2 * self.PI * random.random() for _ in range(self.nb_vertices)]
         
-    def generate_edgelist(self, width=15):
+    def generate_edgelist(self, 
+                          width: int =15):
         if self.BETA == -10:
             raise ValueError("The value of parameter beta must be provided.")
         
@@ -135,11 +152,6 @@ class GeneratingDirectedS1:
 
 if __name__ == "__main__":
     gen = GeneratingDirectedS1()
-    gen.CUSTOM_OUTPUT_ROOTNAME = False
-    gen.NAME_PROVIDED = False
-    gen.NATIVE_INPUT_FILE = True
-    gen.THETA_PROVIDED = False
-    gen.SAVE_COORDINATES = False
     gen.HIDDEN_VARIABLES_FILENAME = sys.argv[1]
     gen.OUTPUT_ROOTNAME = sys.argv[2]
     
