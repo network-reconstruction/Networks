@@ -55,20 +55,8 @@ def hyp2f1c(beta: float, z: float) -> float:
 class FittingDirectedS1:
     """
     A class used to represent the parameter inference model for directed hyperbolic networks.
-
-    Attributes
-    ----------
-    PI : float
-        Constant value of pi from the JAX numpy library.
-    
-    Methods
-    -------
-    __init__(seed=0, verbose=False, KAPPA_MAX_NB_ITER_CONV=100, 
-             EXP_CLUST_NB_INTEGRATION_MC_STEPS=50, 
-             NUMERICAL_CONVERGENCE_THRESHOLD_1=1e-2, 
-             NUMERICAL_CONVERGENCE_THRESHOLD_2=1e-2,
-             log_file="output.log")
-        Initializes the parameter inference model with the provided settings.
+    .. attribute:: PI
+       :noindex:
     """
 
     PI = jnp.pi
