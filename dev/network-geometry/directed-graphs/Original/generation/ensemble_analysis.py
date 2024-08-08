@@ -7,27 +7,20 @@ import os
 import logging
 from typing import List
 
-class GraphEnsembleAnalysis:
+#TODO perhaps save multiple coordinates for everything generated?
+#TODO plots with customizable directories and features
+class DirectedS1EnsembleAnalyser:
     def __init__(self,
                  gen: DirectedS1Generator,
                  verbose: bool = False,
-                 log_file_path: str = "logs/GraphEnsembleAnalysis/output.log"):
+                 log_file_path: str = "logs/DirectedS1EnsembleAnalyser/output.log"):
         self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        handler = logging.StreamHandler(sys.stdout)
-        if log_file_path:
-            handler = logging.FileHandler(log_file_path, mode='w')
-        handler.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
+        self.logger = self._setup_logging(log_file_path)
         # -----------------------------------------------------
         
         self.gen = gen
-        self.num_samples = num_samples
         self.reciprocity_list = []
         self.clustering_list = []
         self.in_degree_sequences = []
@@ -37,24 +30,63 @@ class GraphEnsembleAnalysis:
         self.variance_reciprocity = 0
         self.variance_clustering = 0
         self.average_in_degree = 0
-        self.num_samples = -1
+
         
-    def set_params(self, 
-                    hidden_variables_filename,
-                    output_rootname: str = "",
-                    theta: List[int] = None,
-                    save_coordinates: bool = False, 
-                    num_samples: int = 10):
+    def _setup_logging(self, log_file_path: str) -> logging.Logger:
         """
-        Set the parameters for the underlying generator for ensemble analysis.
+        Setup logging with the given log file path.
+        
+        Parameters
+        ----------
+        log_file_path : str
+            Path to the log file.
+        
+        Returns
+        -------
+        logging.Logger
+            Logger
         """
-        self.num_samples = num_samples
-        self.gen.set_params(hidden_variables_filename, output_rootname, theta, save_coordinates)
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler) 
+        return logger
         
+    def set_params(self, **kwargs):
+        """
+        Set the DirectedS1Generator parameters.
         
-    def run_analysis(self):
+        Params:
+        -------
+        **kwargs: dict
+            The parameters to set
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+    def run_analysis(self, hidden_variables_filename: str, num_samples: int, save_results: bool = False, plot_degree_distribution: bool = False):
         """
         Run the ensemble analysis on the generated networks.
+        
+        Parameters
+        ----------
+        hidden_variables_filename : str (default = "outputs/TestNetwork/inferred_params.json")
+            Path to the hidden variables file.
+        num_samples : int (default = 10)
+            Number of samples to generate.
+        save_results : bool (default = False)
+            Save the results to a json file.
+        plot_degree_distribution : bool (default = False)
+            Plot the degree distribution.
         
         The analysis includes:
         - Generating the edgelist
@@ -62,20 +94,40 @@ class GraphEnsembleAnalysis:
         - Calculating the in-degree and out-degree sequences
         - Saving the results to a json file
         - Plotting the degree distribution
+        
         """
-        for _ in range(self.num_samples):
+        for _ in range(num_samples):
             self.gen.network.clear()
-            self.gen.generate()
+            self.gen.generate(hidden_variables_filename)
             reciprocity, clustering, in_degree_sequence, out_degree_sequence = self.gen.calculate_metrics()
             self.reciprocity_list.append(reciprocity)
             self.clustering_list.append(clustering)
             self.in_degree_sequences.append(in_degree_sequence)
             self.out_degree_sequences.append(out_degree_sequence)
         
-        self.save_results()
-        self.plot_degree_distribution()
+        if not os.path.exists("outputs"):
+            os.makedirs("outputs")  
+        if not os.path.exists(f"outputs/{self.gen.output_rootname}"):
+            os.makedirs(f"outputs/{self.gen.output_rootname}")
+        if not os.path.exists(f"outputs/{self.gen.output_rootname}/ensemble_analysis"):
+            os.makedirs(f"outputs/{self.gen.output_rootname}/ensemble_analysis")
+        if save_results:
+            self._save_results()
+        if plot_degree_distribution:
+            self._plot_degree_distribution()
     
-    def save_results(self):
+    def _save_results(self):
+        """Saves the results:
+            - Average reciprocity
+            - Average clustering
+            - Variance reciprocity
+            - Variance clustering
+            - Reciprocity list
+            - Clustering list
+            - Average in-degree
+            - In-degree sequences
+            - Out-degree sequences
+            to a json file."""
         self.average_reciprocity = np.mean(self.reciprocity_list)
         self.average_clustering = np.mean(self.clustering_list) 
         self.variance_reciprocity = np.var(self.reciprocity_list)
@@ -94,14 +146,11 @@ class GraphEnsembleAnalysis:
             "out_degree_sequences": self.out_degree_sequences
         }
         # if the folder does not exist, create it
-        if not os.path.exists("outputs"):
-            os.makedirs("outputs")  
-        if not os.path.exists(f"outputs/{self.gen.output_rootname}"):
-            os.makedirs(f"outputs/{self.gen.output_rootname}")
-        with open(f"outputs/{self.gen.output_rootname}/ensemble_analysis_results.json", 'w') as f:
+        
+        with open(f"outputs/{self.gen.output_rootname}/ensemble_analysis/results.json", 'w') as f:
             json.dump(results, f, indent=4)
     
-    def plot_degree_distribution(self):
+    def _plot_degree_distribution(self):
         """
         Plot the degree distribution of the generated networks.
         
@@ -110,8 +159,9 @@ class GraphEnsembleAnalysis:
         - In-degree vs out-degree distribution
         """
         #create directory for figure outputs
-        if not os.path.exists(f"outputs/{self.gen.output_rootname}/figs"):
-            os.makedirs(f"outputs/{self.gen.output_rootname}/figs")
+        if not os.path.exists(f"outputs/{self.gen.output_rootname}/ensemble_analysis/figs"):
+            os.makedirs(f"outputs/{self.gen.output_rootname}/ensemble_analysis/figs")
+            
         all_in_degrees = np.concatenate(self.in_degree_sequences)
         all_out_degrees = np.concatenate(self.out_degree_sequences)
         
@@ -137,7 +187,7 @@ class GraphEnsembleAnalysis:
         plt.xscale('log')
         plt.yscale('log')
         plt.tight_layout()
-        plt.savefig(f"outputs/{self.gen.output_rootname}/figs/complementary_cumulative_degree_distribution.png")
+        plt.savefig(f"outputs/{self.gen.output_rootname}/ensemble_analysis/figs/complementary_cumulative_degree_distribution.png")
 
         # Plotting in-degree vs out-degree
         plt.figure(figsize=(8, 6))
@@ -148,7 +198,7 @@ class GraphEnsembleAnalysis:
         plt.xlabel("In-Degree")
         plt.ylabel("Out-Degree")
         plt.grid(True)
-        plt.savefig(f"outputs/{self.gen.output_rootname}/figs/in_vs_out_degree_distribution.png")
+        plt.savefig(f"outputs/{self.gen.output_rootname}/ensemble_analysis/figs/in_vs_out_degree_distribution.png")
         
         # print reciprocity, clustering, in_degree_sequence, out_degree_sequence averages
         print(f"Average Reciprocity: {self.average_reciprocity}")
@@ -190,6 +240,7 @@ if __name__ == "__main__":
     
     num_samples = 10    
     
-    analysis = GraphEnsembleAnalysis(gen, num_samples)
-    analysis.run_analysis()
+    analysis = DirectedS1EnsembleAnalyser(gen = gen, verbose = True)
+    
+    analysis.run_analysis(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json", num_samples = num_samples, save_results = True, plot_degree_distribution = True)
     print(f"Finished at {gen.get_time()}")

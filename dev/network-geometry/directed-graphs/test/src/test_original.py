@@ -16,6 +16,7 @@ def setup_paths():
     sys.path.append(parent_dir)
     sys.path.append(os.path.join(parent_dir, 'Original', 'generation'))
     sys.path.append(os.path.join(parent_dir, 'Original', 'infer_parameters'))
+    
 
 @pytest.fixture(scope='module')
 def imported_modules(setup_paths):
@@ -48,8 +49,8 @@ def test_imports(imported_modules):
 
     # Test ensemble_analysis functionality
     ensemble_analysis = imported_modules['ensemble_analysis']
-    assert hasattr(ensemble_analysis, 'GraphEnsembleAnalysis'), "GraphEnsembleAnalysis not found in ensemble_analysis"
-    # print("GraphEnsembleAnalysis is available in ensemble_analysis")
+    assert hasattr(ensemble_analysis, 'DirectedS1EnsembleAnalyser'), "DirectedS1EnsembleAnalyser not found in ensemble_analysis"
+    # print("DirectedS1EnsembleAnalyser is available in ensemble_analysis")
     
     # Test infer_params functionality
     infer_params = imported_modules['infer_params']
@@ -182,33 +183,39 @@ def test_random_generation_quick_generate(setup_paths, quick_random_generation_m
     #              output_rootname: str = "",
     #              theta: List[int] = None,
     #              save_coordinates: bool = False):
-    quick_random_generation_model.generate(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json",
-                                           save_coordinates = True)
+    quick_random_generation_model.generate(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json")
     assert os.path.exists("outputs/TestNetwork/generation_data.json"), "Generation data file not found"
 
 #TODO test the ensemble analysis
 @pytest.fixture(scope='module')
 def quick_ensemble_analysis_model(quick_random_generation_model):
     """
-    Fixture to instantiate the GraphEnsembleAnalysis class converging fast just to test the functionality runs.
+    Fixture to instantiate the DirectedS1EnsembleAnalyser class converging fast just to test the functionality runs.
     """
-    from ensemble_analysis import GraphEnsembleAnalysis
+    from ensemble_analysis import DirectedS1EnsembleAnalyser
     # def __init__(self, 
     #              gen: DirectedS1Generator,
     #              num_samples: int,
     #              verbose: bool = False,
-    #              log_file_path: str = "logs/GraphEnsembleAnalysis/output.log"):
-    return GraphEnsembleAnalysis(gen = quick_random_generation_model,
+    #              log_file_path: str = "logs/DirectedS1EnsembleAnalyser/output.log"):
+    return DirectedS1EnsembleAnalyser(gen = quick_random_generation_model,
                                  verbose = True,
-                                 log_file_path = "logs/GraphEnsembleAnalysis/output_test_ensemble_analysis_quick.log")
+                                 log_file_path = "logs/DirectedS1EnsembleAnalyser/output_test_ensemble_analysis_quick.log")
 
 def test_ensemble_analysis_quick_analysis(setup_paths, quick_ensemble_analysis_model):
     """
-    Test that the GraphEnsembleAnalysis class can be instantiated and run_analysis works as expected.
+    Test that the DirectedS1EnsembleAnalyser class can be instantiated and run_analysis works as expected.
     """
     # def run_analysis(self):
-    quick_ensemble_analysis_model.run_analysis()
-    assert os.path.exists("outputs/ensemble_analysis/degree_distribution.png"), "Degree distribution plot not found"
+
+    quick_ensemble_analysis_model.run_analysis(hidden_variables_filename = "outputs/TestNetwork/inferred_params.json",
+                                               num_samples = 10,
+                                               save_results = True,
+                                               plot_degree_distribution = True)
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/complementary_cumulative_degree_distribution.png"), "CCDF plot not found"
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/in_vs_out_degree_distribution.png"), "In vs Out degree distribution plot not found"
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/results.json"), "Ensemble analysis results file not found"
+
 
 #TODO test whole pipeline with accuracy
 #TODO large test on whole pipeline

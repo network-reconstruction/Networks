@@ -9,17 +9,21 @@ import matplotlib.pyplot as plt
 from typing import List, Tuple
 import logging
 import os
+
+#TODO unify Params and Parameters
+#TODO fix set_params log_file_path to be more rebust.
+#TODO save coordinates and data should it be in generate or take in parameter for where to save to?
 class DirectedS1Generator:
     """
     Class to generate a directed network using the S1 model.
     
     Params:
     -------
-    seed: int
+    seed: int (default = 0)
         The seed for the random number generator
-    verbose: bool
+    verbose: bool (default = False)
         Whether to print log messages
-    log_file_path: str
+    log_file_path: str (default = "logs/DirectedS1Generator/output.log")
         The path to the log file
     """
     def __init__(self,
@@ -30,21 +34,8 @@ class DirectedS1Generator:
         self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
-        for i in range(1, len(log_file_path.split("/"))):
-            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
-                os.mkdir("/".join(log_file_path.split("/")[:i]))
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        handler = logging.StreamHandler(sys.stdout)
-        if log_file_path:
-            handler = logging.FileHandler(log_file_path, mode='w')
-        handler.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
+        self.logger = self._setup_logging(log_file_path)
         # -----------------------------------------------------
-        
-        self.save_coordinates = False
         
         self.SEED = seed
         random.seed(self.SEED)
@@ -70,6 +61,34 @@ class DirectedS1Generator:
         self.clustering = 0
         self.in_degree_sequence = []
         self.out_degree_sequence = []
+        
+    def _setup_logging(self, log_file_path: str) -> logging.Logger:
+        """
+        Setup logging with the given log file path.
+        
+        Parameters
+        ----------
+        log_file_path : str
+            Path to the log file.
+        
+        Returns
+        -------
+        logging.Logger
+            Logger
+        """
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler) 
+        return logger
         
         
     def _load_hidden_variables(self) -> None:
@@ -203,41 +222,26 @@ class DirectedS1Generator:
             for i in range(self.nb_vertices):
                 f.write(f"{self.Num2Name[i]},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
                 
-    def set_params(self,
-                    hidden_variables_filename,
-                    output_rootname: str = "",
-                    theta: List[int] = None,
-                    save_coordinates: bool = False) -> None:  
+    def set_params(self, **kwargs):
         """
-        Set the parameters for the generator.
+        Set the DirectedS1Generator parameters.
         
         Params:
         -------
-        hidden_variables_filename: str
-            The filename of the hidden variables json file
-        output_rootname: str
-            The rootname of the output files, if not assigned it will be the same as the hidden variables subdirectory without file name and parent directories.
-        theta: List[int]
-            The theta values for the network
-        save_coordinates: bool
-            Whether to save the coordinates of the nodes
-        
+        **kwargs: dict
+            The parameters to set
         """
-        if self.verbose:
-            self.logger.info(f"Setting parameters: hidden_variables_filename: {hidden_variables_filename}, output_rootname: {output_rootname}, theta: {theta}, save_coordinates: {save_coordinates}")
-        self.save_coordinates = save_coordinates
-        self.theta = theta
-        self.hidden_variables_filename = hidden_variables_filename
-        if output_rootname == "":
-            self.output_rootname = hidden_variables_filename.split(".")[0].split("/")[-2]
-            if self.verbose:
-                self.logger.info(f"Output rootname set to {self.output_rootname}")
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        
+        
            
     def generate(self, 
                  hidden_variables_filename,
                  output_rootname: str = "",
                  theta: List[int] = None,
-                 save_coordinates: bool = False) -> None:
+                 save_data: bool = True,
+                 save_coordinates: bool = True) -> None:
         """
         Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.
         
@@ -245,20 +249,28 @@ class DirectedS1Generator:
         -------
         hidden_variables_filename: str
             The filename of the hidden variables json file
-        output_rootname: str
-            The rootname of the output files
-        theta: List[int]
+        output_rootname: str (default = "")
+            The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.
+        theta: List[int] (default = None)
             The theta values for the network
-        save_coordinates: bool
+        save_data: bool (default = True)
+            Whether to save the data
+        save_coordinates: bool (default = True)
             Whether to save the coordinates of the nodes
+            
         """
         if self.verbose:
             self.logger.info(f"Generating network with hidden variables from {hidden_variables_filename}")
-        self.set_params(hidden_variables_filename, output_rootname, theta, save_coordinates)
+        self.set_params(hidden_variables_filename = hidden_variables_filename,
+                        theta = theta)
+        if output_rootname == "": 
+            #if output_rootname is not provided, use the name of subdirectory containing the hidden variables file
+            self.output_rootname = hidden_variables_filename.split("/")[-2].split(".")[0]
         self._load_hidden_variables()
         self._generate_edgelist()
-        self._save_data()
-        if self.save_coordinates:
+        if save_data:
+            self._save_data()
+        if save_coordinates:
             self._save_coordinates()
         if self.verbose:
             self.logger.info(f"Finished generating network at {self.get_time()}")

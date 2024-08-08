@@ -424,11 +424,11 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <section id="params">
 <h2>Params:<a class="headerlink" href="#params" title="Link to this heading">¶</a></h2>
 <dl class="simple">
-<dt>seed: int</dt><dd><p>The seed for the random number generator</p>
+<dt>seed: int (default = 0)</dt><dd><p>The seed for the random number generator</p>
 </dd>
-<dt>verbose: bool</dt><dd><p>Whether to print log messages</p>
+<dt>verbose: bool (default = False)</dt><dd><p>Whether to print log messages</p>
 </dd>
-<dt>log_file_path: str</dt><dd><p>The path to the log file</p>
+<dt>log_file_path: str (default = “logs/DirectedS1Generator/output.log”)</dt><dd><p>The path to the log file</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -439,18 +439,20 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.</p>
 <section id="id1">
 <h3>Params:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>hidden_variables_filename: str</dt><dd><p>The filename of the hidden variables json file</p>
 </dd>
-<dt>output_rootname: str</dt><dd><p>The rootname of the output files</p>
+<dt>output_rootname: str (default = “”)</dt><dd><p>The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.</p>
 </dd>
-<dt>theta: List[int]</dt><dd><p>The theta values for the network</p>
+<dt>theta: List[int] (default = None)</dt><dd><p>The theta values for the network</p>
 </dd>
-<dt>save_coordinates: bool</dt><dd><p>Whether to save the coordinates of the nodes</p>
+<dt>save_data: bool (default = True)</dt><dd><p>Whether to save the data</p>
+</dd>
+<dt>save_coordinates: bool (default = True)</dt><dd><p>Whether to save the coordinates of the nodes</p>
 </dd>
 </dl>
 </section>
@@ -481,18 +483,12 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.set_params">
-<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_params" title="Link to this definition">¶</a></dt>
-<dd><p>Set the parameters for the generator.</p>
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_params" title="Link to this definition">¶</a></dt>
+<dd><p>Set the DirectedS1Generator parameters.</p>
 <section id="id3">
 <h3>Params:<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <dl class="simple">
-<dt>hidden_variables_filename: str</dt><dd><p>The filename of the hidden variables json file</p>
-</dd>
-<dt>output_rootname: str</dt><dd><p>The rootname of the output files, if not assigned it will be the same as the hidden variables subdirectory without file name and parent directories.</p>
-</dd>
-<dt>theta: List[int]</dt><dd><p>The theta values for the network</p>
-</dd>
-<dt>save_coordinates: bool</dt><dd><p>Whether to save the coordinates of the nodes</p>
+<dt><a href="#id4"><span class="problematic" id="id5">**</span></a>kwargs: dict</dt><dd><p>The parameters to set</p>
 </dd>
 </dl>
 </section>
@@ -607,8 +603,8 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <li><p><strong>deg_seq</strong> (<em>Tuple</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Tuple of two lists of integers/float representing in-degree and out-degree sequences.</p></li>
 <li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
 <li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
-<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default is “”).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default is False).</p></li>
+<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default = False).</p></li>
 </ul>
 </dd>
 </dl>
@@ -624,8 +620,8 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <li><p><strong>filename</strong> (<em>str</em>) – Filename containing the degree sequence.</p></li>
 <li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
 <li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
-<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default is “”).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default is False).</p></li>
+<li><p><strong>network_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbosity (default = False).</p></li>
 </ul>
 </dd>
 </dl>
@@ -681,6 +677,19 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.save_inferred_parameters">
 <span class="sig-name descname"><span class="pre">save_inferred_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.save_inferred_parameters" title="Link to this definition">¶</a></dt>
 <dd><p>Save the inferred parameters to a JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.set_params" title="Link to this definition">¶</a></dt>
+<dd><p>Set the DirectedS1Generator parameters.</p>
+<section id="id6">
+<h2>Params:<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict</dt><dd><p>The parameters to set</p>
+</dd>
+</dl>
+</section>
 </dd></dl>
 
 <dl class="py method">

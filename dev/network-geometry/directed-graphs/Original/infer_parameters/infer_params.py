@@ -76,37 +76,26 @@ class DirectedS1Fitter:
         Parameters
         ----------
         seed : int, optional
-            Seed for random number generation (default is 0).
+            Seed for random number generation (default = 0).
         verbose : bool, optional
-            Whether to print verbose output (default is False).
+            Whether to print verbose output (default = False).
         KAPPA_MAX_NB_ITER_CONV : int, optional
-            Maximum number of iterations for convergence of kappa (default is 100).
+            Maximum number of iterations for convergence of kappa (default = 100).
         EXP_CLUST_NB_INTEGRATION_MC_STEPS : int, optional
-            Number of Monte Carlo steps for integration of expected clustering (default is 50).
+            Number of Monte Carlo steps for integration of expected clustering (default = 50).
         NUMERICAL_CONVERGENCE_THRESHOLD_1 : float, optional
-            Threshold for numerical convergence of kappa (default is 1e-2).
+            Threshold for numerical convergence of kappa (default = 1e-2).
         NUMERICAL_CONVERGENCE_THRESHOLD_2 : float, optional
-            Threshold for numerical convergence of clustering (default is 1e-2).
+            Threshold for numerical convergence of clustering (default = 1e-2).
         log_file_path : str, optional
-            Path to the log file (default is "output.log").
+            Path to the log file (default = "output.log").
         """
         
         # for loop create folders in log file path if they don't exist
         self.verbose = verbose
         # Setup logging
         # -----------------------------------------------------
-        for i in range(1, len(log_file_path.split("/"))):
-            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
-                os.mkdir("/".join(log_file_path.split("/")[:i]))
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-        handler = logging.StreamHandler(sys.stdout)
-        if log_file_path:
-            handler = logging.FileHandler(log_file_path, mode='w')
-        handler.setLevel(logging.INFO)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
+        self.logger = self._setup_logging(log_file_path)
         # -----------------------------------------------------
 
         self.CUSTOM_BETA = False
@@ -148,7 +137,48 @@ class DirectedS1Fitter:
 
         self.out_degree_sequence, self.in_degree_sequence = [], []
         self.verbose = verbose
+        
+    def _setup_logging(self, log_file_path: str) -> logging.Logger:
+        """
+        Setup logging with the given log file path.
+        
+        Parameters
+        ----------
+        log_file_path : str
+            Path to the log file.
+        
+        Returns
+        -------
+        logging.Logger
+            Logger
+        """
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler) 
+        return logger
+    
+    def set_params(self, **kwargs):
+        """
+        Set the DirectedS1Generator parameters.
+        
+        Params:
+        -------
+        **kwargs: dict
+            The parameters to set
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
+        
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
         """
         Compute the degree histogram.
@@ -682,9 +712,9 @@ class DirectedS1Fitter:
         average_local_clustering : float
             Average local clustering coefficient of the network.
         network_name : str, optional
-            Name of the network (default is "").
+            Name of the network (default = "").
         verbose : bool, optional
-            Verbosity (default is False).
+            Verbosity (default = False).
         """
         self.verbose = verbose
         self.output_rootname = network_name
@@ -714,9 +744,9 @@ class DirectedS1Fitter:
         average_local_clustering : float
             Average local clustering coefficient of the network.
         network_name : str, optional
-            Name of the network (default is "").
+            Name of the network (default = "").
         verbose : bool, optional
-            Verbosity (default is False).
+            Verbosity (default = False).
         """
         self.verbose = verbose
         if self.verbose:
