@@ -3,9 +3,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 from random_generation import GeneratingDirectedS1
+import os
+import logging
 
 class GraphEnsembleAnalysis:
-    def __init__(self, gen, num_samples):
+    def __init__(self,
+                 gen: GeneratingDirectedS1,
+                 num_samples: int = 10,
+                 verbose: bool = False,
+                 log_file_path: str = "logs/GraphEnsembleAnalysis/output.log"):
+        self.verbose = verbose
+        # Set up logging
+        # -----------------------------------------------------
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+        # -----------------------------------------------------
+        
         self.gen = gen
         self.num_samples = num_samples
         self.reciprocity_list = []
@@ -50,11 +70,16 @@ class GraphEnsembleAnalysis:
             "in_degree_sequences": self.in_degree_sequences,
             "out_degree_sequences": self.out_degree_sequences
         }
-        
-        with open(f"{self.gen.OUTPUT_ROOTNAME}_analysis_results.json", 'w') as f:
+        # if the folder does not exist, create it
+        if not os.path.exists("outputs"):
+            os.makedirs("outputs")  
+        if not os.path.exists(f"outputs/{self.gen.output_rootname}"):
+            os.makedirs(f"outputs/{self.gen.output_rootname}")
+        with open(f"outputs/{self.gen.output_rootname}/ensemble_analysis_results.json", 'w') as f:
             json.dump(results, f, indent=4)
     
     def plot_degree_distribution(self):
+        
         all_in_degrees = np.concatenate(self.in_degree_sequences)
         all_out_degrees = np.concatenate(self.out_degree_sequences)
         
@@ -81,8 +106,8 @@ class GraphEnsembleAnalysis:
         plt.yscale('log')
         
         plt.tight_layout()
-        plt.savefig(f"{self.gen.OUTPUT_ROOTNAME}_complementary_cumulative_degree_distribution.png")
-        plt.show()
+        plt.savefig(f"{self.gen.output_rootname}_complementary_cumulative_degree_distribution.png")
+        # plt.show()
 
         # Plotting in-degree vs out-degree
         plt.figure(figsize=(8, 6))
@@ -93,8 +118,8 @@ class GraphEnsembleAnalysis:
         plt.xlabel("In-Degree")
         plt.ylabel("Out-Degree")
         plt.grid(True)
-        plt.savefig(f"{self.gen.OUTPUT_ROOTNAME}_in_vs_out_degree_distribution.png")
-        plt.show()
+        plt.savefig(f"{self.gen.output_rootname}_in_vs_out_degree_distribution.png")
+        # plt.show()
         
         # print reciprocity, clustering, in_degree_sequence, out_degree_sequence averages
         print(f"Average Reciprocity: {self.average_reciprocity}")
@@ -103,20 +128,42 @@ class GraphEnsembleAnalysis:
         print(f"Variance Clustering: {np.var(self.clustering_list)}")
         print(f"Average in-degree: {np.mean([np.mean(seq) for seq in self.in_degree_sequences])}")
 
-       
+    def modify_log_file_path(self, log_file_path: str) -> None:
+        """
+        Modify the log file path for the logger.
+        
+        Parameters
+        ----------
+        log_file_path: str 
+            Path to the log file.
+        """
+        #create directory if doesn't exist
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        for handler in self.logger.handlers:
+            handler.close()
+            self.logger.removeHandler(handler)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
 
 
 
 if __name__ == "__main__":
     gen = GeneratingDirectedS1()
-    gen.CUSTOM_OUTPUT_ROOTNAME = False
+    gen.CUSTOM_output_rootname = False
     gen.NAME_PROVIDED = False
     gen.NATIVE_INPUT_FILE = True
     gen.THETA_PROVIDED = False
     gen.SAVE_COORDINATES = False
     gen.HIDDEN_VARIABLES_FILENAME = sys.argv[1]
-    gen.OUTPUT_ROOTNAME = sys.argv[2]
+    gen.output_rootname = sys.argv[2]
     
     gen.load_hidden_variables()
     

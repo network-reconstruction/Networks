@@ -1,3 +1,4 @@
+cd ../
 echo "Running Random Generation for directed graphs, output will be saved to output_generation_small.log"
 # print start time
 echo "Random Generation started, check output.log for progress"

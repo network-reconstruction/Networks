@@ -12,6 +12,7 @@ import sys
 from sortedcontainers import SortedDict
 import json
 import logging
+import os
 
 
 def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
@@ -68,7 +69,7 @@ class FittingDirectedS1:
                  EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 50, 
                  NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
                  NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
-                 log_file_path: str = "output.log"): 
+                 log_file_path: str = "logs/FittingDirectedS1/output.log"): 
         """
         Initialize the parameter inference model for directed hyperbolic networks.
 
@@ -89,7 +90,14 @@ class FittingDirectedS1:
         log_file_path : str, optional
             Path to the log file (default is "output.log").
         """
+        
+        # for loop create folders in log file path if they don't exist
+        self.verbose = verbose
         # Setup logging
+        # -----------------------------------------------------
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler(sys.stdout)
@@ -99,6 +107,7 @@ class FittingDirectedS1:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
+        # -----------------------------------------------------
 
         self.CUSTOM_BETA = False
         self.CUSTOM_MU = False
@@ -111,7 +120,7 @@ class FittingDirectedS1:
         self.NUMERICAL_CONVERGENCE_THRESHOLD_1 = NUMERICAL_CONVERGENCE_THRESHOLD_1
         self.NUMERICAL_CONVERGENCE_THRESHOLD_2 = NUMERICAL_CONVERGENCE_THRESHOLD_2
         self.NUMERICAL_ZERO = 1e-5
-        self.ROOTNAME_OUTPUT = ""
+        self.output_rootname = ""
         self.SEED = seed
 
         self.nb_vertices = 0
@@ -678,7 +687,7 @@ class FittingDirectedS1:
             Verbosity (default is False).
         """
         self.verbose = verbose
-        self.ROOTNAME_OUTPUT = network_name
+        self.output_rootname = network_name
         try:
             self.in_degree_sequence, self.out_degree_sequence = deg_seq
             assert len(self.in_degree_sequence) == len(self.out_degree_sequence)
@@ -714,9 +723,9 @@ class FittingDirectedS1:
             self.logger.info(f"Reading degree sequence from file: {filename}")
 
         if network_name:
-            self.ROOTNAME_OUTPUT = network_name
+            self.output_rootname = network_name
         else:
-            self.ROOTNAME_OUTPUT = self.deg_seq_filename.split(".")[0]
+            self.output_rootname = self.deg_seq_filename.split(".")[0]
 
         self.deg_seq_filename = filename
         with open(self.deg_seq_filename, 'r') as f:
@@ -742,7 +751,6 @@ class FittingDirectedS1:
         """
         Save the inferred parameters to a JSON file.
         """
-        output_filename = self.ROOTNAME_OUTPUT + "_inferred_parameters.json"
 
         data = {
             "beta": float(self.beta),
@@ -765,10 +773,35 @@ class FittingDirectedS1:
                     "kappa_in": kappa_in.tolist() if hasattr(kappa_in, 'tolist') else kappa_in,
                     "kappa_out": kappa_out.tolist() if hasattr(kappa_out, 'tolist') else kappa_out
                 })
-
-        with open(output_filename, 'w') as f:
+        if not os.path.exists("outputs"):
+            os.makedirs("outputs")  
+        if not os.path.exists(f"outputs/{self.output_rootname}"):
+            os.makedirs(f"outputs/{self.output_rootname}")
+        with open(f"outputs/{self.output_rootname}/inferred_params.json", 'w') as f:
             json.dump(data, f, indent=4)
-
+            
+    def modify_log_file_path(self, log_file_path: str) -> None:
+        """
+        Modify the log file path for the logger.
+        Parameters
+        ----------
+        log_file_path: str 
+            Path to the log file.
+        """
+        #create directory if doesn't exist
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        for handler in self.logger.handlers:
+            handler.close()
+            self.logger.removeHandler(handler)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
 def main():
     """

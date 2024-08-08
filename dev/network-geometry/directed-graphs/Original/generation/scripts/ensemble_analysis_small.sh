@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd ../
 echo "Running Ensemble Analysis for directed graphs, output will be saved to output_ensemble_small.log"
 # print start time
 echo "Ensemble Analysis started, check output_ensemble_small.log for progress"

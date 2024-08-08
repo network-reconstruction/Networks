@@ -30,7 +30,7 @@ extensions = [
 
 html_theme = 'sphinx_rtd_theme'
 templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store','*infer_params_annotated.py']
 
 
 

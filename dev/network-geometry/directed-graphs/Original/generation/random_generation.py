@@ -8,19 +8,31 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from typing import List, Tuple
 import logging
+import os
 class GeneratingDirectedS1:
+    """
+    Class to generate a directed network using the S1 model.
+    
+    Params:
+    -------
+    seed: int
+        The seed for the random number generator
+    verbose: bool
+        Whether to print log messages
+    log_file_path: str
+        The path to the log file
+    """
     def __init__(self,
-                 hidden_variables_filename,
-                 output_rootname: str = "",
-                 theta: List[int] = None,
-                 save_coordinates: bool = False,
                  seed: int = 0,
                  verbose: bool = False,
-                 log_file_path: str = "output.log"):
+                 log_file_path: str = "logs/GeneratingDirectedS1/output.log"):
         
         self.verbose = verbose
         # Set up logging
         # -----------------------------------------------------
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler(sys.stdout)
@@ -32,8 +44,7 @@ class GeneratingDirectedS1:
         self.logger.addHandler(handler)
         # -----------------------------------------------------
         
-        self.theta = theta
-        self.save_coordinates = save_coordinates
+        self.save_coordinates = False
         
         self.SEED = seed
         random.seed(self.SEED)
@@ -42,10 +53,8 @@ class GeneratingDirectedS1:
         self.MU = -10
         self.NU = -10
         self.R = -10
-        self.HIDDEN_VARIABLES_FILENAME = hidden_variables_filename
-        if output_rootname == "":
-            self.OUTPUT_ROOTNAME = hidden_variables_filename.split(".")[0]
-        
+        self.hidden_variables_filename = ""
+        self.output_rootname = ""
         self.PI = math.pi
         self.NUMERICAL_ZERO = 1e-5
         
@@ -57,8 +66,17 @@ class GeneratingDirectedS1:
         self.theta = []
         self.network = nx.DiGraph()
         
-    def load_hidden_variables(self):
-        with open(self.HIDDEN_VARIABLES_FILENAME, 'r') as file:
+        self.reciprocity = 0    
+        self.clustering = 0
+        self.in_degree_sequence = []
+        self.out_degree_sequence = []
+        
+        
+    def _load_hidden_variables(self) -> None:
+        """
+        Load the hidden variables from the hidden variables file.
+        """
+        with open(self.hidden_variables_filename, 'r') as file:
             data = json.load(file)
         
         self.BETA = data.get("beta", self.BETA)
@@ -73,12 +91,15 @@ class GeneratingDirectedS1:
         self.outKappa = [kappa["kappa_out"] for kappa in inferred_kappas]
         self.Num2Name = [f"node_{i}" for i in range(self.nb_vertices)]
         
-        if self.THETA_PROVIDED:
+        if self.theta:
             self.theta = [kappa["theta"] for kappa in inferred_kappas]
         else:
             self.theta = [2 * self.PI * random.random() for _ in range(self.nb_vertices)]
         
-    def generate_edgelist(self):
+    def _generate_edgelist(self) -> None:
+        """
+        Generate the edgelist of the network using the hidden variables.
+        """
         if self.BETA == -10:
             raise ValueError("The value of parameter beta must be provided.")
         
@@ -115,16 +136,23 @@ class GeneratingDirectedS1:
                 elif r < (p21 + p12 - p11):
                     self.network.add_edge(self.Num2Name[v1], self.Num2Name[v2])
         
-    def calculate_metrics(self):
-        reciprocity = nx.reciprocity(self.network)
-        clustering = nx.average_clustering(self.network.to_undirected())
-        in_degree_sequence = [d for n, d in self.network.in_degree()]
-        out_degree_sequence = [d for n, d in self.network.out_degree()]
-        return reciprocity, clustering, in_degree_sequence, out_degree_sequence
+    def calculate_metrics(self) -> Tuple[float, float, List[int], List[int]]:
+        """
+        Calculate the reciprocity, clustering coefficient, in-degree sequence, and out-degree sequence of the network.
+        """
+        self.reciprocity = nx.reciprocity(self.network)
+        self.clustering = nx.average_clustering(self.network.to_undirected())
+        self.in_degree_sequence = [d for n, d in self.network.in_degree()]
+        self.out_degree_sequence = [d for n, d in self.network.out_degree()]
+        return self.reciprocity, self.clustering, self.in_degree_sequence, self.out_degree_sequence
     
-    def save_adjacency_list(self):
-        adjacency_list = [list(self.network.neighbors(node)) for node in self.network.nodes()]
+    def _save_data(self) -> None:
+        """
+        Saves data to outputs/<output_rootname>/generation_data.json
+        """
         
+        adjacency_list = [list(self.network.neighbors(node)) for node in self.network.nodes()]
+        self.calculate_metrics()
         data = {
             "parameters": {
                 "beta": self.BETA,
@@ -133,36 +161,102 @@ class GeneratingDirectedS1:
                 "N": self.nb_vertices,
                 "R": self.R,
                 "seed": self.SEED,
-                "hidden_variables_file": self.HIDDEN_VARIABLES_FILENAME
+                "hidden_variables_file": self.hidden_variables_filename
             },
-            "adjacency_list": adjacency_list
+            "adjacency_list": adjacency_list,
+            "network_data": {
+                "reciprocity": self.reciprocity,
+                "clustering": self.clustering,
+                "in_degree_sequence": self.in_degree_sequence,
+                "out_degree_sequence": self.out_degree_sequence
+            }
         }
         
-        with open(f"{self.OUTPUT_ROOTNAME}_adjacency_list.json", 'w') as f:
+        if not os.path.exists("outputs"):
+            os.makedirs("outputs")  
+        if not os.path.exists(f"outputs/{self.output_rootname}"):
+            os.makedirs(f"outputs/{self.output_rootname}")
+        with open(f"outputs/{self.output_rootname}/generation_data.json", 'w') as f:
             json.dump(data, f, indent=4)
             
-    def _save_coordinates(self):
+    def _save_coordinates(self) -> None:
         #node in_kappa, out_kappa, theta save as dataframe
-        with open(f"{self.OUTPUT_ROOTNAME}_coordinates.csv", 'w') as f:
+        if not os.path.exists("outputs"):
+            os.makedirs("outputs")  
+        if not os.path.exists(f"outputs/{self.output_rootname}"):
+            os.makedirs(f"outputs/{self.output_rootname}")
+        with open(f"outputs/{self.output_rootname}/coordinates.csv", 'w') as f:
             f.write("node,in_kappa,out_kappa,theta\n")
             for i in range(self.nb_vertices):
                 f.write(f"{self.Num2Name[i]},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
+                
+    def generate(self, 
+                 hidden_variables_filename,
+                 output_rootname: str = "",
+                 theta: List[int] = None,
+                 save_coordinates: bool = False) -> None:
+        """
+        Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.
         
-    def get_time(self):
+        Params:
+        -------
+        hidden_variables_filename: str
+            The filename of the hidden variables json file
+        output_rootname: str
+            The rootname of the output files
+        theta: List[int]
+            The theta values for the network
+        save_coordinates: bool
+            Whether to save the coordinates of the nodes
+        """
+        
+        self.save_coordinates = save_coordinates
+        self.theta = theta
+        self.hidden_variables_filename = hidden_variables_filename
+        if output_rootname == "":
+            self.output_rootname = hidden_variables_filename.split(".")[0]
+        self._load_hidden_variables()
+        self._generate_edgelist()
+        self._save_data()
+        if self.save_coordinates:
+            self._save_coordinates()
+    
+    def modify_log_file_path(self, log_file_path: str) -> None:
+        """
+        Modify the log file path for the logger.
+        
+        Params:
+        -------
+        log_file_path: str
+            The new log file path
+        """
+        #create directory if doesn't exist
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        for handler in self.logger.handlers:
+            handler.close()
+            self.logger.removeHandler(handler)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+    def get_time(self) -> str:
         return datetime.utcnow().strftime("%Y/%m/%d %H:%M UTC")
 
-    def plot_degree_sequence(self, degree_sequence):
+    def plot_degree_sequence(self, degree_sequence) -> None:
         plt.figure()
         plt.hist(degree_sequence, bins='auto')
         plt.title("Degree Sequence Distribution")
         plt.xlabel("Degree")
         plt.ylabel("Frequency")
-        plt.savefig(f"{self.OUTPUT_ROOTNAME}_degree_sequence.png")
+        plt.savefig(f"{self.output_rootname}_degree_sequence.png")
 
 
 if __name__ == "__main__":
-    gen = GeneratingDirectedS1(hidden_variables_filename="deg_seq_test_inferred_parameters.json", output_rootname="deg_seq_test")
-    gen.load_hidden_variables()
-    gen.generate_edgelist()
-    gen.save_adjacency_list()
+    gen = GeneratingDirectedS1()
+    
     print(f"Finished at {gen.get_time()}")
