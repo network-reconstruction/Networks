@@ -5,67 +5,6 @@ import os
 import sys
 import pytest
 import logging
-# Organization:
-"""
-12 directories, 43 files
-tree
-.
-├── __init__.py
-├── JAX
-│   ├── generation
-│   │   ├── deg_seq_test_inferred_parameters.json
-│   │   └── random_generation_JAX.py
-│   └── infer_parameters
-│       ├── degree_sequence.txt
-│       ├── deg_seq_test.txt
-│       ├── infer_params_JAX.py
-│       ├── output_JAX.log
-│       ├── output_JAX_small.log
-│       ├── run_infer_params_JAX.sh
-│       └── run_infer_params_JAX_small.sh
-├── Original
-│   ├── generation
-│   │   ├── default_output_rootname_adjacency_list.json
-│   │   ├── deg_seq_test_inferred_parameters.json
-│   │   ├── ensemble_analysis.py
-│   │   ├── ensemble_analysis_small.sh
-│   │   ├── __init__.py
-│   │   ├── output_ensemble_small_analysis_results.json
-│   │   ├── output_ensemble_small_complementary_cumulative_degree_distribution.png
-│   │   ├── output_ensemble_small_in_vs_out_degree_distribution.png
-│   │   ├── output_ensemble_small.log
-│   │   ├── output_generation_small.log
-│   │   ├── __pycache__
-│   │   │   └── random_generation.cpython-310.pyc
-│   │   ├── random_generation.py
-│   │   └── random_generation_small.sh
-│   └── infer_parameters
-│       ├── degree_sequence.txt
-│       ├── deg_seq_test.txt
-│       ├── deg_seq_test.txt_ccdf.png
-│       ├── deg_seq_test.txt_degree_distribution.png
-│       ├── deg_seq_test.txt_in_vs_out_degree.png
-│       ├── deg_seq_test.txt_results.json
-│       ├── infer_params_cumul_prob.log
-│       ├── infer_params.py
-│       ├── _inferred_parameters.txt
-│       ├── __init__.py
-│       ├── output.log
-│       ├── output_small.log
-│       ├── read.ipynb
-│       ├── run_infer_params.sh
-│       ├── run_infer_params_small.sh
-│       └── test.ipynb
-├── test
-│   ├── data
-│   │   └── network_data.json
-│   └── src
-│       ├── test_JAX.py
-│       └── test_original.py
-├── utils
-│   └── DegSeqAnalysis.py
-└── verification.py
-"""
 
 @pytest.fixture(scope='module')
 def setup_paths():
