@@ -153,54 +153,156 @@
 import os
 import sys
 import logging
-from typing import List, Dict, Any
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from typing import List, Dict, Any, Tuple
 from general.model import Model
+import jax.numpy as jnp
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+#Imports for the generation and infer_parameters modules
+sys.path.append(parent_dir)
+sys.path.append(os.path.join(parent_dir, 'Original', 'generation'))
+sys.path.append(os.path.join(parent_dir, 'Original', 'infer_parameters'))
+from random_generation import DirectedS1Generator
+from infer_params import DirectedS1Fitter
+from ensemble_analysis import DirectedS1EnsembleAnalyser
+
+#TODO - Multi modify log file path.
 class DirectedS1(Model):
-    def __init__(self, log_file_path: str = None, verbose: bool = False, **kwargs):
+    def __init__(self, seed: int = 0,
+                 log_file_path: str = None,
+                 verbose: bool = False):
         """
         Initialize the DirectedS1 Model.
         """
-        super().__init__(log_file_path, verbose, **kwargs)
-        self.logger.info("DirectedS1 Model initialized.")
+        super().__init__(log_file_path, verbose)
+        if self.verbose:
+            self.logger.info("DirectedS1 Model initialized.")
+            
+        if self.verbose:
+            self.logger.info("Initializing DirectedS1 Generator.")
+        self.fitter = DirectedS1Fitter(seed, log_file_path, verbose)
         
-    def generate(self, **kwargs):
+        if self.verbose:
+            self.logger.info("Initializing DirectedS1 Fitter.")
+        self.generator = DirectedS1Generator(seed, log_file_path, verbose)
+        
+        if self.verbose:
+            self.logger.info("Initializing DirectedS1 Ensemble Analyser.")
+        self.ensemble_analyser = DirectedS1EnsembleAnalyser(gen = self.generator, verbose = self.verbose, log_file_path = log_file_path)
+        
+        self.reciprocity = -10
+        self.average_local_clustering = -10
+        self.network_name = ""
+        self.in_degree_sequence = []
+        self.out_degree_sequence = []
+        self.num_samples = 10
+    
+    def set_params_generator(self, **kwargs):
+        """Modify generator parameters."""
+        self.generator.set_params(**kwargs)
+        
+    def set_params_fitter(self, **kwargs):
+        """Modify fitter parameters."""
+        self.fitter.set_params(**kwargs)
+        
+    def set_params_ensemble_analyser(self, **kwargs):
+        """Modify ensemble analyser parameters."""
+        self.ensemble_analyser.set_params(**kwargs)
+    
+    def set_original_network_data(self, in_degree_sequence: List[int], out_degree_sequence: List[int], reciprocity: float, average_local_clustering: float):
         """
-        Generate the DirectedS1 Model.
+        Set the network data.
         
         Args:
-            **kwargs (dict): Parameters.
+            in_degree_sequence (List[int]): In-degree sequence.
+            out_degree_sequence (List[int]): Out-degree sequence.
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
         """
-        self.logger.info("Generating DirectedS1 Model.")
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        self.logger.info("DirectedS1 Model generated.")
+        self.in_degree_sequence = in_degree_sequence
+        self.out_degree_sequence = out_degree_sequence
+        self.reciprocity = reciprocity
+        self.average_local_clustering = average_local_clustering
         
-    def infer_parameters(self, **kwargs):
+    def fit_generate_analyse_from_file(self, filename: str, reciprocity: float, average_local_clustering: float, network_name: str = "", num_samples: int = 10):
         """
-        Infer the parameters of the DirectedS1 Model.
+        Fit, generate and analyse the DirectedS1 Model.
         
         Args:
-            **kwargs (dict): Parameters
+            filename (str): Filename containing the network data.
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
+            network_name (str): Name of the network (default = "").
+            num_samples (int): Number of samples (default = 10).
+            
         """
-        self.logger.info("Inferring parameters of the DirectedS1 Model.")
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        self.logger.info("Parameters of the DirectedS1 Model inferred.")
+
+        self.fitter.fit_from_file(filename = filename, reciprocity = reciprocity, average_local_clustering = average_local_clustering, network_name = network_name)
+        inferred_params = self.fitter.get_output()
+        self.ensemble_analyser.run_analysis(num_samples = num_samples,
+                                            hidden_variables_data = inferred_params,
+                                            output_rootname = network_name,
+                                            plot_degree_distribution = True)
+        ensemble_analysis = self.ensemble_analyser.get_output()
+        self.evaluate(ensemble_analysis = ensemble_analysis)
+        
+    def fit_generate_analyse_from_network_data(self, deg_seq: Tuple[List[float], List[float]], reciprocity: float, average_local_clustering: float, network_name: str = "", num_samples: int = 10):
+        """
+        Fit, generate and analyse the DirectedS1 Model.
+        
+        Args:
+            deg_seq (Tuple[List[float], List[float]]): Tuple of two lists of integers/float representing in-degree and out-degree sequences.
+            reciprocity (float): Reciprocity of the network.
+            average_local_clustering (float): Average local clustering coefficient of the network.
+            network_name (str): Name of the network (default = "").
+            num_samples (int): Number of samples (default = 10).
+            
+        """
+        self.set_original_network_data(in_degree_sequence = deg_seq[0], out_degree_sequence = deg_seq[1], reciprocity = reciprocity, average_local_clustering = average_local_clustering)
+        self.fitter.fit_from_network_data(deg_seq = deg_seq, reciprocity = reciprocity, average_local_clustering = average_local_clustering, network_name = network_name)
+        inferred_params = self.fitter.get_output()
+        self.ensemble_analyser.run_analysis(num_samples = num_samples,
+                                            hidden_variables_data = inferred_params,
+                                            output_rootname = network_name,
+                                            save_results = True,
+                                            plot_degree_distribution = True)
+        ensemble_analysis = self.ensemble_analyser.get_output()
+        self.evaluate(ensemble_analysis = ensemble_analysis)
+        
+    def generate(self, 
+                 hidden_variables_filename: str = "",
+                 hidden_variables_data: dict = None,    
+                 output_rootname: str = "",
+                 theta: List[int] = None,
+                 save_data: bool = True,
+                 save_coordinates: bool = True) -> None:
+        """
+        Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.
+        
+        Args:
+            hidden_variables_filename (str): The filename of the hidden variables json file.
+            output_rootname (str): The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.
+            theta (List[int], optional): The theta values for the network. Defaults to None.
+            save_data (bool, optional): Whether to save the data. Defaults to True.
+            save_coordinates (bool, optional): Whether to save the coordinates of the nodes. Defaults to True.
+        """
+        self.generator.generate(hidden_variables_filename, hidden_variables_data, output_rootname, theta, save_data, save_coordinates)
+
+    
         
     def ensemble_analysis(self, **kwargs):
         """
-        Analyse the ensemble of the DirectedS1 Model.
+        Ensemble analysis of the DirectedS1 Model.
         
         Args:
             **kwargs (dict): Parameters
         """
-        self.logger.info("Analysing the ensemble of the DirectedS1 Model.")
+        self.logger.info("Fitting the DirectedS1 Model.")
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self.logger.info("Ensemble of the DirectedS1 Model analysed.")
+        self.logger.info("DirectedS1 Model fitted.")
+
         
     def fit(self, **kwargs):
         """
@@ -214,25 +316,55 @@ class DirectedS1(Model):
             setattr(self, key, value)
         self.logger.info("DirectedS1 Model fitted.")
         
-    def test(self, **kwargs):
+        
+    def evaluate(self, ensemble_analysis: Dict[str, Any], save= False) -> None:
         """
-        Test the DirectedS1 Model.
+        Evaluate the ensemble of networks generated using the DirectedS1 Model.
         
         Args:
-            **kwargs (dict): Parameters
+            ensemble_analysis (Dict[str, Any]): The ensemble analysis data.
+                average_reciprocity (float): Average reciprocity across the ensemble.
+                average_clustering (float): Average clustering coefficient across the ensemble.
+                variance_reciprocity (float): Variance of reciprocity across the ensemble.
+                variance_clustering (float): Variance of clustering coefficient across the ensemble.
+                reciprocity_list (List[float]): List of reciprocity values for each generated network.
+                clustering_list (List[float]): List of clustering coefficients for each generated network.
+                average_in_degree (float): Average in-degree across the ensemble.
+                in_degree_sequences (List[List[int]]): List of in-degree sequences for each generated network.
+                out_degree_sequences (List[List[int]]): List of out-degree sequences for each generated network.
+                
+            save (bool, optional): Whether to save the evaluation results. Defaults to False.
         """
-        self.logger.info("Testing the DirectedS1 Model.")
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        self.logger.info("DirectedS1 Model tested.")
+        #compare with original input data
+        if self.verbose:
+            self.logger.info("Comparing the ensemble analysis with the original data.")
+            
+        #Deviation average reciprocity from self.reciprocity
+        average_reciprocity_error = jnp.abs(ensemble_analysis['average_reciprocity'] - self.reciprocity)
+        average_clustering_error = jnp.abs(ensemble_analysis['average_clustering'] - self.average_local_clustering)
+        average_in_degree_error = jnp.abs(ensemble_analysis['average_in_degree'] - jnp.mean(self.in_degree_sequence))
+
+        evaluation = {
+            'average_reciprocity_error': average_reciprocity_error,
+            'average_clustering_error': average_clustering_error,
+            'average_in_degree_error': average_in_degree_error
+        }
+        if self.verbose:
+            self.logger.info("Evaluation complete.")
+            self.logger.info(f"Average reciprocity error: {average_reciprocity_error}")
+            self.logger.info(f"Average clustering error: {average_clustering_error}")
+            self.logger.info(f"Average in-degree error: {average_in_degree_error}")
+        if save:
+            self._save_evaluation(evaluation)
+    def _save_evaluation(self, evaluation: Dict[str, Any]) -> None:
+        """
+        Save the evaluation results.
         
-    def evaluate(self, **kwargs):
-        """
-        Evaluate the DirectedS1 Model.
         Args:
-            **kwargs (dict): Parameters
+            evaluation (Dict[str, Any]): The evaluation results.
         """
-        self.logger.info("Evaluating the DirectedS1 Model.")
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        self.logger.info("DirectedS1 Model evaluated.")
+        pass
+if __name__ == "__main__":
+    pass
+
+        

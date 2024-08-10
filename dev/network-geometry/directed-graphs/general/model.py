@@ -55,3 +55,25 @@ class Model:
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
+            
+    def modify_log_file_path(self, log_file_path: str) -> None:
+        """
+        Modify the log file path for the logger.
+
+        Args:
+            log_file_path (str): The new log file path.
+        """
+        #create directory if doesn't exist
+        for i in range(1, len(log_file_path.split("/"))):
+            if not os.path.exists("/".join(log_file_path.split("/")[:i])):
+                os.mkdir("/".join(log_file_path.split("/")[:i]))
+        for handler in self.logger.handlers:
+            handler.close()
+            self.logger.removeHandler(handler)
+        handler = logging.StreamHandler(sys.stdout)
+        if log_file_path:
+            handler = logging.FileHandler(log_file_path, mode='w')
+        handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)

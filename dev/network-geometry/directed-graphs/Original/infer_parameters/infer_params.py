@@ -1,5 +1,6 @@
 """
 Model from Supplementary Information of the paper: Geometric description of clustering in directed networks: Antoine Allard et al.
+
 """
 
 import jax.numpy as jnp
@@ -19,7 +20,7 @@ def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
     """
     Compute the lower bound of a key in a sorted dictionary.
 
-    Parameters:
+    Args:
         d (SortedDict): Sorted dictionary.
         key (Any): Key to search.
 
@@ -36,7 +37,7 @@ def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
 def hyp2f1a(beta: float, z: float) -> float:
     """Compute hypergeometric function for parameters beta and z.
     
-    Parameters:
+    Args:
         beta (float): Parameter beta.
         z (float): Parameter z.
     
@@ -49,7 +50,7 @@ def hyp2f1a(beta: float, z: float) -> float:
 def hyp2f1b(beta: float, z: float) -> float:
     """Compute hypergeometric function for parameters beta and z.
     
-    Parameters:
+    Args:
         beta (float): Parameter beta.
         z (float): Parameter z.
     
@@ -62,7 +63,7 @@ def hyp2f1b(beta: float, z: float) -> float:
 def hyp2f1c(beta: float, z: float) -> float:
     """Compute hypergeometric function for parameters beta and z (S75b).
     
-    Parameters:
+    Args:
         beta (float): Parameter beta.
         z (float): Parameter z.
     """
@@ -127,7 +128,7 @@ class DirectedS1Fitter:
         """
         Initialize the parameter inference model for directed hyperbolic networks.
 
-        Parameters:
+        Args:
             seed (int): Seed for random number generation (default = 0).
             verbose (bool): Whether to print verbose output (default = False).
             KAPPA_MAX_NB_ITER_CONV (int): Maximum number of iterations for convergence of kappa (default = 100).
@@ -188,7 +189,7 @@ class DirectedS1Fitter:
         """
         Setup logging with the given log file path.
 
-        Parameters:
+        Args:
             log_file_path (str): Path to the log file.
 
         Returns:
@@ -212,7 +213,7 @@ class DirectedS1Fitter:
         """
         Set the DirectedS1Fitter parameters.
 
-        Parameters:
+        Args:
             **kwargs (dict): The parameters to set.
         """
         for key, value in kwargs.items():
@@ -222,7 +223,7 @@ class DirectedS1Fitter:
         """
         Compute the degree histogram.
 
-        Parameters:
+        Args:
             degrees (List[float]): List of degrees.
 
         Returns:
@@ -257,7 +258,7 @@ class DirectedS1Fitter:
         """
         Compute the directed connection probability using hypergeometric function.
 
-        Parameters:
+        Args:
             z (float): Angle between two nodes.
             koutkin (float): Product of out-degree and in-degree.
 
@@ -270,7 +271,7 @@ class DirectedS1Fitter:
         """
         Compute the undirected connection probability.
 
-        Parameters:
+        Args:
             z (float): Angle between two nodes.
             kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
             kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
@@ -308,7 +309,7 @@ class DirectedS1Fitter:
         """
         Find the minimal angle by bisection.
 
-        Parameters:
+        Args:
             kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
             kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
 
@@ -402,7 +403,7 @@ class DirectedS1Fitter:
         """
         Compute the random ensemble clustering for a given degree class.
 
-        Parameters:
+        Args:
             in_deg (int): In-degree.
             out_deg (int): Out-degree.
 
@@ -696,7 +697,7 @@ class DirectedS1Fitter:
         """
         Fit the model to the network data.
 
-        Parameters:
+        Args:
             reciprocity (float): Reciprocity of the network.
             average_local_clustering (float): Average local clustering coefficient of the network.
         """
@@ -706,18 +707,17 @@ class DirectedS1Fitter:
         self.infer_parameters()
         self.save_inferred_parameters()
 
-    def fit_from_deg_seq(self, deg_seq: Tuple[List[float], List[float]], reciprocity: float, average_local_clustering: float, network_name: str = "", verbose: bool = False) -> None:
+    def fit_from_network_data(self, deg_seq: Tuple[List[float], List[float]], reciprocity: float, average_local_clustering: float, network_name: str = "") -> None:
         """
         Fit the model to the network data from a degree sequence, reciprocity, and average local clustering coefficient.
 
-        Parameters:
+        Args:
             deg_seq (Tuple[List[float], List[float]]): Tuple of two lists of integers/float representing in-degree and out-degree sequences.
             reciprocity (float): Reciprocity of the network.
             average_local_clustering (float): Average local clustering coefficient of the network.
             network_name (str): Name of the network (default = "").
             verbose (bool): Verbosity (default = False).
         """
-        self.verbose = verbose
         self.output_rootname = network_name
         try:
             self.in_degree_sequence, self.out_degree_sequence = deg_seq
@@ -732,18 +732,17 @@ class DirectedS1Fitter:
 
         self._fit(reciprocity, average_local_clustering)
 
-    def fit_from_file(self, filename: str, reciprocity: float, average_local_clustering: float, network_name: str = "", verbose: bool = False) -> None:
+    def fit_from_file(self, filename: str, reciprocity: float, average_local_clustering: float, network_name: str = "") -> None:
         """
         Fit the model to the network data from a file.
 
-        Parameters:
+        Args:
             filename (str): Filename containing the degree sequence.
             reciprocity (float): Reciprocity of the network.
             average_local_clustering (float): Average local clustering coefficient of the network.
             network_name (str): Name of the network (default = "").
-            verbose (bool): Verbosity (default = False).
+
         """
-        self.verbose = verbose
         if self.verbose:
             self.logger.info(f"Reading degree sequence from file: {filename}")
 
@@ -771,13 +770,27 @@ class DirectedS1Fitter:
         self.degree = [self.in_degree_sequence, self.out_degree_sequence]
 
         self._fit(reciprocity, average_local_clustering)
-
-    def save_inferred_parameters(self) -> None:
+        
+    def get_output(self) -> Dict[str, Any]:
         """
-        Save the inferred parameters to a JSON file.
+        Get the inferred parameters.
+        
+        Returns:
+            Dict[str, Any]: Inferred parameters.
+        
+        Output contains the following:
+            beta (float): Beta parameter.
+            mu (float): Mu parameter.
+            nu (float): Nu parameter.
+            R (float): R parameter.
+            inferred_kappas (List[Dict[str, Any]]): List of inferred kappas per degree class.
+                in_deg (int): In-degree.
+                out_deg (int): Out-degree.
+                kappa_in (float): Inferred kappa for in-degree.
+                kappa_out (float): Inferred kappa for out-degree.
+                
         """
-
-        data = {
+        output = {
             "beta": float(self.beta),
             "mu": float(self.mu),
             "nu": float(self.nu),
@@ -792,24 +805,49 @@ class DirectedS1Fitter:
             for out_deg, count in out_degs.items():
                 kappa_in = self.random_ensemble_kappa_per_degree_class[0][in_deg]
                 kappa_out = self.random_ensemble_kappa_per_degree_class[1][out_deg]
-                data["inferred_kappas"].append({
+                output["inferred_kappas"].append({
                     "in_deg": in_deg,
                     "out_deg": out_deg,
                     "kappa_in": kappa_in.tolist() if hasattr(kappa_in, 'tolist') else kappa_in,
                     "kappa_out": kappa_out.tolist() if hasattr(kappa_out, 'tolist') else kappa_out
                 })
+        return output
+    
+    def save_inferred_parameters(self) -> None:
+        """
+        Save the inferred parameters to a JSON file.
+        
+        Output is saved in the following format:
+            {
+                "beta": float,
+                "mu": float,
+                "nu": float,
+                "R": float,
+                "inferred_kappas": [
+                    {
+                        "in_deg": int,
+                        "out_deg": int,
+                        "kappa_in": float,
+                        "kappa_out": float
+                    },
+                    ...
+                ]
+            }
+        """
+        output = self.get_output()  
+        
         if not os.path.exists("outputs"):
             os.makedirs("outputs")  
         if not os.path.exists(f"outputs/{self.output_rootname}"):
             os.makedirs(f"outputs/{self.output_rootname}")
         with open(f"outputs/{self.output_rootname}/inferred_params.json", 'w') as f:
-            json.dump(data, f, indent=4)
+            json.dump(output, f, indent=4)
             
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
         Modify the log file path for the logger.
 
-        Parameters:
+        Args:
             log_file_path (str): Path to the log file.
         """
         #create directory if doesn't exist
