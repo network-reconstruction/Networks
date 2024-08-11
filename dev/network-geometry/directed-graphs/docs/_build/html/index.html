@@ -488,17 +488,6 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.hidden_variables_filename">
-<span class="sig-name descname"><span class="pre">hidden_variables_filename</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.hidden_variables_filename" title="Link to this definition">¶</a></dt>
-<dd><p>The filename for hidden variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.output_rootname">
 <span class="sig-name descname"><span class="pre">output_rootname</span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.output_rootname" title="Link to this definition">¶</a></dt>
 <dd><p>The rootname for output files.</p>
@@ -645,18 +634,46 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.generate">
-<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a directed network using the hidden variables provided in the hidden_variables_filename, and save the data.</p>
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.generate_from_file">
+<span class="sig-name descname"><span class="pre">generate_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate_from_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.generate_from_inference_data">
+<span class="sig-name descname"><span class="pre">generate_from_inference_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_variables_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_rootname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.generate_from_inference_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.get_output">
+<span class="sig-name descname"><span class="pre">get_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.get_output" title="Link to this definition">¶</a></dt>
+<dd><p>Get the output of the generated network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>hidden_variables_filename</strong> (<em>str</em>) – The filename of the hidden variables json file.</p></li>
-<li><p><strong>output_rootname</strong> (<em>str</em>) – The rootname of the output files. If not provided, the name of the subdirectory containing the hidden variables file is used.</p></li>
-<li><p><strong>theta</strong> (<em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The theta values for the network. Defaults to None.</p></li>
-<li><p><strong>save_data</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the data. Defaults to True.</p></li>
-<li><p><strong>save_coordinates</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the coordinates of the nodes. Defaults to True.</p></li>
-</ul>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The output data of the generated network.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<dl>
+<dt>Output contains the following:</dt><dd><dl class="simple">
+<dt>parameters (dict): The parameters of the model.</dt><dd><p>beta (float): The beta parameter.
+mu (float): The mu parameter.
+nu (float): The nu parameter.
+N (int): The number of vertices.
+R (float): The R parameter.
+seed (int): The random seed.
+output_rootname (str): The network name of the hidden variables file.</p>
+</dd>
+</dl>
+<p>adjacency_list (List[List[int]]): The adjacency list of the network.
+network_data (dict): The data of the network.</p>
+<blockquote>
+<div><p>reciprocity (float): The network reciprocity.
+clustering (float): The network clustering coefficient.
+in_degree_sequence (List[int]): The in-degree sequence.
+out_degree_sequence (List[int]): The out-degree sequence.</p>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -698,6 +715,26 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.set_hidden_variables">
+<span class="sig-name descname"><span class="pre">set_hidden_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_hidden_variables" title="Link to this definition">¶</a></dt>
+<dd><p>Set the hidden variables from the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – <p>The data containing the hidden variables.
+Data contains the following:</p>
+<blockquote>
+<div><p>beta (float): The beta parameter.
+mu (float): The mu parameter.
+nu (float): The nu parameter.
+R (float): The R parameter.
+inferred_kappas (List[Dict[str, float]]): The inferred kappas.</p>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Original.generation.random_generation.DirectedS1Generator.set_params">
 <span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.generation.random_generation.DirectedS1Generator.set_params" title="Link to this definition">¶</a></dt>
 <dd><p>Set the DirectedS1Generator parameters.</p>
@@ -713,7 +750,7 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <p id="module-Original.infer_parameters.infer_params">Model from Supplementary Information of the paper: Geometric description of clustering in directed networks: Antoine Allard et al.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">DirectedS1Fitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">KAPPA_MAX_NB_ITER_CONV</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXP_CLUST_NB_INTEGRATION_MC_STEPS</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'logs/DirectedS1Fitter/output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">DirectedS1Fitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">KAPPA_MAX_NB_ITER_CONV</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EXP_CLUST_NB_INTEGRATION_MC_STEPS</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NUMERICAL_CONVERGENCE_THRESHOLD_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'logs/DirectedS1Fitter/output.log'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class used to represent the parameter inference model for directed hyperbolic networks.</p>
 <dl class="py attribute">
@@ -1207,8 +1244,24 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_deg_seq">
-<span class="sig-name descname"><span class="pre">fit_from_deg_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_deg_seq" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_file">
+<span class="sig-name descname"><span class="pre">fit_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_file" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the model to the network data from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Filename containing the degree sequence.</p></li>
+<li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
+<li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
+<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_network_data">
+<span class="sig-name descname"><span class="pre">fit_from_network_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_network_data" title="Link to this definition">¶</a></dt>
 <dd><p>Fit the model to the network data from a degree sequence, reciprocity, and average local clustering coefficient.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1224,18 +1277,29 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_file">
-<span class="sig-name descname"><span class="pre">fit_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.fit_from_file" title="Link to this definition">¶</a></dt>
-<dd><p>Fit the model to the network data from a file.</p>
+<dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.get_output">
+<span class="sig-name descname"><span class="pre">get_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.get_output" title="Link to this definition">¶</a></dt>
+<dd><p>Get the inferred parameters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Filename containing the degree sequence.</p></li>
-<li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
-<li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
-<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – Verbosity (default = False).</p></li>
-</ul>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Inferred parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+<dl>
+<dt>Output contains the following:</dt><dd><p>beta (float): Beta parameter.
+mu (float): Mu parameter.
+nu (float): Nu parameter.
+R (float): R parameter.
+inferred_kappas (List[Dict[str, Any]]): List of inferred kappas per degree class.</p>
+<blockquote>
+<div><p>in_deg (int): In-degree.
+out_deg (int): Out-degree.
+kappa_in (float): Inferred kappa for in-degree.
+kappa_out (float): Inferred kappa for out-degree.</p>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -1291,8 +1355,30 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.DirectedS1Fitter.save_inferred_parameters">
-<span class="sig-name descname"><span class="pre">save_inferred_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.save_inferred_parameters" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_inferred_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.DirectedS1Fitter.save_inferred_parameters" title="Link to this definition">¶</a></dt>
 <dd><p>Save the inferred parameters to a JSON file.</p>
+<dl>
+<dt>Output is saved in the following format:</dt><dd><dl>
+<dt>{</dt><dd><p>“beta”: float,
+“mu”: float,
+“nu”: float,
+“R”: float,
+“inferred_kappas”: [</p>
+<blockquote>
+<div><dl class="simple">
+<dt>{</dt><dd><p>“in_deg”: int,
+“out_deg”: int,
+“kappa_in”: float,
+“kappa_out”: float</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1333,18 +1419,54 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.hyp2f1a">
 <span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">hyp2f1a</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.hyp2f1a" title="Link to this definition">¶</a></dt>
 <dd><p>Compute hypergeometric function for parameters beta and z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>float</em>) – Parameter beta.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Parameter z.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hypergeometric function 2F1(1, 1/beta, 1 + 1/beta, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.hyp2f1b">
 <span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">hyp2f1b</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.hyp2f1b" title="Link to this definition">¶</a></dt>
 <dd><p>Compute hypergeometric function for parameters beta and z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>float</em>) – Parameter beta.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Parameter z.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hypergeometric function 2F1(1, 2/beta, 1 + 2/beta, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Original.infer_parameters.infer_params.hyp2f1c">
 <span class="sig-prename descclassname"><span class="pre">Original.infer_parameters.infer_params.</span></span><span class="sig-name descname"><span class="pre">hyp2f1c</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Original.infer_parameters.infer_params.hyp2f1c" title="Link to this definition">¶</a></dt>
 <dd><p>Compute hypergeometric function for parameters beta and z (S75b).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>float</em>) – Parameter beta.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Parameter z.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1373,8 +1495,286 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 <dd><p>Main function to initialize the model and fit it to the network data.</p>
 </dd></dl>
 
+<p id="module-Original.full_model.directedS1">.
+├── docs
+│   ├── _build
+│   │   ├── doctrees
+│   │   │   ├── environment.pickle
+│   │   │   └── index.doctree
+│   │   └── html
+│   │       ├── genindex.html
+│   │       ├── index.html
+│   │       ├── objects.inv
+│   │       ├── py-modindex.html
+│   │       ├── search.html
+│   │       ├── searchindex.js
+│   │       ├── _sources
+│   │       │   └── index.rst.txt
+│   │       └── _static
+│   │           ├── alabaster.css
+│   │           ├── basic.css
+│   │           ├── basic.css.jinja
+│   │           ├── custom.css
+│   │           ├── doctools.js
+│   │           ├── documentation_options.js
+│   │           ├── documentation_options.js.jinja
+│   │           ├── file.png
+│   │           ├── github-banner.svg
+│   │           ├── language_data.js
+│   │           ├── language_data.js.jinja
+│   │           ├── minus.png
+│   │           ├── plus.png
+│   │           ├── pygments.css
+│   │           ├── searchtools.js
+│   │           └── sphinx_highlight.js
+│   ├── conf.py
+│   ├── index.rst
+│   ├── make.bat
+│   ├── Makefile
+│   ├── _static
+│   └── _templates
+├── general
+│   └── model.py
+├── __init__.py
+├── JAX
+│   ├── generation
+│   │   ├── deg_seq_test_inferred_parameters.json
+│   │   ├── __pycache__
+│   │   │   └── random_generation_JAX.cpython-310.pyc
+│   │   └── random_generation_JAX.py
+│   └── infer_parameters
+│       ├── degree_sequence.txt
+│       ├── deg_seq_test.txt
+│       ├── infer_params_JAX.py
+│       ├── output_JAX.log
+│       ├── output_JAX_small.log
+│       ├── __pycache__
+│       │   └── infer_params_JAX.cpython-310.pyc
+│       ├── run_infer_params_JAX.sh
+│       └── run_infer_params_JAX_small.sh
+├── Original
+│   ├── full_model
+│   │   └── directedS1.py
+│   ├── generation
+│   │   ├── deg_seq_test_inferred_parameters.json
+│   │   ├── ensemble_analysis.py
+│   │   ├── __init__.py
+│   │   ├── logs
+│   │   │   ├── output_ensemble_small.log
+│   │   │   └── output_generation_small.log
+│   │   ├── outputs
+│   │   │   ├── default_output_rootname_adjacency_list.json
+│   │   │   └── output_ensemble_small_analysis_results.json
+│   │   ├── plots
+│   │   │   ├── output_ensemble_small_complementary_cumulative_degree_distribution.png
+│   │   │   └── output_ensemble_small_in_vs_out_degree_distribution.png
+│   │   ├── __pycache__
+│   │   │   ├── ensemble_analysis.cpython-310.pyc
+│   │   │   ├── ensemble_analysis.cpython-311.pyc
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   ├── random_generation.cpython-310.pyc
+│   │   │   └── random_generation.cpython-311.pyc
+│   │   ├── random_generation.py
+│   │   └── scripts
+│   │       ├── ensemble_analysis_small.sh
+│   │       └── random_generation_small.sh
+│   └── infer_parameters
+│       ├── data
+│       │   ├── degree_sequence.txt
+│       │   └── deg_seq_test.txt
+│       ├── deg_seq_test.txt_results.json
+│       ├── infer_params_annotated.py
+│       ├── infer_params.py
+│       ├── __init__.py
+│       ├── logs
+│       │   ├── infer_params_cumul_prob.log
+│       │   ├── output.log
+│       │   └── output_small.log
+│       ├── plots
+│       │   ├── deg_seq_test.txt_ccdf.png
+│       │   ├── deg_seq_test.txt_degree_distribution.png
+│       │   └── deg_seq_test.txt_in_vs_out_degree.png
+│       ├── __pycache__
+│       │   ├── infer_params.cpython-310.pyc
+│       │   ├── infer_params.cpython-311.pyc
+│       │   └── __init__.cpython-310.pyc
+│       ├── run_infer_params.sh
+│       └── run_infer_params_small.sh
+├── __pycache__
+│   └── verification.cpython-310.pyc
+├── test
+│   ├── data
+│   │   ├── 7th_graders_layer1_inferred_parameters.json
+│   │   ├── deg_seq_test.txt
+│   │   ├── network_data.json
+│   │   └── TestNetwork_inferred_parameters.json
+│   └── src
+│       ├── logs
+│       │   ├── DirectedS1EnsembleAnalyser
+│       │   │   └── output_test_ensemble_analysis_functional.log
+│       │   ├── DirectedS1Fitter
+│       │   │   ├── output_test_infer_params_functional_fit_from_deg_seq.log
+│       │   │   └── test_infer_params_functional_fit_from_file.log
+│       │   └── DirectedS1Generator
+│       │       └── output_test_generation_fast.log
+│       ├── outputs
+│       │   ├── 7th_graders_layer1
+│       │   │   └── inferred_params.json
+│       │   ├── coordinates.csv
+│       │   ├── ensemble_analysis_results.json
+│       │   ├── generation_data.json
+│       │   └── TestNetwork
+│       │       ├── coordinates.csv
+│       │       ├── ensemble_analysis
+│       │       │   ├── figs
+│       │       │   │   ├── complementary_cumulative_degree_distribution.png
+│       │       │   │   └── in_vs_out_degree_distribution.png
+│       │       │   └── results.json
+│       │       ├── ensemble_analysis_results.json
+│       │       ├── generation_data.json
+│       │       └── inferred_params.json
+│       ├── __pycache__
+│       │   ├── test_JAX.cpython-310-pytest-7.4.4.pyc
+│       │   ├── test_JAX.cpython-311-pytest-7.4.0.pyc
+│       │   ├── test_original.cpython-310-pytest-7.4.4.pyc
+│       │   └── test_original.cpython-311-pytest-7.4.0.pyc
+│       ├── test_JAX.py
+│       └── test_original.py
+├── utils
+│   ├── DegSeqAnalysis.py
+│   └── __pycache__
+│       └── DegSeqAnalysis.cpython-310.pyc
+└── verification.py</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Original.full_model.directedS1.</span></span><span class="sig-name descname"><span class="pre">DirectedS1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#general.model.Model" title="general.model.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ensemble_analysis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outputs/full/evaluation.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the ensemble of networks generated using the DirectedS1 Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ensemble_analysis</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – The ensemble analysis data.
+average_reciprocity (float): Average reciprocity across the ensemble.
+average_clustering (float): Average clustering coefficient across the ensemble.
+variance_reciprocity (float): Variance of reciprocity across the ensemble.
+variance_clustering (float): Variance of clustering coefficient across the ensemble.
+reciprocity_list (List[float]): List of reciprocity values for each generated network.
+clustering_list (List[float]): List of clustering coefficients for each generated network.
+average_in_degree (float): Average in-degree across the ensemble.
+in_degree_sequences (List[List[int]]): List of in-degree sequences for each generated network.
+out_degree_sequences (List[List[int]]): List of out-degree sequences for each generated network.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to save the evaluation results. Defaults to False.</p></li>
+<li><p><strong>save_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The file path to save the evaluation results. Defaults to “outputs/”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.fit_generate_analyse_from_file">
+<span class="sig-name descname"><span class="pre">fit_generate_analyse_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.fit_generate_analyse_from_file" title="Link to this definition">¶</a></dt>
+<dd><p>Fit, generate and analyse the DirectedS1 Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Filename containing the network data.</p></li>
+<li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
+<li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
+<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – Number of samples (default = 10).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.fit_generate_analyse_from_network_data">
+<span class="sig-name descname"><span class="pre">fit_generate_analyse_from_network_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deg_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_inferred_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_evaluation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.fit_generate_analyse_from_network_data" title="Link to this definition">¶</a></dt>
+<dd><p>Fit, generate and analyse the DirectedS1 Model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deg_seq</strong> (<em>Tuple</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>, </em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Tuple of two lists of integers/float representing in-degree and out-degree sequences respectively.</p></li>
+<li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
+<li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
+<li><p><strong>network_name</strong> (<em>str</em>) – Name of the network (default = “”).</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – Number of samples (default = 10).</p></li>
+<li><p><strong>save_inferred_params</strong> (<em>bool</em>) – Whether to save the inferred parameters (default = False).</p></li>
+<li><p><strong>save_evaluation</strong> (<em>bool</em>) – Whether to save the evaluation results (default = False).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.set_original_network_data">
+<span class="sig-name descname"><span class="pre">set_original_network_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_degree_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_degree_sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reciprocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">average_local_clustering</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.set_original_network_data" title="Link to this definition">¶</a></dt>
+<dd><p>Set the network data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_degree_sequence</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – In-degree sequence.</p></li>
+<li><p><strong>out_degree_sequence</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Out-degree sequence.</p></li>
+<li><p><strong>reciprocity</strong> (<em>float</em>) – Reciprocity of the network.</p></li>
+<li><p><strong>average_local_clustering</strong> (<em>float</em>) – Average local clustering coefficient of the network.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.set_params_ensemble_analyser">
+<span class="sig-name descname"><span class="pre">set_params_ensemble_analyser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.set_params_ensemble_analyser" title="Link to this definition">¶</a></dt>
+<dd><p>Modify ensemble analyser parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.set_params_fitter">
+<span class="sig-name descname"><span class="pre">set_params_fitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.set_params_fitter" title="Link to this definition">¶</a></dt>
+<dd><p>Modify fitter parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Original.full_model.directedS1.DirectedS1.set_params_generator">
+<span class="sig-name descname"><span class="pre">set_params_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Original.full_model.directedS1.DirectedS1.set_params_generator" title="Link to this definition">¶</a></dt>
+<dd><p>Modify generator parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-general.model">
+<dt class="sig sig-object py" id="general.model.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">general.model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'logs/default.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#general.model.Model" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="general.model.Model.modify_log_file_path">
+<span class="sig-name descname"><span class="pre">modify_log_file_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#general.model.Model.modify_log_file_path" title="Link to this definition">¶</a></dt>
+<dd><p>Modify the log file path for the logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>log_file_path</strong> (<em>str</em>) – The new log file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="general.model.Model.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#general.model.Model.set_params" title="Link to this definition">¶</a></dt>
+<dd><p>Set the Ensemble Analyser parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<em>dict</em>) – Parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class" id="module-utils.DegSeqAnalysis">
-<dt class="sig sig-object py" id="utils.DegSeqAnalysis.DegSeqAnalyzer">
+<span id="module-general.metrics"></span><dt class="sig sig-object py" id="utils.DegSeqAnalysis.DegSeqAnalyzer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utils.DegSeqAnalysis.</span></span><span class="sig-name descname"><span class="pre">DegSeqAnalyzer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.DegSeqAnalysis.DegSeqAnalyzer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
@@ -1409,7 +1809,7 @@ Point 1-4 after Equation S86 of the paper, inner summation of S85</p>
 
 </dd></dl>
 
-<span class="target" id="module-verification"></span></section>
+</section>
 
 
           </div>

@@ -161,31 +161,35 @@ class DirectedS1EnsembleAnalyser:
         Output contains the following:
             average_reciprocity (float): Average reciprocity across the ensemble.
             average_clustering (float): Average clustering coefficient across the ensemble.
+            average_in_degree (float): Average in-degree across the ensemble.
             variance_reciprocity (float): Variance of reciprocity across the ensemble.
             variance_clustering (float): Variance of clustering coefficient across the ensemble.
+            variance_in_degree (float): Variance of in-degree across the ensemble.
             reciprocity_list (List[float]): List of reciprocity values for each generated network.
             clustering_list (List[float]): List of clustering coefficients for each generated network.
-            average_in_degree (float): Average in-degree across the ensemble.
             in_degree_sequences (List[List[int]]): List of in-degree sequences for each generated network.
             out_degree_sequences (List[List[int]]): List of out-degree sequences for each generated network.
-        
+            
         """
         self.average_reciprocity = np.mean(self.reciprocity_list)
         self.average_clustering = np.mean(self.clustering_list) 
         self.variance_reciprocity = np.var(self.reciprocity_list)
         self.variance_clustering = np.var(self.clustering_list) 
         self.average_in_degree = np.mean([np.mean(seq) for seq in self.in_degree_sequences])
+        self.variance_in_degree = np.var([np.mean(seq) for seq in self.in_degree_sequences])
         
         output = {
             "average_reciprocity": self.average_reciprocity,
             "average_clustering": self.average_clustering,
+            "average_in_degree": self.average_in_degree,
             "variance_reciprocity": self.variance_reciprocity,
             "variance_clustering": self.variance_clustering,
+            "variance_in_degree": self.variance_in_degree,
             "reciprocity_list": self.reciprocity_list,
             "clustering_list": self.clustering_list,
-            "average_in_degree": self.average_in_degree,
             "in_degree_sequences": self.in_degree_sequences,
             "out_degree_sequences": self.out_degree_sequences
+            
         }
         
         return output
@@ -197,13 +201,15 @@ class DirectedS1EnsembleAnalyser:
         Output contains the following:
             average_reciprocity (float): Average reciprocity across the ensemble.
             average_clustering (float): Average clustering coefficient across the ensemble.
+            average_in_degree (float): Average in-degree across the ensemble.
             variance_reciprocity (float): Variance of reciprocity across the ensemble.
             variance_clustering (float): Variance of clustering coefficient across the ensemble.
+            variance_in_degree (float): Variance of in-degree across the ensemble.
             reciprocity_list (List[float]): List of reciprocity values for each generated network.
             clustering_list (List[float]): List of clustering coefficients for each generated network.
-            average_in_degree (float): Average in-degree across the ensemble.
             in_degree_sequences (List[List[int]]): List of in-degree sequences for each generated network.
             out_degree_sequences (List[List[int]]): List of out-degree sequences for each generated network.
+            
         """
         
         output = self.get_output()

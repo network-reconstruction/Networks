@@ -44,12 +44,24 @@ Module Documentation
     :undoc-members:
     :show-inheritance:
 
+.. automodule:: Original.full_model.directedS1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: general.model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: general.metrics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 .. automodule:: utils.DegSeqAnalysis
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: verification
-    :members:
-    :undoc-members:
-    :show-inheritance:
+

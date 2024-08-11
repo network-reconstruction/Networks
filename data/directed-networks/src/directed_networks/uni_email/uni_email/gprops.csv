@@ -1,0 +1,6 @@
+# prop_name, value
+name,uni_email
+description,"A network representing the exchange of emails among members of the Rovira i Virgili University in Spain, in 2003. The KONECT version is undirected."
+citation,"['R. Guimera, L. Danon, A. Diaz-Guilera, F. Giralt and A. Arenas, \"Self-similar community structure in a network of human interactions.\" Physical Review E 68, 065103(R) (2003)., http://deim.urv.cat/~alexandre.arenas/publicacions/pdf/email.pdf']"
+url,http://deim.urv.cat/~alexandre.arenas/data/xarxes
+tags,"['Social', 'Communication', 'Unweighted']"

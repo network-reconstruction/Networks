@@ -21,7 +21,6 @@ def setup_paths():
     sys.path.append(os.path.join(parent_dir, 'Original', 'infer_parameters'))
     sys.path.append(os.path.join(parent_dir, 'Original', 'full_model'))
     
-
 @pytest.fixture(scope='module')
 def imported_modules(setup_paths):
     
@@ -268,7 +267,7 @@ def test_random_generation_functional_generate_from_file(setup_paths, functional
     assert 'in_degree_sequence' in data['network_data'] and isinstance(data['network_data']['in_degree_sequence'], list)
     assert 'out_degree_sequence' in data['network_data'] and isinstance(data['network_data']['out_degree_sequence'], list)
 
-def test_random_generation_functional_generate_from_inference_data(setup_paths, functional_random_generation_model, network_data):
+def test_random_generation_functional_generate_from_inference_data(setup_paths, functional_random_generation_model, network_data: dict):
     """
     Test that the DirectedS1Generator class can be instantiated and generate works as expected.
     """
@@ -391,14 +390,46 @@ def functional_directedS1_model():
     #              NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
     #              NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
     #              log_file_path: str = "logs/DirectedS1/test_directedS1_functional.log"):
-    model =  DirectedS1(verbose = True,
-                      log_file_path = "logs/full/DirectedS1/test_directedS1_functional.log")
+    model =  DirectedS1(log_file_path = "logs/full/DirectedS1/test_directedS1_functional.log",
+                        verbose = True)
     model.set_params_fitter(seed = 0, verbose = True, log_file_path = "logs/full/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log")
     model.set_params_generator(seed = 0, verbose = True, log_file_path = "logs/full/DirectedS1Generator/test_generation_functional_generate_from_file.log")
-#TODO large test on whole pipeline
+    model.set_params_ensemble_analyser(verbose = True, log_file_path = "logs/full/DirectedS1EnsembleAnalyser/test_ensemble_analysis_functional.log")
+    return model
+
+def test_functional_directedS1_model(imported_modules, functional_directedS1_model, network_data, deg_seq_filename):
+    """
+    Test that the DirectedS1 class can be instantiated and run works as expected.
+    """
+    # fit_generate_analyse_from_network_data(self,
+                                        #    deg_seq: Tuple[List[float], List[float]],
+                                        #    reciprocity: float,
+                                        #    average_local_clustering: float,
+                                        #    network_name: str = "",
+                                        #    num_samples: int = 10,
+                                        #    save_inferred_params: bool = False,
+                                        #    save_evaluation: bool = False) -> None:
+    network = list(network_data.keys())[0]
+    deg_seq = (network_data[network]['in_degree_sequence'], network_data[network]['out_degree_sequence'])
+    functional_directedS1_model.fit_generate_analyse_from_network_data(deg_seq = deg_seq,
+                                                                       reciprocity = network_data[network]['reciprocity'],
+                                                                       average_local_clustering = network_data[network]['average_clustering'],
+                                                                       network_name = network,
+                                                                       num_samples = 10,
+                                                                       save_inferred_params = True,
+                                                                       save_evaluation = True)
+    assert os.path.exists("outputs/TestNetwork/inferred_params.json"), "Inferred parameters file not found"
+    assert os.path.exists("outputs/TestNetwork/generation_data.json"), "Generation data file not found"
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/complementary_cumulative_degree_distribution.png"), "CCDF plot not found"
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/in_vs_out_degree_distribution.png"), "In vs Out degree distribution plot not found"
+    assert os.path.exists("outputs/TestNetwork/ensemble_analysis/results.json"), "Ensemble analysis results file not found"
+
+#TODO large test on whole pipeline multiple datasets
+
+
 
 if __name__ == '__main__':
     # Test all
-    exit_code = pytest.main(['-v', '-s'])
-    # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_infer_params_fit_from_network_data'])
+    # exit_code = pytest.main(['-v', '-s'])
+    exit_code = pytest.main(['-v', '-s', 'test_original.py::test_functional_directedS1_model'])
     sys.exit(exit_code)

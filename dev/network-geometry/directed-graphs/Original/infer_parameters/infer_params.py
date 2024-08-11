@@ -122,8 +122,8 @@ class DirectedS1Fitter:
                  verbose: bool = False, 
                  KAPPA_MAX_NB_ITER_CONV: int = 100, 
                  EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 50, 
-                 NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
-                 NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
+                 NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1.5e-1, 
+                 NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1.5e-1,
                  log_file_path: str = "logs/DirectedS1Fitter/output.log"): 
         """
         Initialize the parameter inference model for directed hyperbolic networks.
@@ -216,6 +216,7 @@ class DirectedS1Fitter:
         Args:
             **kwargs (dict): The parameters to set.
         """
+        # print(f"kwargs: {kwargs}")
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -813,7 +814,7 @@ class DirectedS1Fitter:
                 })
         return output
     
-    def save_inferred_parameters(self) -> None:
+    def save_inferred_parameters(self, save_path = "") -> None:
         """
         Save the inferred parameters to a JSON file.
         
@@ -836,12 +837,19 @@ class DirectedS1Fitter:
         """
         output = self.get_output()  
         
-        if not os.path.exists("outputs"):
-            os.makedirs("outputs")  
-        if not os.path.exists(f"outputs/{self.output_rootname}"):
-            os.makedirs(f"outputs/{self.output_rootname}")
-        with open(f"outputs/{self.output_rootname}/inferred_params.json", 'w') as f:
-            json.dump(output, f, indent=4)
+        if save_path == "":
+            if not os.path.exists("outputs"):
+                os.makedirs("outputs")  
+            if not os.path.exists(f"outputs/{self.output_rootname}"):
+                os.makedirs(f"outputs/{self.output_rootname}")
+            with open(f"outputs/{self.output_rootname}/inferred_params.json", 'w') as f:
+                json.dump(output, f, indent=4)
+        else:
+            for i in range(1, len(save_path.split("/"))):
+                if not os.path.exists("/".join(save_path.split("/")[:i])):
+                    os.mkdir("/".join(save_path.split("/")[:i]))
+            with open(save_path, 'w') as f:
+                json.dump(output, f, indent=4)
             
     def modify_log_file_path(self, log_file_path: str) -> None:
         """

@@ -7,7 +7,7 @@ Generic Model Class.
 """
 
 class Model:
-    def __init__(self, log_file_path: str = None, verbose: bool = False, **kwargs):
+    def __init__(self, log_file_path: str = "logs/default.log", verbose: bool = False, **kwargs):
         """
         Initialize the Model.
         """

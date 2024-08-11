@@ -4,7 +4,7 @@ import pandas as pd
 import json
 
 class NetworkProcessor:
-    def __init__(self, root_dir, max_edges=150000):
+    def __init__(self, root_dir, max_edges=500000):
         self.root_dir = root_dir
         self.network_data = {}
         self.max_edges = max_edges
@@ -88,5 +88,5 @@ class NetworkProcessor:
 
 # Example usage
 if __name__ == "__main__":
-    processor = NetworkProcessor('directed-networks')
+    processor = NetworkProcessor('directed_networks')
     processor.recursive_process()
