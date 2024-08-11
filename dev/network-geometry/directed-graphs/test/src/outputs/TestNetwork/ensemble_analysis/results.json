@@ -1,8 +1,10 @@
 {
     "average_reciprocity": 0.4366750019845996,
     "average_clustering": 0.3275,
+    "average_in_degree": 1.8666666666666665,
     "variance_reciprocity": 0.015007681977754978,
     "variance_clustering": 0.008668947187928669,
+    "variance_in_degree": 0.07886574074074075,
     "reciprocity_list": [
         0.375,
         0.42105263157894735,
@@ -27,7 +29,6 @@
         0.23333333333333334,
         0.35416666666666663
     ],
-    "average_in_degree": 1.8666666666666665,
     "in_degree_sequences": [
         [
             1,

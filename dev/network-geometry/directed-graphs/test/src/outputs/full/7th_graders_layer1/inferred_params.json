@@ -172,5 +172,27 @@
             "kappa_in": 2.3678648471832275,
             "kappa_out": 433.93011474609375
         }
-    ]
+    ],
+    "flags": {
+        "clustering_cvg": false,
+        "kappa_cvg": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "beta_min_hit": true,
+        "beta_max_hit": false
+    },
+    "model_params": {
+        "seed": 0,
+        "verbose": true,
+        "KAPPA_MAX_NB_ITER_CONV": 100,
+        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 50,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.15,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.15,
+        "log_file_path": "logs/full/DirectedS1/test_directedS1_functional.log"
+    }
 }

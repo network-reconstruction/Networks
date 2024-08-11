@@ -31,7 +31,7 @@ class DirectedS1Generator:
         Num2Name (List[str]): List of node names.
         nb_vertices (int): Number of vertices.
         in_Kappa (List[float]): In-degree distribution.
-        outKappa (List[float]): Out-degree distribution.
+        out_Kappa (List[float]): Out-degree distribution.
         theta (List[float]): Angular positions of nodes.
         network (nx.DiGraph): The generated network.
         reciprocity (float): Network reciprocity.
@@ -73,7 +73,7 @@ class DirectedS1Generator:
         
         self.nb_vertices = 0
         self.in_Kappa = []
-        self.outKappa = []
+        self.out_Kappa = []
         self.theta = None
         self.network = nx.DiGraph()
         
@@ -118,6 +118,7 @@ class DirectedS1Generator:
                     nu (float): The nu parameter.
                     R (float): The R parameter.
                     inferred_kappas (List[Dict[str, float]]): The inferred kappas.
+                    flags (List[Dict[str, Any]]): The flags (not used).
                 
         """
         
@@ -133,7 +134,7 @@ class DirectedS1Generator:
         self.nb_vertices = len(inferred_kappas)
         
         self.in_Kappa = [kappa["kappa_in"] for kappa in inferred_kappas]
-        self.outKappa = [kappa["kappa_out"] for kappa in inferred_kappas]
+        self.out_Kappa = [kappa["kappa_out"] for kappa in inferred_kappas]
         
         self.theta = [2 * self.PI * random.random() for _ in range(self.nb_vertices)]
         
@@ -163,7 +164,7 @@ class DirectedS1Generator:
             raise ValueError("The value of parameter beta must be provided.")
         
         if self.MU == -10:
-            average_kappa = sum((in_k + out_k) / 2.0 for in_k, out_k in zip(self.in_Kappa, self.outKappa)) / self.nb_vertices
+            average_kappa = sum((in_k + out_k) / 2.0 for in_k, out_k in zip(self.in_Kappa, self.out_Kappa)) / self.nb_vertices
             self.MU = self.BETA * math.sin(self.PI / self.BETA) / (2.0 * self.PI * average_kappa)
         
         if self.NU == -10:
@@ -171,14 +172,14 @@ class DirectedS1Generator:
         
         prefactor = self.nb_vertices / (2 * self.PI * self.MU)
         for v1 in range(self.nb_vertices):
-            kout1 = self.outKappa[v1]
+            kout1 = self.out_Kappa[v1]
             k_in1 = self.in_Kappa[v1]
             theta1 = self.theta[v1]
             for v2 in range(v1 + 1, self.nb_vertices):
                 dtheta = self.PI - abs(self.PI - abs(theta1 - self.theta[v2]))
                 koutkin = kout1 * self.in_Kappa[v2]
                 p12 = 1 / (1 + ((prefactor * dtheta) / koutkin) ** self.BETA) if koutkin > self.NUMERICAL_ZERO else 0
-                koutkin = self.outKappa[v2] * k_in1
+                koutkin = self.out_Kappa[v2] * k_in1
                 p21 = 1 / (1 + ((prefactor * dtheta) / koutkin) ** self.BETA) if koutkin > self.NUMERICAL_ZERO else 0
                 
                 if self.NU > 0:
@@ -304,7 +305,7 @@ class DirectedS1Generator:
         with open(f"outputs/{self.output_rootname}/coordinates.csv", 'w') as f:
             f.write("node,in_kappa,out_kappa,theta\n")
             for i in range(self.nb_vertices):
-                f.write(f"{i},{self.in_Kappa[i]},{self.outKappa[i]},{self.theta[i]}\n")
+                f.write(f"{i},{self.in_Kappa[i]},{self.out_Kappa[i]},{self.theta[i]}\n")
                 
     def set_params(self, **kwargs) -> None:
         """

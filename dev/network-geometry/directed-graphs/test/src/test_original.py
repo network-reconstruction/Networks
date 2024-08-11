@@ -143,12 +143,29 @@ def test_infer_params_functional_fit_from_file(setup_paths, functional_fit_model
 
     """Check if data is saved as expected
      data = {
-            "beta": float(self.beta),
-            "mu": float(self.mu),
-            "nu": float(self.nu),
-            "R": float(self.R),
-            "inferred_kappas": []
-        }"""
+                "beta": float,
+                "mu": float,
+                "nu": float,
+                "R": float,
+                "inferred_kappas": [
+                    {
+                        "in_deg": int,
+                        "out_deg": int,
+                        "kappa_in": float,
+                        "kappa_out": float
+                    },
+                    ...
+                ]
+                "flags":
+                {
+                    "clustering_cvg": bool,
+                    "kappa_cvg": List,
+                    "beta_min_hit": bool, 
+                    "beta_max_hit": bool
+                }
+                "seed": int
+            }
+    """
     with open(f"outputs/TestNetwork/inferred_params.json", 'r') as file:
         data = json.load(file)
     assert 'beta' in data and isinstance(data['beta'], float)
@@ -156,6 +173,8 @@ def test_infer_params_functional_fit_from_file(setup_paths, functional_fit_model
     assert 'nu' in data and isinstance(data['nu'], float)
     assert 'R' in data and isinstance(data['R'], float)
     assert 'inferred_kappas' in data and isinstance(data['inferred_kappas'], list)
+    assert 'flags' in data and isinstance(data['flags'], dict)
+    
     
 
         
@@ -186,14 +205,44 @@ def test_infer_params_functional_fit_from_network_data(setup_paths, functional_f
                                 network_name = network)
     assert os.path.exists(f"outputs/{network}/inferred_params.json"), "Inferred parameters file not found"
     
-    """Check if data is saved as expected
-     data = {
-            "beta": float(self.beta),
-            "mu": float(self.mu),
-            "nu": float(self.nu),
-            "R": float(self.R),
-            "inferred_kappas": []
-        }"""
+    """
+    Check if data is saved as expected, data is also hidden_variables for generation.
+    data = {
+                "beta": float,
+                "mu": float,
+                "nu": float,
+                "R": float,
+                "inferred_kappas": [
+                    {
+                        "in_deg": int,
+                        "out_deg": int,
+                        "kappa_in": float,
+                        "kappa_out": float
+                    },
+                    ...
+                ],
+                
+                "flags":
+                {
+                    "clustering_cvg": bool,
+                    "kappa_cvg": List,
+                    "beta_min_hit": bool, 
+                    "beta_max_hit": bool
+                },
+                
+                "model_params":
+                {
+                    "seed": seed,
+                    "verbose": verbose,
+                    "KAPPA_MAX_NB_ITER_CONV": KAPPA_MAX_NB_ITER_CONV, 
+                    "EXP_CLUST_NB_INTEGRATION_MC_STEPS": EXP_CLUST_NB_INTEGRATION_MC_STEPS, 
+                    "NUMERICAL_CONVERGENCE_THRESHOLD_1": NUMERICAL_CONVERGENCE_THRESHOLD_1, 
+                    "NUMERICAL_CONVERGENCE_THRESHOLD_2": NUMERICAL_CONVERGENCE_THRESHOLD_2, 
+                    "log_file_path": log_file_path
+                }
+                
+            } 
+    """
     with open(f"outputs/{network}/inferred_params.json", 'r') as file:
         data = json.load(file)
     assert 'beta' in data and isinstance(data['beta'], float)
@@ -201,6 +250,8 @@ def test_infer_params_functional_fit_from_network_data(setup_paths, functional_f
     assert 'nu' in data and isinstance(data['nu'], float)
     assert 'R' in data and isinstance(data['R'], float)
     assert 'inferred_kappas' in data and isinstance(data['inferred_kappas'], list)
+    assert 'flags' in data and isinstance(data['flags'], dict)
+    assert 'model_params' in data and isinstance(data['model_params'], dict)
     
 @pytest.fixture(scope='module')
 def functional_random_generation_model():
@@ -382,14 +433,6 @@ def functional_directedS1_model():
     Fixture to instantiate the DirectedS1 class converging fast just to test the functionality runs.
     """
     from directedS1 import DirectedS1
-    # def __init__(self, 
-    #              seed: int = 0, 
-    #              verbose: bool = False, 
-    #              KAPPA_MAX_NB_ITER_CONV: int = 10, 
-    #              EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 10, 
-    #              NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
-    #              NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
-    #              log_file_path: str = "logs/DirectedS1/test_directedS1_functional.log"):
     model =  DirectedS1(log_file_path = "logs/full/DirectedS1/test_directedS1_functional.log",
                         verbose = True)
     model.set_params_fitter(seed = 0, verbose = True, log_file_path = "logs/full/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log")
@@ -424,12 +467,39 @@ def test_functional_directedS1_model(imported_modules, functional_directedS1_mod
     assert os.path.exists("outputs/TestNetwork/ensemble_analysis/figs/in_vs_out_degree_distribution.png"), "In vs Out degree distribution plot not found"
     assert os.path.exists("outputs/TestNetwork/ensemble_analysis/results.json"), "Ensemble analysis results file not found"
 
-#TODO large test on whole pipeline multiple datasets
 
+#TODO large test on whole pipeline multiple datasets
+#TODO add Beta convergence flags in model inference and save it to evaluation.
+@pytest.fixture(scope='module')
+def directedS1_model():
+    from directedS1 import DirectedS1
+    # def __init__(self, 
+    #              seed: int = 0, 
+    #              verbose: bool = False, 
+    #              KAPPA_MAX_NB_ITER_CONV: int = 10, 
+    #              EXP_CLUST_NB_INTEGRATION_MC_STEPS: int = 10, 
+    #              NUMERICAL_CONVERGENCE_THRESHOLD_1: float = 1e-2, 
+    #              NUMERICAL_CONVERGENCE_THRESHOLD_2: float = 1e-2,
+    #              log_file_path: str = "logs/DirectedS1/test_directedS1_functional.log"):
+    model =  DirectedS1(log_file_path = "logs/full/DirectedS1/test_directedS1_functional.log",
+                        verbose = True)
+    #Model is going serious mode.
+    model.set_params_fitter(seed = 0,
+                            verbose = True,
+                            log_file_path = "logs/full/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log",
+                            KAPPA_MAX_NB_ITER_CONV = 100,
+                            EXP_CLUST_NB_INTEGRATION_MC_STEPS = 500,
+                            NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-1,
+                            NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-1)
+    model.set_params_generator(seed = 0, verbose = True, log_file_path = "logs/full/DirectedS1Generator/test_generation_functional_generate_from_file.log")
+    model.set_params_ensemble_analyser(verbose = True, log_file_path = "logs/full/DirectedS1EnsembleAnalyser/test_ensemble_analysis_functional.log")
+    return model
+
+# def test_multi_directedS1_model(imported_modules,
 
 
 if __name__ == '__main__':
     # Test all
-    # exit_code = pytest.main(['-v', '-s'])
-    exit_code = pytest.main(['-v', '-s', 'test_original.py::test_functional_directedS1_model'])
+    exit_code = pytest.main(['-v', '-s'])
+    # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_functional_directedS1_model'])
     sys.exit(exit_code)

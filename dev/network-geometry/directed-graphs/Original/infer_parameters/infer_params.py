@@ -158,6 +158,15 @@ class DirectedS1Fitter:
         self.NUMERICAL_ZERO = 1e-5
         self.output_rootname = ""
         self.SEED = seed
+        
+        self.model_params = {"seed": seed,
+                             "verbose": verbose,
+                             "KAPPA_MAX_NB_ITER_CONV": KAPPA_MAX_NB_ITER_CONV, 
+                             "EXP_CLUST_NB_INTEGRATION_MC_STEPS": EXP_CLUST_NB_INTEGRATION_MC_STEPS, 
+                             "NUMERICAL_CONVERGENCE_THRESHOLD_1": NUMERICAL_CONVERGENCE_THRESHOLD_1, 
+                             "NUMERICAL_CONVERGENCE_THRESHOLD_2": NUMERICAL_CONVERGENCE_THRESHOLD_2, 
+                             "log_file_path": log_file_path}
+        self.FLAGS = {"clustering_cvg": False, "kappa_cvg": [], "beta_min_hit": False, "beta_max_hit": False}
 
         self.nb_vertices = 0
         self.nb_vertices_undir_degree_gt_one = 0
@@ -533,6 +542,7 @@ class DirectedS1Fitter:
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
             error = jnp.inf
             keep_going = False
+            #Check error for each of the kappa has to be less than threshold.
             for direction in directions:
                 for el in self.degree_histogram[direction].items():
                     error = jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] - el[0])
@@ -552,6 +562,11 @@ class DirectedS1Fitter:
 
             if cnt >= self.KAPPA_MAX_NB_ITER_CONV:
                 self.logger.info("WARNING: Maximum number of iterations reached before convergence. This limit can be adjusted through the parameter KAPPA_MAX_NB_ITER_CONV.")
+                self.FLAGS["kappa_cvg"].append(False)
+    
+        if cnt < self.KAPPA_MAX_NB_ITER_CONV:
+            self.logger.info(f"Converged in {cnt} iterations.")
+            self.FLAGS["kappa_cvg"].append(True)
 
     def infer_nu(self) -> None:
         """
@@ -647,6 +662,7 @@ class DirectedS1Fitter:
                 self.compute_random_ensemble_clustering()
 
                 if jnp.abs(self.random_ensemble_average_clustering - self.average_undir_clustering) < self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
+                    self.FLAGS["clustering_cvg"] = True
                     break
 
                 if self.random_ensemble_average_clustering > self.average_undir_clustering:
@@ -658,6 +674,7 @@ class DirectedS1Fitter:
                     else:
                         self.beta = beta_min + (beta_max - beta_min) * (self.average_undir_clustering - random_ensemble_average_clustering_min) / (random_ensemble_average_clustering_max - random_ensemble_average_clustering_min)
                     if self.beta < self.BETA_ABS_MIN:
+                        self.FLAGS["beta_min_hit"] = True
                         break
                 else:
                     beta_min = self.beta
@@ -668,6 +685,7 @@ class DirectedS1Fitter:
                         self.beta = beta_min + (beta_max - beta_min) * (self.average_undir_clustering - random_ensemble_average_clustering_min) / (random_ensemble_average_clustering_max - random_ensemble_average_clustering_min)
 
                 if self.beta > self.BETA_ABS_MAX:
+                    self.FLAGS["beta_max_hit"] = True
                     break
         else:
             if not self.CUSTOM_MU:
@@ -789,14 +807,29 @@ class DirectedS1Fitter:
                 out_deg (int): Out-degree.
                 kappa_in (float): Inferred kappa for in-degree.
                 kappa_out (float): Inferred kappa for out-degree.
-                
+            flags (Dict[str, Any]): Flags.
+                clustering_cvg (bool): Clustering converged.
+                kappa_cvg (List[bool]): Kappa converged at each beta iteration.
+                beta_min_hit (bool): Beta minimum hit.
+                beta_max_hit (bool): Beta maximum hit.
+            model_params (Dict[str, Any]): Model parameters.
+                seed (int): Seed.
+                verbose (bool): Verbosity.
+                KAPPA_MAX_NB_ITER_CONV (int): Maximum number of iterations for convergence.
+                EXP_CLUST_NB_INTEGRATION_MC_STEPS (int): Number of Monte Carlo steps for integration.
+                NUMERICAL_CONVERGENCE_THRESHOLD_1 (float): Numerical convergence threshold 1.
+                NUMERICAL_CONVERGENCE_THRESHOLD_2 (float): Numerical convergence threshold 2.
+                log_file_path (str): Path to the log file
+                  
         """
         output = {
             "beta": float(self.beta),
             "mu": float(self.mu),
             "nu": float(self.nu),
             "R": float(self.R),
-            "inferred_kappas": []
+            "inferred_kappas": [],
+            "flags": self.FLAGS,
+            "model_params": self.model_params
         }
         if self.verbose:
             self.logger.info("Data types:")
@@ -832,11 +865,30 @@ class DirectedS1Fitter:
                         "kappa_out": float
                     },
                     ...
-                ]
+                ],
+                
+                "flags":
+                {
+                    "clustering_cvg": bool,
+                    "kappa_cvg": List,
+                    "beta_min_hit": bool, 
+                    "beta_max_hit": bool
+                },
+                
+                "model_params":
+                {
+                    "seed": seed,
+                    "verbose": verbose,
+                    "KAPPA_MAX_NB_ITER_CONV": KAPPA_MAX_NB_ITER_CONV, 
+                    "EXP_CLUST_NB_INTEGRATION_MC_STEPS": EXP_CLUST_NB_INTEGRATION_MC_STEPS, 
+                    "NUMERICAL_CONVERGENCE_THRESHOLD_1": NUMERICAL_CONVERGENCE_THRESHOLD_1, 
+                    "NUMERICAL_CONVERGENCE_THRESHOLD_2": NUMERICAL_CONVERGENCE_THRESHOLD_2, 
+                    "log_file_path": log_file_path
+                }
+                
             }
         """
         output = self.get_output()  
-        
         if save_path == "":
             if not os.path.exists("outputs"):
                 os.makedirs("outputs")  
@@ -850,7 +902,16 @@ class DirectedS1Fitter:
                     os.mkdir("/".join(save_path.split("/")[:i]))
             with open(save_path, 'w') as f:
                 json.dump(output, f, indent=4)
-            
+                
+    def get_flags(self) -> Dict[str, Any]:
+        """
+        Get the flags.
+
+        Returns:
+            Dict[str, Any]: Flags.
+        """
+        return self.FLAGS       
+    
     def modify_log_file_path(self, log_file_path: str) -> None:
         """
         Modify the log file path for the logger.
