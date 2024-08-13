@@ -1,7 +1,7 @@
 {
     "7th_graders_layer1": {
         "reciprocity": 0.6703601108033241,
-        "average_clustering": 0.5938583612970665,
+        "average_clustering": 0.7536970255663542,
         "in_degree_sequence": [
             10,
             7,
@@ -68,7 +68,7 @@
     },
     "7th_graders_layer2": {
         "reciprocity": 0.6077348066298343,
-        "average_clustering": 0.5719008700600645,
+        "average_clustering": 0.6806935653835735,
         "in_degree_sequence": [
             5,
             8,
@@ -135,7 +135,7 @@
     },
     "7th_graders_layer3": {
         "reciprocity": 0.46464646464646464,
-        "average_clustering": 0.5063915796643874,
+        "average_clustering": 0.712821978680845,
         "in_degree_sequence": [
             4,
             7,
@@ -202,7 +202,7 @@
     },
     "advogato": {
         "reciprocity": 0.30707845169871106,
-        "average_clustering": 0.1477892963200948,
+        "average_clustering": 0.19529853863012134,
         "in_degree_sequence": [
             14,
             8,
@@ -13289,7 +13289,7 @@
     },
     "celegansneural": {
         "reciprocity": 0.16801705756929639,
-        "average_clustering": 0.17355726624539414,
+        "average_clustering": 0.2923632978321903,
         "in_degree_sequence": [
             2,
             24,
@@ -13892,7 +13892,7 @@
     },
     "chess": {
         "reciprocity": 0.13812743563268162,
-        "average_clustering": 0.10465317728453763,
+        "average_clustering": 0.1766973682040722,
         "in_degree_sequence": [
             19,
             56,
@@ -28503,7 +28503,7 @@
     },
     "cintestinalis": {
         "reciprocity": 0.1922149500516707,
-        "average_clustering": 0.20931186095684248,
+        "average_clustering": 0.3553532182575647,
         "in_degree_sequence": [
             12,
             7,
@@ -28922,7 +28922,7 @@
     },
     "email_company": {
         "reciprocity": 0.8758644536652835,
-        "average_clustering": 0.5589200297168039,
+        "average_clustering": 0.5918632085486948,
         "in_degree_sequence": [
             116,
             66,
@@ -29265,7 +29265,7 @@
     },
     "faa_routes": {
         "reciprocity": 0.15678776290630975,
-        "average_clustering": 0.040446962184873675,
+        "average_clustering": 0.06750771494491799,
         "in_degree_sequence": [
             5,
             4,
@@ -31726,7 +31726,7 @@
     },
     "fao_trade_layer3": {
         "reciprocity": 0.5446469597181804,
-        "average_clustering": 0.5823101737725047,
+        "average_clustering": 0.6800406552532978,
         "in_degree_sequence": [
             45,
             94,
@@ -32127,7 +32127,7 @@
     },
     "fao_trade_layer5": {
         "reciprocity": 0.3244962884411453,
-        "average_clustering": 0.3738565254141849,
+        "average_clustering": 0.48443709016973957,
         "in_degree_sequence": [
             16,
             19,
@@ -32478,7 +32478,7 @@
     },
     "fao_trade_layer6": {
         "reciprocity": 0.20132013201320131,
-        "average_clustering": 0.329092286474079,
+        "average_clustering": 0.4861780791343215,
         "in_degree_sequence": [
             5,
             31,
@@ -32775,7 +32775,7 @@
     },
     "fao_trade_layer7": {
         "reciprocity": 0.32860520094562645,
-        "average_clustering": 0.3163792755987981,
+        "average_clustering": 0.4368444190674742,
         "in_degree_sequence": [
             5,
             6,
@@ -33082,7 +33082,7 @@
     },
     "fao_trade_layer11": {
         "reciprocity": 0.2940038684719536,
-        "average_clustering": 0.2485975954428228,
+        "average_clustering": 0.37167624449347836,
         "in_degree_sequence": [
             1,
             3,
@@ -33351,7 +33351,7 @@
     },
     "fao_trade_layer12": {
         "reciprocity": 0.29436769394261425,
-        "average_clustering": 0.3951075618160512,
+        "average_clustering": 0.5257300723757368,
         "in_degree_sequence": [
             0,
             41,
@@ -33682,7 +33682,7 @@
     },
     "fao_trade_layer15": {
         "reciprocity": 0.3174958077138066,
-        "average_clustering": 0.35602764481190846,
+        "average_clustering": 0.4946990776378415,
         "in_degree_sequence": [
             0,
             27,
@@ -34023,7 +34023,7 @@
     },
     "fao_trade_layer18": {
         "reciprocity": 0.2683544303797468,
-        "average_clustering": 0.36033769700134577,
+        "average_clustering": 0.5289138703538665,
         "in_degree_sequence": [
             0,
             20,
@@ -34326,7 +34326,7 @@
     },
     "fao_trade_layer22": {
         "reciprocity": 0.3057401812688822,
-        "average_clustering": 0.41245792456482616,
+        "average_clustering": 0.5450849092627906,
         "in_degree_sequence": [
             0,
             8,
@@ -34637,7 +34637,7 @@
     },
     "fao_trade_layer23": {
         "reciprocity": 0.2135306553911205,
-        "average_clustering": 0.35199736413179683,
+        "average_clustering": 0.508973368943353,
         "in_degree_sequence": [
             0,
             9,
@@ -34918,7 +34918,7 @@
     },
     "fao_trade_layer24": {
         "reciprocity": 0.5836065573770491,
-        "average_clustering": 0.6710730960985006,
+        "average_clustering": 0.7268327172397229,
         "in_degree_sequence": [
             0,
             89,
@@ -35341,7 +35341,7 @@
     },
     "fao_trade_layer29": {
         "reciprocity": 0.5255609530418691,
-        "average_clustering": 0.5777711831958352,
+        "average_clustering": 0.6663186177157668,
         "in_degree_sequence": [
             0,
             78,
@@ -35706,7 +35706,7 @@
     },
     "fao_trade_layer38": {
         "reciprocity": 0.16517667092379737,
-        "average_clustering": 0.30978272186515937,
+        "average_clustering": 0.4610793997798266,
         "in_degree_sequence": [
             0,
             33,
@@ -36059,7 +36059,7 @@
     },
     "fao_trade_layer40": {
         "reciprocity": 0.3628415300546448,
-        "average_clustering": 0.4447382792091999,
+        "average_clustering": 0.5642578410534773,
         "in_degree_sequence": [
             0,
             58,
@@ -36380,7 +36380,7 @@
     },
     "fao_trade_layer44": {
         "reciprocity": 0.2593144560357675,
-        "average_clustering": 0.37216141763088184,
+        "average_clustering": 0.5103407420985909,
         "in_degree_sequence": [
             0,
             15,
@@ -36637,7 +36637,7 @@
     },
     "fao_trade_layer49": {
         "reciprocity": 0.21359223300970873,
-        "average_clustering": 0.24709135288021403,
+        "average_clustering": 0.3423131154215786,
         "in_degree_sequence": [
             0,
             5,
@@ -36938,7 +36938,7 @@
     },
     "fao_trade_layer51": {
         "reciprocity": 0.2835332606324973,
-        "average_clustering": 0.4379829568605932,
+        "average_clustering": 0.5820418546808321,
         "in_degree_sequence": [
             0,
             10,
@@ -37219,7 +37219,7 @@
     },
     "fao_trade_layer52": {
         "reciprocity": 0.29427792915531337,
-        "average_clustering": 0.35788053418105287,
+        "average_clustering": 0.4818273618866369,
         "in_degree_sequence": [
             0,
             10,
@@ -37526,7 +37526,7 @@
     },
     "fao_trade_layer54": {
         "reciprocity": 0.2471264367816092,
-        "average_clustering": 0.3250457519130678,
+        "average_clustering": 0.47828698093477096,
         "in_degree_sequence": [
             0,
             17,
@@ -37839,7 +37839,7 @@
     },
     "fao_trade_layer55": {
         "reciprocity": 0.21575342465753425,
-        "average_clustering": 0.29518916523178923,
+        "average_clustering": 0.4291737291130357,
         "in_degree_sequence": [
             0,
             2,
@@ -38088,7 +38088,7 @@
     },
     "fao_trade_layer57": {
         "reciprocity": 0.3269513991163476,
-        "average_clustering": 0.2620485305429959,
+        "average_clustering": 0.3514782751341899,
         "in_degree_sequence": [
             0,
             3,
@@ -38337,7 +38337,7 @@
     },
     "fao_trade_layer63": {
         "reciprocity": 0.2754182754182754,
-        "average_clustering": 0.30792275323683244,
+        "average_clustering": 0.4411732348605801,
         "in_degree_sequence": [
             0,
             4,
@@ -38606,7 +38606,7 @@
     },
     "fao_trade_layer67": {
         "reciprocity": 0.17972350230414746,
-        "average_clustering": 0.3375062323408509,
+        "average_clustering": 0.5053658320966005,
         "in_degree_sequence": [
             0,
             22,
@@ -38893,7 +38893,7 @@
     },
     "fao_trade_layer68": {
         "reciprocity": 0.2381818181818182,
-        "average_clustering": 0.3162588210024008,
+        "average_clustering": 0.4433495912967717,
         "in_degree_sequence": [
             0,
             3,
@@ -39204,7 +39204,7 @@
     },
     "fao_trade_layer77": {
         "reciprocity": 0.3,
-        "average_clustering": 0.33234472170688617,
+        "average_clustering": 0.4541011283095351,
         "in_degree_sequence": [
             0,
             19,
@@ -39405,7 +39405,7 @@
     },
     "fao_trade_layer79": {
         "reciprocity": 0.2369146005509642,
-        "average_clustering": 0.3584967190228564,
+        "average_clustering": 0.5073325086041137,
         "in_degree_sequence": [
             0,
             57,
@@ -39730,7 +39730,7 @@
     },
     "fao_trade_layer82": {
         "reciprocity": 0.1438721136767318,
-        "average_clustering": 0.2857262452949448,
+        "average_clustering": 0.48367295906983165,
         "in_degree_sequence": [
             0,
             20,
@@ -40031,7 +40031,7 @@
     },
     "fao_trade_layer90": {
         "reciprocity": 0.1881720430107527,
-        "average_clustering": 0.24873012783810367,
+        "average_clustering": 0.3598116387557974,
         "in_degree_sequence": [
             0,
             5,
@@ -40238,7 +40238,7 @@
     },
     "fao_trade_layer105": {
         "reciprocity": 0.04326923076923077,
-        "average_clustering": 0.1679331427759374,
+        "average_clustering": 0.27034795629270486,
         "in_degree_sequence": [
             0,
             30,
@@ -40503,7 +40503,7 @@
     },
     "fao_trade_layer109": {
         "reciprocity": 0.3067484662576687,
-        "average_clustering": 0.29267676563754813,
+        "average_clustering": 0.39746308288504195,
         "in_degree_sequence": [
             0,
             12,
@@ -40784,7 +40784,7 @@
     },
     "fao_trade_layer110": {
         "reciprocity": 0.19909502262443438,
-        "average_clustering": 0.22444488816380795,
+        "average_clustering": 0.3388731854107212,
         "in_degree_sequence": [
             0,
             6,
@@ -41027,7 +41027,7 @@
     },
     "fao_trade_layer142": {
         "reciprocity": 0.41239644062595887,
-        "average_clustering": 0.44944972715833303,
+        "average_clustering": 0.5624484886555084,
         "in_degree_sequence": [
             0,
             55,
@@ -41378,7 +41378,7 @@
     },
     "fao_trade_layer143": {
         "reciprocity": 0.2035195103289977,
-        "average_clustering": 0.32580762311396133,
+        "average_clustering": 0.5107848516067555,
         "in_degree_sequence": [
             0,
             12,
@@ -41685,7 +41685,7 @@
     },
     "fao_trade_layer144": {
         "reciprocity": 0.14432989690721648,
-        "average_clustering": 0.2361175839509685,
+        "average_clustering": 0.3958259710199339,
         "in_degree_sequence": [
             0,
             11,
@@ -41990,7 +41990,7 @@
     },
     "fao_trade_layer147": {
         "reciprocity": 0.36544437538844005,
-        "average_clustering": 0.3951430530321651,
+        "average_clustering": 0.5174883593983356,
         "in_degree_sequence": [
             0,
             32,
@@ -42307,7 +42307,7 @@
     },
     "fao_trade_layer152": {
         "reciprocity": 0.20738413197172034,
-        "average_clustering": 0.2769957342364363,
+        "average_clustering": 0.43233522675687863,
         "in_degree_sequence": [
             0,
             2,
@@ -42614,7 +42614,7 @@
     },
     "fao_trade_layer166": {
         "reciprocity": 0.2277339346110485,
-        "average_clustering": 0.32845401876186775,
+        "average_clustering": 0.47961044168114547,
         "in_degree_sequence": [
             0,
             12,
@@ -42889,7 +42889,7 @@
     },
     "fao_trade_layer168": {
         "reciprocity": 0.3030961434003259,
-        "average_clustering": 0.39575033345421584,
+        "average_clustering": 0.5538865861542382,
         "in_degree_sequence": [
             0,
             56,
@@ -43208,7 +43208,7 @@
     },
     "fao_trade_layer171": {
         "reciprocity": 0.21739130434782608,
-        "average_clustering": 0.4182813907783617,
+        "average_clustering": 0.5266357545976099,
         "in_degree_sequence": [
             0,
             3,
@@ -43447,7 +43447,7 @@
     },
     "fao_trade_layer174": {
         "reciprocity": 0.2889079965606191,
-        "average_clustering": 0.339111981641622,
+        "average_clustering": 0.48744362745560643,
         "in_degree_sequence": [
             0,
             16,
@@ -43746,7 +43746,7 @@
     },
     "fao_trade_layer175": {
         "reciprocity": 0.3069387755102041,
-        "average_clustering": 0.33393989892045955,
+        "average_clustering": 0.46718417839377024,
         "in_degree_sequence": [
             0,
             14,
@@ -44057,7 +44057,7 @@
     },
     "fao_trade_layer182": {
         "reciprocity": 0.21230398069963813,
-        "average_clustering": 0.278188758231519,
+        "average_clustering": 0.4273510635494322,
         "in_degree_sequence": [
             0,
             2,
@@ -44340,7 +44340,7 @@
     },
     "fao_trade_layer183": {
         "reciprocity": 0.2987551867219917,
-        "average_clustering": 0.3571051481188984,
+        "average_clustering": 0.4847000445679756,
         "in_degree_sequence": [
             0,
             37,
@@ -44655,7 +44655,7 @@
     },
     "fao_trade_layer185": {
         "reciprocity": 0.10294117647058823,
-        "average_clustering": 0.09280089511391451,
+        "average_clustering": 0.17061213640161008,
         "in_degree_sequence": [
             0,
             2,
@@ -44854,7 +44854,7 @@
     },
     "fao_trade_layer189": {
         "reciprocity": 0.24350940017905104,
-        "average_clustering": 0.40804459713435043,
+        "average_clustering": 0.5535359706527185,
         "in_degree_sequence": [
             0,
             11,
@@ -45141,7 +45141,7 @@
     },
     "fao_trade_layer192": {
         "reciprocity": 0.20185375901132852,
-        "average_clustering": 0.3825824170788664,
+        "average_clustering": 0.5463163516126337,
         "in_degree_sequence": [
             0,
             10,
@@ -45432,7 +45432,7 @@
     },
     "fao_trade_layer194": {
         "reciprocity": 0.3374233128834356,
-        "average_clustering": 0.36330048270266097,
+        "average_clustering": 0.4903852922066834,
         "in_degree_sequence": [
             0,
             6,
@@ -45663,7 +45663,7 @@
     },
     "fao_trade_layer197": {
         "reciprocity": 0.38851674641148326,
-        "average_clustering": 0.4374647283678068,
+        "average_clustering": 0.5526742203269167,
         "in_degree_sequence": [
             0,
             42,
@@ -45978,7 +45978,7 @@
     },
     "fao_trade_layer198": {
         "reciprocity": 0.27627118644067794,
-        "average_clustering": 0.34037595058907594,
+        "average_clustering": 0.49738627932052004,
         "in_degree_sequence": [
             0,
             4,
@@ -46283,7 +46283,7 @@
     },
     "fao_trade_layer199": {
         "reciprocity": 0.22580645161290322,
-        "average_clustering": 0.35141193530399983,
+        "average_clustering": 0.5070734457068787,
         "in_degree_sequence": [
             0,
             16,
@@ -46554,7 +46554,7 @@
     },
     "fao_trade_layer207": {
         "reciprocity": 0.4906734113183686,
-        "average_clustering": 0.5817623148274131,
+        "average_clustering": 0.6591717819687752,
         "in_degree_sequence": [
             0,
             86,
@@ -46911,7 +46911,7 @@
     },
     "fao_trade_layer212": {
         "reciprocity": 0.16357688113413305,
-        "average_clustering": 0.250236882624826,
+        "average_clustering": 0.3926763902150132,
         "in_degree_sequence": [
             0,
             2,
@@ -47172,7 +47172,7 @@
     },
     "fao_trade_layer214": {
         "reciprocity": 0.24261275272161742,
-        "average_clustering": 0.29430770692942826,
+        "average_clustering": 0.3962661637385564,
         "in_degree_sequence": [
             0,
             3,
@@ -47445,7 +47445,7 @@
     },
     "fao_trade_layer226": {
         "reciprocity": 0.23772241992882562,
-        "average_clustering": 0.43295187510481775,
+        "average_clustering": 0.5990449260944346,
         "in_degree_sequence": [
             0,
             42,
@@ -47742,7 +47742,7 @@
     },
     "fao_trade_layer229": {
         "reciprocity": 0.20797720797720798,
-        "average_clustering": 0.27824491967330633,
+        "average_clustering": 0.43831672668385135,
         "in_degree_sequence": [
             0,
             28,
@@ -48019,7 +48019,7 @@
     },
     "fao_trade_layer230": {
         "reciprocity": 0.215962441314554,
-        "average_clustering": 0.3133545824605153,
+        "average_clustering": 0.46568777432348046,
         "in_degree_sequence": [
             0,
             2,
@@ -48300,7 +48300,7 @@
     },
     "fao_trade_layer236": {
         "reciprocity": 0.25949367088607594,
-        "average_clustering": 0.3289755417686088,
+        "average_clustering": 0.4750565315902598,
         "in_degree_sequence": [
             0,
             2,
@@ -48607,7 +48607,7 @@
     },
     "fao_trade_layer237": {
         "reciprocity": 0.08163265306122448,
-        "average_clustering": 0.18383531360972566,
+        "average_clustering": 0.3169058894562153,
         "in_degree_sequence": [
             0,
             26,
@@ -48842,7 +48842,7 @@
     },
     "fao_trade_layer254": {
         "reciprocity": 0.36042402826855124,
-        "average_clustering": 0.4250118777796794,
+        "average_clustering": 0.5226320762995642,
         "in_degree_sequence": [
             0,
             15,
@@ -49137,7 +49137,7 @@
     },
     "fao_trade_layer255": {
         "reciprocity": 0.23255813953488372,
-        "average_clustering": 0.22024341725363428,
+        "average_clustering": 0.31628072820787295,
         "in_degree_sequence": [
             0,
             3,
@@ -49398,7 +49398,7 @@
     },
     "fao_trade_layer256": {
         "reciprocity": 0.19923371647509577,
-        "average_clustering": 0.21141759850323497,
+        "average_clustering": 0.2738962358250964,
         "in_degree_sequence": [
             0,
             5,
@@ -49589,7 +49589,7 @@
     },
     "fao_trade_layer258": {
         "reciprocity": 0.2421875,
-        "average_clustering": 0.2621406859493607,
+        "average_clustering": 0.3985207327626616,
         "in_degree_sequence": [
             0,
             17,
@@ -49728,7 +49728,7 @@
     },
     "fao_trade_layer266": {
         "reciprocity": 0.22739018087855298,
-        "average_clustering": 0.2785962185734729,
+        "average_clustering": 0.4056102838549631,
         "in_degree_sequence": [
             0,
             1,
@@ -49913,7 +49913,7 @@
     },
     "fao_trade_layer268": {
         "reciprocity": 0.16936936936936936,
-        "average_clustering": 0.2665083394648401,
+        "average_clustering": 0.3976852562177855,
         "in_degree_sequence": [
             0,
             5,
@@ -50170,7 +50170,7 @@
     },
     "fao_trade_layer291": {
         "reciprocity": 0.18723404255319148,
-        "average_clustering": 0.3372746044514293,
+        "average_clustering": 0.5166476015173822,
         "in_degree_sequence": [
             10,
             15,
@@ -50499,7 +50499,7 @@
     },
     "fao_trade_layer293": {
         "reciprocity": 0.378159757330637,
-        "average_clustering": 0.486725257860292,
+        "average_clustering": 0.6169798993303206,
         "in_degree_sequence": [
             18,
             24,
@@ -50850,7 +50850,7 @@
     },
     "fao_trade_layer295": {
         "reciprocity": 0.4557678697806086,
-        "average_clustering": 0.4880535903965007,
+        "average_clustering": 0.6069213319373488,
         "in_degree_sequence": [
             22,
             72,
@@ -51215,7 +51215,7 @@
     },
     "fao_trade_layer296": {
         "reciprocity": 0.30484988452655887,
-        "average_clustering": 0.35749794415028907,
+        "average_clustering": 0.48609927353638605,
         "in_degree_sequence": [
             12,
             6,
@@ -51526,7 +51526,7 @@
     },
     "fao_trade_layer301": {
         "reciprocity": 0.21666666666666667,
-        "average_clustering": 0.14532084231071765,
+        "average_clustering": 0.22998705752833715,
         "in_degree_sequence": [
             0,
             6,
@@ -51751,7 +51751,7 @@
     },
     "fao_trade_layer302": {
         "reciprocity": 0.42278860569715143,
-        "average_clustering": 0.511426300401461,
+        "average_clustering": 0.621992473122911,
         "in_degree_sequence": [
             0,
             49,
@@ -52102,7 +52102,7 @@
     },
     "fao_trade_layer303": {
         "reciprocity": 0.39656406585540444,
-        "average_clustering": 0.5027556444141122,
+        "average_clustering": 0.6374672659444222,
         "in_degree_sequence": [
             0,
             88,
@@ -52445,7 +52445,7 @@
     },
     "fao_trade_layer304": {
         "reciprocity": 0.37935034802784223,
-        "average_clustering": 0.46676709606646377,
+        "average_clustering": 0.5866051074493356,
         "in_degree_sequence": [
             0,
             8,
@@ -52762,7 +52762,7 @@
     },
     "fao_trade_layer307": {
         "reciprocity": 0.40865384615384615,
-        "average_clustering": 0.49594351714175683,
+        "average_clustering": 0.6093197724517311,
         "in_degree_sequence": [
             0,
             14,
@@ -53083,7 +53083,7 @@
     },
     "fao_trade_layer309": {
         "reciprocity": 0.4150462225055786,
-        "average_clustering": 0.530285389697147,
+        "average_clustering": 0.6497913781996043,
         "in_degree_sequence": [
             0,
             63,
@@ -53414,7 +53414,7 @@
     },
     "fao_trade_layer313": {
         "reciprocity": 0.22076215505913271,
-        "average_clustering": 0.22411653219107153,
+        "average_clustering": 0.3372828736548394,
         "in_degree_sequence": [
             0,
             2,
@@ -53693,7 +53693,7 @@
     },
     "fao_trade_layer319": {
         "reciprocity": 0.2638522427440633,
-        "average_clustering": 0.31064706450287605,
+        "average_clustering": 0.4865675550728493,
         "in_degree_sequence": [
             0,
             15,
@@ -53944,7 +53944,7 @@
     },
     "fao_trade_layer320": {
         "reciprocity": 0.21256038647342995,
-        "average_clustering": 0.23840478547180893,
+        "average_clustering": 0.3502186318449558,
         "in_degree_sequence": [
             0,
             17,
@@ -54175,7 +54175,7 @@
     },
     "fao_trade_layer321": {
         "reciprocity": 0.2144,
-        "average_clustering": 0.37290360128608874,
+        "average_clustering": 0.5652272798829283,
         "in_degree_sequence": [
             0,
             15,
@@ -54466,7 +54466,7 @@
     },
     "fao_trade_layer327": {
         "reciprocity": 0.16272965879265092,
-        "average_clustering": 0.282110622954307,
+        "average_clustering": 0.46961667901942905,
         "in_degree_sequence": [
             0,
             9,
@@ -54777,7 +54777,7 @@
     },
     "fao_trade_layer330": {
         "reciprocity": 0.2885181550539745,
-        "average_clustering": 0.30427436779004,
+        "average_clustering": 0.4396159237536469,
         "in_degree_sequence": [
             0,
             4,
@@ -55088,7 +55088,7 @@
     },
     "fao_trade_layer332": {
         "reciprocity": 0.3139269406392694,
-        "average_clustering": 0.3927122190454091,
+        "average_clustering": 0.5399520904452376,
         "in_degree_sequence": [
             0,
             58,
@@ -55439,7 +55439,7 @@
     },
     "fao_trade_layer333": {
         "reciprocity": 0.3309692671394799,
-        "average_clustering": 0.43422311664582747,
+        "average_clustering": 0.5626076081228468,
         "in_degree_sequence": [
             0,
             11,
@@ -55726,7 +55726,7 @@
     },
     "fao_trade_layer337": {
         "reciprocity": 0.24332810047095763,
-        "average_clustering": 0.30565235115167616,
+        "average_clustering": 0.44353729393369556,
         "in_degree_sequence": [
             0,
             33,
@@ -56039,7 +56039,7 @@
     },
     "fao_trade_layer339": {
         "reciprocity": 0.19413092550790068,
-        "average_clustering": 0.2174644733069216,
+        "average_clustering": 0.35416064542069425,
         "in_degree_sequence": [
             0,
             7,
@@ -56260,7 +56260,7 @@
     },
     "fao_trade_layer342": {
         "reciprocity": 0.25458052073288334,
-        "average_clustering": 0.34924746120279293,
+        "average_clustering": 0.4802024805138625,
         "in_degree_sequence": [
             0,
             55,
@@ -56555,7 +56555,7 @@
     },
     "fao_trade_layer348": {
         "reciprocity": 0.3018867924528302,
-        "average_clustering": 0.3461294064412714,
+        "average_clustering": 0.4749091584054836,
         "in_degree_sequence": [
             0,
             44,
@@ -56764,7 +56764,7 @@
     },
     "fao_trade_layer349": {
         "reciprocity": 0.23448275862068965,
-        "average_clustering": 0.2592055664833662,
+        "average_clustering": 0.39758592007409305,
         "in_degree_sequence": [
             0,
             7,
@@ -56985,7 +56985,7 @@
     },
     "fao_trade_layer351": {
         "reciprocity": 0.294234592445328,
-        "average_clustering": 0.37220065715686074,
+        "average_clustering": 0.5177951367319147,
         "in_degree_sequence": [
             0,
             15,
@@ -57310,7 +57310,7 @@
     },
     "fao_trade_layer356": {
         "reciprocity": 0.3421828908554572,
-        "average_clustering": 0.32060745985493905,
+        "average_clustering": 0.40601231880655164,
         "in_degree_sequence": [
             0,
             1,
@@ -57473,7 +57473,7 @@
     },
     "fao_trade_layer359": {
         "reciprocity": 0.10612244897959183,
-        "average_clustering": 0.16744932890543304,
+        "average_clustering": 0.2910295632642017,
         "in_degree_sequence": [
             0,
             23,
@@ -57672,7 +57672,7 @@
     },
     "fao_trade_layer361": {
         "reciprocity": 0.0,
-        "average_clustering": 0.018238993710691827,
+        "average_clustering": 0.036477987421383654,
         "in_degree_sequence": [
             0,
             4,
@@ -57787,7 +57787,7 @@
     },
     "fao_trade_layer362": {
         "reciprocity": 0.13688212927756654,
-        "average_clustering": 0.24976409067415634,
+        "average_clustering": 0.4187116058374053,
         "in_degree_sequence": [
             0,
             43,
@@ -58020,7 +58020,7 @@
     },
     "fao_trade_layer1": {
         "reciprocity": 0.46053946053946054,
-        "average_clustering": 0.4930786506050536,
+        "average_clustering": 0.599761320782016,
         "in_degree_sequence": [
             65,
             28,
@@ -58387,7 +58387,7 @@
     },
     "fao_trade_layer2": {
         "reciprocity": 0.27611044417767105,
-        "average_clustering": 0.3155349679119623,
+        "average_clustering": 0.4542148982071001,
         "in_degree_sequence": [
             5,
             6,
@@ -58678,7 +58678,7 @@
     },
     "fao_trade_layer4": {
         "reciprocity": 0.3139054612207435,
-        "average_clustering": 0.44971422482616635,
+        "average_clustering": 0.5976290441472816,
         "in_degree_sequence": [
             31,
             30,
@@ -58999,7 +58999,7 @@
     },
     "fao_trade_layer8": {
         "reciprocity": 0.2163355408388521,
-        "average_clustering": 0.22301746798590824,
+        "average_clustering": 0.34241263018475426,
         "in_degree_sequence": [
             10,
             36,
@@ -59294,7 +59294,7 @@
     },
     "fao_trade_layer9": {
         "reciprocity": 0.22115384615384615,
-        "average_clustering": 0.3190399861219288,
+        "average_clustering": 0.4453981661453784,
         "in_degree_sequence": [
             0,
             6,
@@ -59591,7 +59591,7 @@
     },
     "fao_trade_layer10": {
         "reciprocity": 0.29338842975206614,
-        "average_clustering": 0.25633127103282444,
+        "average_clustering": 0.38312356378150614,
         "in_degree_sequence": [
             0,
             15,
@@ -59820,7 +59820,7 @@
     },
     "fao_trade_layer13": {
         "reciprocity": 0.2233375156838143,
-        "average_clustering": 0.2965070460407459,
+        "average_clustering": 0.4576187544181014,
         "in_degree_sequence": [
             8,
             18,
@@ -60093,7 +60093,7 @@
     },
     "fao_trade_layer14": {
         "reciprocity": 0.476647311285029,
-        "average_clustering": 0.5165083268632249,
+        "average_clustering": 0.6217388214568456,
         "in_degree_sequence": [
             67,
             45,
@@ -60436,7 +60436,7 @@
     },
     "fao_trade_layer16": {
         "reciprocity": 0.12998522895125553,
-        "average_clustering": 0.25062783233703295,
+        "average_clustering": 0.425474036818234,
         "in_degree_sequence": [
             13,
             8,
@@ -60699,7 +60699,7 @@
     },
     "fao_trade_layer17": {
         "reciprocity": 0.32689655172413795,
-        "average_clustering": 0.4180162510213942,
+        "average_clustering": 0.5598150904338409,
         "in_degree_sequence": [
             30,
             24,
@@ -60992,7 +60992,7 @@
     },
     "fao_trade_layer19": {
         "reciprocity": 0.3651226158038147,
-        "average_clustering": 0.44899452341615453,
+        "average_clustering": 0.5484006790551453,
         "in_degree_sequence": [
             9,
             19,
@@ -61241,7 +61241,7 @@
     },
     "fao_trade_layer20": {
         "reciprocity": 0.49708879184861715,
-        "average_clustering": 0.5722832326454454,
+        "average_clustering": 0.6516882311484141,
         "in_degree_sequence": [
             72,
             30,
@@ -61596,7 +61596,7 @@
     },
     "fao_trade_layer21": {
         "reciprocity": 0.15898617511520738,
-        "average_clustering": 0.22962992776601143,
+        "average_clustering": 0.39221273770933557,
         "in_degree_sequence": [
             19,
             27,
@@ -61875,7 +61875,7 @@
     },
     "fao_trade_layer25": {
         "reciprocity": 0.11690363349131122,
-        "average_clustering": 0.27961805538642953,
+        "average_clustering": 0.38402081366822466,
         "in_degree_sequence": [
             0,
             41,
@@ -62100,7 +62100,7 @@
     },
     "fao_trade_layer26": {
         "reciprocity": 0.3244979919678715,
-        "average_clustering": 0.43904162967200183,
+        "average_clustering": 0.5885189698120026,
         "in_degree_sequence": [
             23,
             40,
@@ -62391,7 +62391,7 @@
     },
     "fao_trade_layer27": {
         "reciprocity": 0.4202298850574713,
-        "average_clustering": 0.4878830986116627,
+        "average_clustering": 0.5933940076939516,
         "in_degree_sequence": [
             44,
             62,
@@ -62690,7 +62690,7 @@
     },
     "fao_trade_layer28": {
         "reciprocity": 0.3351404632824051,
-        "average_clustering": 0.41228308931243296,
+        "average_clustering": 0.546624659558853,
         "in_degree_sequence": [
             1,
             35,
@@ -62983,7 +62983,7 @@
     },
     "fao_trade_layer30": {
         "reciprocity": 0.48128342245989303,
-        "average_clustering": 0.5644894014735542,
+        "average_clustering": 0.6620584552540951,
         "in_degree_sequence": [
             75,
             48,
@@ -63336,7 +63336,7 @@
     },
     "fao_trade_layer31": {
         "reciprocity": 0.42008196721311475,
-        "average_clustering": 0.4626470196852863,
+        "average_clustering": 0.5661863712744218,
         "in_degree_sequence": [
             31,
             28,
@@ -63651,7 +63651,7 @@
     },
     "fao_trade_layer32": {
         "reciprocity": 0.2679217958001448,
-        "average_clustering": 0.3789399151255255,
+        "average_clustering": 0.5329151509402419,
         "in_degree_sequence": [
             10,
             13,
@@ -63960,7 +63960,7 @@
     },
     "fao_trade_layer33": {
         "reciprocity": 0.40431654676258993,
-        "average_clustering": 0.4652431611478924,
+        "average_clustering": 0.5782913126053372,
         "in_degree_sequence": [
             47,
             36,
@@ -64285,7 +64285,7 @@
     },
     "fao_trade_layer34": {
         "reciprocity": 0.3931914893617021,
-        "average_clustering": 0.4282700207172795,
+        "average_clustering": 0.5347385576063668,
         "in_degree_sequence": [
             28,
             20,
@@ -64574,7 +64574,7 @@
     },
     "fao_trade_layer35": {
         "reciprocity": 0.2723112128146453,
-        "average_clustering": 0.2715483658135844,
+        "average_clustering": 0.38753930627702493,
         "in_degree_sequence": [
             6,
             16,
@@ -64871,7 +64871,7 @@
     },
     "fao_trade_layer36": {
         "reciprocity": 0.358974358974359,
-        "average_clustering": 0.46044728910359495,
+        "average_clustering": 0.5931077365218878,
         "in_degree_sequence": [
             39,
             45,
@@ -65186,7 +65186,7 @@
     },
     "fao_trade_layer37": {
         "reciprocity": 0.3871817383669886,
-        "average_clustering": 0.461196263111178,
+        "average_clustering": 0.573989172087481,
         "in_degree_sequence": [
             54,
             32,
@@ -65511,7 +65511,7 @@
     },
     "fao_trade_layer39": {
         "reciprocity": 0.3146067415730337,
-        "average_clustering": 0.3732721963652471,
+        "average_clustering": 0.4768846815768327,
         "in_degree_sequence": [
             3,
             10,
@@ -65698,7 +65698,7 @@
     },
     "fao_trade_layer41": {
         "reciprocity": 0.272108843537415,
-        "average_clustering": 0.17317783751737675,
+        "average_clustering": 0.28460556932779146,
         "in_degree_sequence": [
             0,
             1,
@@ -65887,7 +65887,7 @@
     },
     "fao_trade_layer42": {
         "reciprocity": 0.18111254851228978,
-        "average_clustering": 0.3058471284613408,
+        "average_clustering": 0.5051932607682601,
         "in_degree_sequence": [
             11,
             28,
@@ -66158,7 +66158,7 @@
     },
     "fao_trade_layer43": {
         "reciprocity": 0.28010139416983526,
-        "average_clustering": 0.43463663349406256,
+        "average_clustering": 0.5981809922607209,
         "in_degree_sequence": [
             26,
             26,
@@ -66459,7 +66459,7 @@
     },
     "fao_trade_layer45": {
         "reciprocity": 0.2597938144329897,
-        "average_clustering": 0.3765446379550598,
+        "average_clustering": 0.5011038219183582,
         "in_degree_sequence": [
             9,
             10,
@@ -66678,7 +66678,7 @@
     },
     "fao_trade_layer46": {
         "reciprocity": 0.10676156583629894,
-        "average_clustering": 0.27357261731375393,
+        "average_clustering": 0.3544613273369042,
         "in_degree_sequence": [
             0,
             3,
@@ -66867,7 +66867,7 @@
     },
     "fao_trade_layer47": {
         "reciprocity": 0.2857142857142857,
-        "average_clustering": 0.3110208308851754,
+        "average_clustering": 0.4308041282705803,
         "in_degree_sequence": [
             18,
             20,
@@ -67170,7 +67170,7 @@
     },
     "fao_trade_layer48": {
         "reciprocity": 0.19273034657650043,
-        "average_clustering": 0.34521104580451695,
+        "average_clustering": 0.5016673525019759,
         "in_degree_sequence": [
             29,
             34,
@@ -67447,7 +67447,7 @@
     },
     "fao_trade_layer53": {
         "reciprocity": 0.19636363636363635,
-        "average_clustering": 0.19359687053344907,
+        "average_clustering": 0.2920007227219894,
         "in_degree_sequence": [
             1,
             5,
@@ -67646,7 +67646,7 @@
     },
     "fao_trade_layer56": {
         "reciprocity": 0.1884297520661157,
-        "average_clustering": 0.29410043342448977,
+        "average_clustering": 0.4251822118813624,
         "in_degree_sequence": [
             1,
             11,
@@ -67899,7 +67899,7 @@
     },
     "fao_trade_layer58": {
         "reciprocity": 0.22666666666666666,
-        "average_clustering": 0.16955484159017079,
+        "average_clustering": 0.28180267349513993,
         "in_degree_sequence": [
             0,
             10,
@@ -68016,7 +68016,7 @@
     },
     "fao_trade_layer59": {
         "reciprocity": 0.2246376811594203,
-        "average_clustering": 0.17279058237309333,
+        "average_clustering": 0.2850734224910684,
         "in_degree_sequence": [
             1,
             12,
@@ -68235,7 +68235,7 @@
     },
     "fao_trade_layer60": {
         "reciprocity": 0.24229979466119098,
-        "average_clustering": 0.16035002902872522,
+        "average_clustering": 0.23153574848764724,
         "in_degree_sequence": [
             4,
             8,
@@ -68524,7 +68524,7 @@
     },
     "fao_trade_layer61": {
         "reciprocity": 0.2808988764044944,
-        "average_clustering": 0.3210304631969588,
+        "average_clustering": 0.4528170809116859,
         "in_degree_sequence": [
             3,
             10,
@@ -68815,7 +68815,7 @@
     },
     "fao_trade_layer62": {
         "reciprocity": 0.3507692307692308,
-        "average_clustering": 0.24850045883695074,
+        "average_clustering": 0.32354430338715096,
         "in_degree_sequence": [
             0,
             8,
@@ -68990,7 +68990,7 @@
     },
     "fao_trade_layer64": {
         "reciprocity": 0.26586102719033233,
-        "average_clustering": 0.3097594870399356,
+        "average_clustering": 0.4287098075492543,
         "in_degree_sequence": [
             3,
             9,
@@ -69249,7 +69249,7 @@
     },
     "fao_trade_layer65": {
         "reciprocity": 0.20444444444444446,
-        "average_clustering": 0.32984712285618667,
+        "average_clustering": 0.47246942450128804,
         "in_degree_sequence": [
             4,
             20,
@@ -69500,7 +69500,7 @@
     },
     "fao_trade_layer66": {
         "reciprocity": 0.2767857142857143,
-        "average_clustering": 0.31381798214319345,
+        "average_clustering": 0.42299275885594956,
         "in_degree_sequence": [
             6,
             8,
@@ -69703,7 +69703,7 @@
     },
     "fao_trade_layer69": {
         "reciprocity": 0.1592356687898089,
-        "average_clustering": 0.20834593570675264,
+        "average_clustering": 0.32804496594982613,
         "in_degree_sequence": [
             11,
             8,
@@ -69996,7 +69996,7 @@
     },
     "fao_trade_layer70": {
         "reciprocity": 0.1456953642384106,
-        "average_clustering": 0.24511584204663042,
+        "average_clustering": 0.4396073112040933,
         "in_degree_sequence": [
             12,
             2,
@@ -70279,7 +70279,7 @@
     },
     "fao_trade_layer71": {
         "reciprocity": 0.10300429184549356,
-        "average_clustering": 0.1841102310643622,
+        "average_clustering": 0.31433230758547187,
         "in_degree_sequence": [
             0,
             3,
@@ -70424,7 +70424,7 @@
     },
     "fao_trade_layer72": {
         "reciprocity": 0.2753623188405797,
-        "average_clustering": 0.25115034843647077,
+        "average_clustering": 0.36641968457935387,
         "in_degree_sequence": [
             0,
             7,
@@ -70697,7 +70697,7 @@
     },
     "fao_trade_layer73": {
         "reciprocity": 0.22257551669316375,
-        "average_clustering": 0.29140632342507145,
+        "average_clustering": 0.3956097396862719,
         "in_degree_sequence": [
             0,
             5,
@@ -70964,7 +70964,7 @@
     },
     "fao_trade_layer74": {
         "reciprocity": 0.38308457711442784,
-        "average_clustering": 0.2596597389089707,
+        "average_clustering": 0.32978793822184616,
         "in_degree_sequence": [
             6,
             6,
@@ -71177,7 +71177,7 @@
     },
     "fao_trade_layer75": {
         "reciprocity": 0.40425531914893614,
-        "average_clustering": 0.4611890920389318,
+        "average_clustering": 0.5624898617725566,
         "in_degree_sequence": [
             17,
             27,
@@ -71474,7 +71474,7 @@
     },
     "fao_trade_layer76": {
         "reciprocity": 0.33495934959349594,
-        "average_clustering": 0.28490154064171547,
+        "average_clustering": 0.38163474904147304,
         "in_degree_sequence": [
             7,
             9,
@@ -71701,7 +71701,7 @@
     },
     "fao_trade_layer78": {
         "reciprocity": 0.26038781163434904,
-        "average_clustering": 0.34390288405383634,
+        "average_clustering": 0.4968521577490601,
         "in_degree_sequence": [
             23,
             15,
@@ -72020,7 +72020,7 @@
     },
     "fao_trade_layer80": {
         "reciprocity": 0.06811145510835913,
-        "average_clustering": 0.12963480014100207,
+        "average_clustering": 0.22575841548331596,
         "in_degree_sequence": [
             14,
             38,
@@ -72239,7 +72239,7 @@
     },
     "fao_trade_layer81": {
         "reciprocity": 0.10762331838565023,
-        "average_clustering": 0.23709756516282388,
+        "average_clustering": 0.3879490981913128,
         "in_degree_sequence": [
             1,
             3,
@@ -72418,7 +72418,7 @@
     },
     "fao_trade_layer83": {
         "reciprocity": 0.22495606326889278,
-        "average_clustering": 0.3362877560844326,
+        "average_clustering": 0.49595122183546014,
         "in_degree_sequence": [
             10,
             25,
@@ -72663,7 +72663,7 @@
     },
     "fao_trade_layer84": {
         "reciprocity": 0.21258134490238612,
-        "average_clustering": 0.2525219168346048,
+        "average_clustering": 0.36094891233032567,
         "in_degree_sequence": [
             3,
             9,
@@ -72878,7 +72878,7 @@
     },
     "fao_trade_layer86": {
         "reciprocity": 0.22921914357682618,
-        "average_clustering": 0.40419944635417965,
+        "average_clustering": 0.5351759126623082,
         "in_degree_sequence": [
             19,
             8,
@@ -73139,7 +73139,7 @@
     },
     "fao_trade_layer87": {
         "reciprocity": 0.27896995708154504,
-        "average_clustering": 0.3300462372348009,
+        "average_clustering": 0.4891762298574724,
         "in_degree_sequence": [
             4,
             7,
@@ -73340,7 +73340,7 @@
     },
     "fao_trade_layer88": {
         "reciprocity": 0.2875816993464052,
-        "average_clustering": 0.17438305868274254,
+        "average_clustering": 0.23541625635738037,
         "in_degree_sequence": [
             0,
             4,
@@ -73467,7 +73467,7 @@
     },
     "fao_trade_layer89": {
         "reciprocity": 0.2828282828282828,
-        "average_clustering": 0.142239360082795,
+        "average_clustering": 0.22173917222936831,
         "in_degree_sequence": [
             3,
             18,
@@ -73656,7 +73656,7 @@
     },
     "fao_trade_layer91": {
         "reciprocity": 0.18625277161862527,
-        "average_clustering": 0.28977382021808723,
+        "average_clustering": 0.42779284401411466,
         "in_degree_sequence": [
             24,
             46,
@@ -73945,7 +73945,7 @@
     },
     "fao_trade_layer92": {
         "reciprocity": 0.23902439024390243,
-        "average_clustering": 0.3929191057076602,
+        "average_clustering": 0.5446725201469007,
         "in_degree_sequence": [
             9,
             9,
@@ -74218,7 +74218,7 @@
     },
     "fao_trade_layer93": {
         "reciprocity": 0.21393841166936792,
-        "average_clustering": 0.2324209963955425,
+        "average_clustering": 0.35407210714268544,
         "in_degree_sequence": [
             6,
             11,
@@ -74485,7 +74485,7 @@
     },
     "fao_trade_layer94": {
         "reciprocity": 0.1342281879194631,
-        "average_clustering": 0.19834959697284346,
+        "average_clustering": 0.33113835969644556,
         "in_degree_sequence": [
             9,
             1,
@@ -74686,7 +74686,7 @@
     },
     "fao_trade_layer95": {
         "reciprocity": 0.19305019305019305,
-        "average_clustering": 0.15714917261484945,
+        "average_clustering": 0.2591255938713558,
         "in_degree_sequence": [
             2,
             13,
@@ -74853,7 +74853,7 @@
     },
     "fao_trade_layer96": {
         "reciprocity": 0.12727272727272726,
-        "average_clustering": 0.11531585473129137,
+        "average_clustering": 0.18964507586551588,
         "in_degree_sequence": [
             1,
             5,
@@ -75050,7 +75050,7 @@
     },
     "fao_trade_layer97": {
         "reciprocity": 0.17543859649122806,
-        "average_clustering": 0.10527179689766228,
+        "average_clustering": 0.1467558870867694,
         "in_degree_sequence": [
             0,
             7,
@@ -75219,7 +75219,7 @@
     },
     "fao_trade_layer98": {
         "reciprocity": 0.025,
-        "average_clustering": 0.40210100187086867,
+        "average_clustering": 0.574791907572228,
         "in_degree_sequence": [
             0,
             20,
@@ -75316,7 +75316,7 @@
     },
     "fao_trade_layer99": {
         "reciprocity": 0.09798270893371758,
-        "average_clustering": 0.2929877871275987,
+        "average_clustering": 0.4319980718144864,
         "in_degree_sequence": [
             11,
             12,
@@ -75577,7 +75577,7 @@
     },
     "fao_trade_layer100": {
         "reciprocity": 0.29910714285714285,
-        "average_clustering": 0.28892602841064635,
+        "average_clustering": 0.42420576638265933,
         "in_degree_sequence": [
             5,
             11,
@@ -75766,7 +75766,7 @@
     },
     "fao_trade_layer102": {
         "reciprocity": 0.17293233082706766,
-        "average_clustering": 0.32428231676277464,
+        "average_clustering": 0.4704395524308324,
         "in_degree_sequence": [
             13,
             5,
@@ -75985,7 +75985,7 @@
     },
     "fao_trade_layer104": {
         "reciprocity": 0.30739299610894943,
-        "average_clustering": 0.3010314533646371,
+        "average_clustering": 0.3812801220072575,
         "in_degree_sequence": [
             12,
             26,
@@ -76220,7 +76220,7 @@
     },
     "fao_trade_layer107": {
         "reciprocity": 0.20267686424474188,
-        "average_clustering": 0.18445536329407833,
+        "average_clustering": 0.28531168062578216,
         "in_degree_sequence": [
             22,
             11,
@@ -76481,7 +76481,7 @@
     },
     "fao_trade_layer108": {
         "reciprocity": 0.043010752688172046,
-        "average_clustering": 0.040652734509067215,
+        "average_clustering": 0.0694541962972965,
         "in_degree_sequence": [
             0,
             4,
@@ -76628,7 +76628,7 @@
     },
     "fao_trade_layer111": {
         "reciprocity": 0.12753623188405797,
-        "average_clustering": 0.17660532994187422,
+        "average_clustering": 0.2938360162262138,
         "in_degree_sequence": [
             17,
             5,
@@ -76924,7 +76924,7 @@
     },
     "fao_trade_layer113": {
         "reciprocity": 0.3574144486692015,
-        "average_clustering": 0.32054595641102573,
+        "average_clustering": 0.37609391228688377,
         "in_degree_sequence": [
             0,
             7,
@@ -77071,7 +77071,7 @@
     },
     "fao_trade_layer115": {
         "reciprocity": 0.078125,
-        "average_clustering": 0.060752411323437616,
+        "average_clustering": 0.11512580076593919,
         "in_degree_sequence": [
             10,
             11,
@@ -77216,7 +77216,7 @@
     },
     "fao_trade_layer116": {
         "reciprocity": 0.23717948717948717,
-        "average_clustering": 0.22160745142424107,
+        "average_clustering": 0.3199644261052169,
         "in_degree_sequence": [
             8,
             10,
@@ -77395,7 +77395,7 @@
     },
     "fao_trade_layer118": {
         "reciprocity": 0.03571428571428571,
-        "average_clustering": 0.053297552787348705,
+        "average_clustering": 0.08613540654356983,
         "in_degree_sequence": [
             2,
             5,
@@ -77502,7 +77502,7 @@
     },
     "fao_trade_layer123": {
         "reciprocity": 0.26053639846743293,
-        "average_clustering": 0.18641333269171997,
+        "average_clustering": 0.28708261734913976,
         "in_degree_sequence": [
             0,
             3,
@@ -77675,7 +77675,7 @@
     },
     "fao_trade_layer125": {
         "reciprocity": 0.25757575757575757,
-        "average_clustering": 0.38936030641374053,
+        "average_clustering": 0.4800483743982196,
         "in_degree_sequence": [
             0,
             3,
@@ -77772,7 +77772,7 @@
     },
     "fao_trade_layer126": {
         "reciprocity": 0.05172413793103448,
-        "average_clustering": 0.06790031549646934,
+        "average_clustering": 0.13585132815902046,
         "in_degree_sequence": [
             0,
             5,
@@ -77937,7 +77937,7 @@
     },
     "fao_trade_layer127": {
         "reciprocity": 0.29213483146067415,
-        "average_clustering": 0.24423550564762445,
+        "average_clustering": 0.3185385870168479,
         "in_degree_sequence": [
             0,
             3,
@@ -78038,7 +78038,7 @@
     },
     "fao_trade_layer129": {
         "reciprocity": 0.041666666666666664,
-        "average_clustering": 0.10978751571573499,
+        "average_clustering": 0.20918195830763198,
         "in_degree_sequence": [
             0,
             15,
@@ -78209,7 +78209,7 @@
     },
     "fao_trade_layer130": {
         "reciprocity": 0.05128205128205128,
-        "average_clustering": 0.22330495818399043,
+        "average_clustering": 0.22414990421455938,
         "in_degree_sequence": [
             0,
             29,
@@ -78282,7 +78282,7 @@
     },
     "fao_trade_layer133": {
         "reciprocity": 0.0,
-        "average_clustering": 0.036157796451914095,
+        "average_clustering": 0.07231559290382819,
         "in_degree_sequence": [
             0,
             6,
@@ -78383,7 +78383,7 @@
     },
     "fao_trade_layer135": {
         "reciprocity": 0.06666666666666667,
-        "average_clustering": 0.14116927962545261,
+        "average_clustering": 0.25944291398836855,
         "in_degree_sequence": [
             0,
             1,
@@ -78458,7 +78458,7 @@
     },
     "fao_trade_layer138": {
         "reciprocity": 0.2217741935483871,
-        "average_clustering": 0.3154201588918735,
+        "average_clustering": 0.45008583869045493,
         "in_degree_sequence": [
             9,
             27,
@@ -78781,7 +78781,7 @@
     },
     "fao_trade_layer139": {
         "reciprocity": 0.3103698332124728,
-        "average_clustering": 0.3219059905311353,
+        "average_clustering": 0.4659738322921478,
         "in_degree_sequence": [
             1,
             65,
@@ -79096,7 +79096,7 @@
     },
     "fao_trade_layer140": {
         "reciprocity": 0.2661782661782662,
-        "average_clustering": 0.2823950345090795,
+        "average_clustering": 0.3958950407918099,
         "in_degree_sequence": [
             3,
             3,
@@ -79391,7 +79391,7 @@
     },
     "fao_trade_layer141": {
         "reciprocity": 0.4801627670396745,
-        "average_clustering": 0.37620139335959346,
+        "average_clustering": 0.4398860591356694,
         "in_degree_sequence": [
             10,
             25,
@@ -79684,7 +79684,7 @@
     },
     "fao_trade_layer145": {
         "reciprocity": 0.16464237516869096,
-        "average_clustering": 0.3418917856594806,
+        "average_clustering": 0.5227248804188311,
         "in_degree_sequence": [
             4,
             11,
@@ -79955,7 +79955,7 @@
     },
     "fao_trade_layer146": {
         "reciprocity": 0.21712268314210062,
-        "average_clustering": 0.27354870092364597,
+        "average_clustering": 0.4032105180706333,
         "in_degree_sequence": [
             5,
             20,
@@ -80252,7 +80252,7 @@
     },
     "fao_trade_layer148": {
         "reciprocity": 0.274385408406027,
-        "average_clustering": 0.3206630043606319,
+        "average_clustering": 0.4707868174995333,
         "in_degree_sequence": [
             3,
             23,
@@ -80557,7 +80557,7 @@
     },
     "fao_trade_layer149": {
         "reciprocity": 0.32577665827036106,
-        "average_clustering": 0.4041814984142602,
+        "average_clustering": 0.5592426766409476,
         "in_degree_sequence": [
             15,
             58,
@@ -80852,7 +80852,7 @@
     },
     "fao_trade_layer150": {
         "reciprocity": 0.2555831265508685,
-        "average_clustering": 0.26852402132194886,
+        "average_clustering": 0.3666661048999438,
         "in_degree_sequence": [
             2,
             14,
@@ -81119,7 +81119,7 @@
     },
     "fao_trade_layer151": {
         "reciprocity": 0.10743801652892562,
-        "average_clustering": 0.10132616113033859,
+        "average_clustering": 0.18159462243428087,
         "in_degree_sequence": [
             10,
             4,
@@ -81348,7 +81348,7 @@
     },
     "fao_trade_layer153": {
         "reciprocity": 0.4672313865358894,
-        "average_clustering": 0.510445811784403,
+        "average_clustering": 0.616524985102875,
         "in_degree_sequence": [
             71,
             59,
@@ -81717,7 +81717,7 @@
     },
     "fao_trade_layer154": {
         "reciprocity": 0.20019249278152068,
-        "average_clustering": 0.36982276563533895,
+        "average_clustering": 0.5871769939082435,
         "in_degree_sequence": [
             5,
             19,
@@ -81994,7 +81994,7 @@
     },
     "fao_trade_layer155": {
         "reciprocity": 0.3015484922575387,
-        "average_clustering": 0.3428729909834701,
+        "average_clustering": 0.4740705076004181,
         "in_degree_sequence": [
             12,
             21,
@@ -82299,7 +82299,7 @@
     },
     "fao_trade_layer156": {
         "reciprocity": 0.21545003543586108,
-        "average_clustering": 0.3590498921486367,
+        "average_clustering": 0.5294018043078256,
         "in_degree_sequence": [
             13,
             25,
@@ -82608,7 +82608,7 @@
     },
     "fao_trade_layer157": {
         "reciprocity": 0.2535575679172057,
-        "average_clustering": 0.3564749237828806,
+        "average_clustering": 0.5256310792464123,
         "in_degree_sequence": [
             20,
             30,
@@ -82925,7 +82925,7 @@
     },
     "fao_trade_layer158": {
         "reciprocity": 0.1643059490084986,
-        "average_clustering": 0.21196363098898538,
+        "average_clustering": 0.3306719538333011,
         "in_degree_sequence": [
             6,
             14,
@@ -83202,7 +83202,7 @@
     },
     "fao_trade_layer159": {
         "reciprocity": 0.3254237288135593,
-        "average_clustering": 0.4210329681587448,
+        "average_clustering": 0.560047005735866,
         "in_degree_sequence": [
             38,
             31,
@@ -83537,7 +83537,7 @@
     },
     "fao_trade_layer160": {
         "reciprocity": 0.2063305978898007,
-        "average_clustering": 0.4321048201585946,
+        "average_clustering": 0.5619031747542738,
         "in_degree_sequence": [
             12,
             11,
@@ -83816,7 +83816,7 @@
     },
     "fao_trade_layer161": {
         "reciprocity": 0.32585949177877427,
-        "average_clustering": 0.3810555866940562,
+        "average_clustering": 0.5226455952310286,
         "in_degree_sequence": [
             22,
             71,
@@ -84109,7 +84109,7 @@
     },
     "fao_trade_layer162": {
         "reciprocity": 0.3482045701849837,
-        "average_clustering": 0.36811723862891454,
+        "average_clustering": 0.4826354743655349,
         "in_degree_sequence": [
             7,
             27,
@@ -84378,7 +84378,7 @@
     },
     "fao_trade_layer163": {
         "reciprocity": 0.3198051948051948,
-        "average_clustering": 0.34910960677246905,
+        "average_clustering": 0.4831175574752453,
         "in_degree_sequence": [
             10,
             30,
@@ -84677,7 +84677,7 @@
     },
     "fao_trade_layer164": {
         "reciprocity": 0.3581151832460733,
-        "average_clustering": 0.3451807435607109,
+        "average_clustering": 0.4684692065264294,
         "in_degree_sequence": [
             5,
             22,
@@ -84926,7 +84926,7 @@
     },
     "fao_trade_layer165": {
         "reciprocity": 0.23574144486692014,
-        "average_clustering": 0.2729232453946346,
+        "average_clustering": 0.39292380177950553,
         "in_degree_sequence": [
             2,
             22,
@@ -85223,7 +85223,7 @@
     },
     "fao_trade_layer167": {
         "reciprocity": 0.28125,
-        "average_clustering": 0.3252141749919445,
+        "average_clustering": 0.43853745434490926,
         "in_degree_sequence": [
             2,
             41,
@@ -85450,7 +85450,7 @@
     },
     "fao_trade_layer169": {
         "reciprocity": 0.37161430119176597,
-        "average_clustering": 0.5071684069353788,
+        "average_clustering": 0.6437595280314777,
         "in_degree_sequence": [
             22,
             26,
@@ -85749,7 +85749,7 @@
     },
     "fao_trade_layer170": {
         "reciprocity": 0.2522255192878338,
-        "average_clustering": 0.3955063824206737,
+        "average_clustering": 0.5137276920456929,
         "in_degree_sequence": [
             11,
             19,
@@ -85986,7 +85986,7 @@
     },
     "fao_trade_layer172": {
         "reciprocity": 0.40594059405940597,
-        "average_clustering": 0.32075740402030356,
+        "average_clustering": 0.4020941623778809,
         "in_degree_sequence": [
             0,
             14,
@@ -86117,7 +86117,7 @@
     },
     "fao_trade_layer173": {
         "reciprocity": 0.18992568125516102,
-        "average_clustering": 0.3343657508874444,
+        "average_clustering": 0.5183809773991555,
         "in_degree_sequence": [
             20,
             18,
@@ -86436,7 +86436,7 @@
     },
     "fao_trade_layer176": {
         "reciprocity": 0.30057803468208094,
-        "average_clustering": 0.4328403512078627,
+        "average_clustering": 0.5707502280380612,
         "in_degree_sequence": [
             17,
             22,
@@ -86733,7 +86733,7 @@
     },
     "fao_trade_layer177": {
         "reciprocity": 0.2945273631840796,
-        "average_clustering": 0.30456504902725223,
+        "average_clustering": 0.4491340523707919,
         "in_degree_sequence": [
             16,
             19,
@@ -87034,7 +87034,7 @@
     },
     "fao_trade_layer178": {
         "reciprocity": 0.2550091074681239,
-        "average_clustering": 0.2324335202209165,
+        "average_clustering": 0.3178768276439831,
         "in_degree_sequence": [
             1,
             9,
@@ -87307,7 +87307,7 @@
     },
     "fao_trade_layer179": {
         "reciprocity": 0.26978146194423513,
-        "average_clustering": 0.35888595410983176,
+        "average_clustering": 0.5251326984249084,
         "in_degree_sequence": [
             36,
             12,
@@ -87604,7 +87604,7 @@
     },
     "fao_trade_layer180": {
         "reciprocity": 0.23094170403587444,
-        "average_clustering": 0.38764522421145353,
+        "average_clustering": 0.5362341134782396,
         "in_degree_sequence": [
             12,
             16,
@@ -87875,7 +87875,7 @@
     },
     "fao_trade_layer181": {
         "reciprocity": 0.3010752688172043,
-        "average_clustering": 0.34444842494000233,
+        "average_clustering": 0.4459171116526335,
         "in_degree_sequence": [
             0,
             13,
@@ -88138,7 +88138,7 @@
     },
     "fao_trade_layer184": {
         "reciprocity": 0.31066571224051537,
-        "average_clustering": 0.46067862789078556,
+        "average_clustering": 0.5994828402590024,
         "in_degree_sequence": [
             25,
             34,
@@ -88425,7 +88425,7 @@
     },
     "fao_trade_layer186": {
         "reciprocity": 0.2613065326633166,
-        "average_clustering": 0.36420158280044873,
+        "average_clustering": 0.5078693248335526,
         "in_degree_sequence": [
             1,
             12,
@@ -88658,7 +88658,7 @@
     },
     "fao_trade_layer187": {
         "reciprocity": 0.319672131147541,
-        "average_clustering": 0.4298139574335514,
+        "average_clustering": 0.5630149212935988,
         "in_degree_sequence": [
             24,
             41,
@@ -88975,7 +88975,7 @@
     },
     "fao_trade_layer188": {
         "reciprocity": 0.3869002284843869,
-        "average_clustering": 0.4123066878240807,
+        "average_clustering": 0.5467528385859186,
         "in_degree_sequence": [
             26,
             17,
@@ -89280,7 +89280,7 @@
     },
     "fao_trade_layer190": {
         "reciprocity": 0.41361256544502617,
-        "average_clustering": 0.4145476372623271,
+        "average_clustering": 0.5299701184855493,
         "in_degree_sequence": [
             19,
             35,
@@ -89561,7 +89561,7 @@
     },
     "fao_trade_layer191": {
         "reciprocity": 0.26878980891719745,
-        "average_clustering": 0.4501001399049457,
+        "average_clustering": 0.6074540250690212,
         "in_degree_sequence": [
             28,
             21,
@@ -89866,7 +89866,7 @@
     },
     "fao_trade_layer193": {
         "reciprocity": 0.19932810750279956,
-        "average_clustering": 0.3021308402700605,
+        "average_clustering": 0.5087658742031091,
         "in_degree_sequence": [
             8,
             18,
@@ -90165,7 +90165,7 @@
     },
     "fao_trade_layer195": {
         "reciprocity": 0.26058631921824105,
-        "average_clustering": 0.2789453302638988,
+        "average_clustering": 0.3802723728417344,
         "in_degree_sequence": [
             9,
             11,
@@ -90434,7 +90434,7 @@
     },
     "fao_trade_layer196": {
         "reciprocity": 0.15879828326180256,
-        "average_clustering": 0.2537477293545528,
+        "average_clustering": 0.38494938172477383,
         "in_degree_sequence": [
             11,
             23,
@@ -90741,7 +90741,7 @@
     },
     "fao_trade_layer200": {
         "reciprocity": 0.15669205658324264,
-        "average_clustering": 0.22993067762178784,
+        "average_clustering": 0.36100714312644877,
         "in_degree_sequence": [
             4,
             9,
@@ -91038,7 +91038,7 @@
     },
     "fao_trade_layer201": {
         "reciprocity": 0.4388412017167382,
-        "average_clustering": 0.4778465221733411,
+        "average_clustering": 0.5807493507973527,
         "in_degree_sequence": [
             41,
             31,
@@ -91345,7 +91345,7 @@
     },
     "fao_trade_layer202": {
         "reciprocity": 0.2694610778443114,
-        "average_clustering": 0.23055520601872226,
+        "average_clustering": 0.33406723020934326,
         "in_degree_sequence": [
             0,
             3,
@@ -91528,7 +91528,7 @@
     },
     "fao_trade_layer203": {
         "reciprocity": 0.4306640625,
-        "average_clustering": 0.5379123446611265,
+        "average_clustering": 0.6372336080663631,
         "in_degree_sequence": [
             44,
             27,
@@ -91845,7 +91845,7 @@
     },
     "fao_trade_layer204": {
         "reciprocity": 0.20064724919093851,
-        "average_clustering": 0.3257706867391752,
+        "average_clustering": 0.4784864068244511,
         "in_degree_sequence": [
             12,
             33,
@@ -92166,7 +92166,7 @@
     },
     "fao_trade_layer205": {
         "reciprocity": 0.16404494382022472,
-        "average_clustering": 0.2468392434827635,
+        "average_clustering": 0.39115100769035777,
         "in_degree_sequence": [
             20,
             16,
@@ -92423,7 +92423,7 @@
     },
     "fao_trade_layer206": {
         "reciprocity": 0.23214285714285715,
-        "average_clustering": 0.24120314665139184,
+        "average_clustering": 0.3437135247547511,
         "in_degree_sequence": [
             13,
             17,
@@ -92692,7 +92692,7 @@
     },
     "fao_trade_layer208": {
         "reciprocity": 0.3493975903614458,
-        "average_clustering": 0.24340534616211018,
+        "average_clustering": 0.3438817912918163,
         "in_degree_sequence": [
             5,
             10,
@@ -92929,7 +92929,7 @@
     },
     "fao_trade_layer209": {
         "reciprocity": 0.20178041543026706,
-        "average_clustering": 0.2621008156013683,
+        "average_clustering": 0.3622459294109896,
         "in_degree_sequence": [
             3,
             17,
@@ -93216,7 +93216,7 @@
     },
     "fao_trade_layer210": {
         "reciprocity": 0.23931623931623933,
-        "average_clustering": 0.3300902823257117,
+        "average_clustering": 0.4748078710589983,
         "in_degree_sequence": [
             6,
             14,
@@ -93487,7 +93487,7 @@
     },
     "fao_trade_layer211": {
         "reciprocity": 0.2084942084942085,
-        "average_clustering": 0.29946588338271546,
+        "average_clustering": 0.4022465072612119,
         "in_degree_sequence": [
             13,
             17,
@@ -93744,7 +93744,7 @@
     },
     "fao_trade_layer213": {
         "reciprocity": 0.3368421052631579,
-        "average_clustering": 0.2388531009774117,
+        "average_clustering": 0.2968282188643935,
         "in_degree_sequence": [
             3,
             4,
@@ -93931,7 +93931,7 @@
     },
     "fao_trade_layer215": {
         "reciprocity": 0.2991556091676719,
-        "average_clustering": 0.36998998548120543,
+        "average_clustering": 0.4792459090605775,
         "in_degree_sequence": [
             1,
             14,
@@ -94198,7 +94198,7 @@
     },
     "fao_trade_layer216": {
         "reciprocity": 0.19974059662775617,
-        "average_clustering": 0.2837293509809334,
+        "average_clustering": 0.40689039970090196,
         "in_degree_sequence": [
             2,
             11,
@@ -94493,7 +94493,7 @@
     },
     "fao_trade_layer217": {
         "reciprocity": 0.23695345557122707,
-        "average_clustering": 0.2333679677655197,
+        "average_clustering": 0.34806146386970516,
         "in_degree_sequence": [
             17,
             17,
@@ -94778,7 +94778,7 @@
     },
     "fao_trade_layer218": {
         "reciprocity": 0.3347547974413646,
-        "average_clustering": 0.38824661895380863,
+        "average_clustering": 0.5103345335139848,
         "in_degree_sequence": [
             8,
             15,
@@ -95055,7 +95055,7 @@
     },
     "fao_trade_layer219": {
         "reciprocity": 0.19216182048040456,
-        "average_clustering": 0.3411237948962522,
+        "average_clustering": 0.4944165663992422,
         "in_degree_sequence": [
             17,
             17,
@@ -95336,7 +95336,7 @@
     },
     "fao_trade_layer220": {
         "reciprocity": 0.1925925925925926,
-        "average_clustering": 0.32443803009591,
+        "average_clustering": 0.45154456280290256,
         "in_degree_sequence": [
             13,
             9,
@@ -95613,7 +95613,7 @@
     },
     "fao_trade_layer221": {
         "reciprocity": 0.2127659574468085,
-        "average_clustering": 0.33142872452400407,
+        "average_clustering": 0.4332750407476176,
         "in_degree_sequence": [
             7,
             11,
@@ -95860,7 +95860,7 @@
     },
     "fao_trade_layer222": {
         "reciprocity": 0.14849187935034802,
-        "average_clustering": 0.2762393371854101,
+        "average_clustering": 0.413987798203868,
         "in_degree_sequence": [
             3,
             2,
@@ -96129,7 +96129,7 @@
     },
     "fao_trade_layer223": {
         "reciprocity": 0.2413793103448276,
-        "average_clustering": 0.4039624670099898,
+        "average_clustering": 0.538379709977146,
         "in_degree_sequence": [
             24,
             14,
@@ -96402,7 +96402,7 @@
     },
     "fao_trade_layer224": {
         "reciprocity": 0.2992125984251969,
-        "average_clustering": 0.1921880823255901,
+        "average_clustering": 0.268596917822335,
         "in_degree_sequence": [
             3,
             8,
@@ -96571,7 +96571,7 @@
     },
     "fao_trade_layer227": {
         "reciprocity": 0.23741007194244604,
-        "average_clustering": 0.3464633143278404,
+        "average_clustering": 0.4938955129250627,
         "in_degree_sequence": [
             0,
             14,
@@ -96832,7 +96832,7 @@
     },
     "fao_trade_layer228": {
         "reciprocity": 0.18875502008032127,
-        "average_clustering": 0.34580952044178703,
+        "average_clustering": 0.5512495416600588,
         "in_degree_sequence": [
             11,
             28,
@@ -97111,7 +97111,7 @@
     },
     "fao_trade_layer231": {
         "reciprocity": 0.29357798165137616,
-        "average_clustering": 0.30936928750810927,
+        "average_clustering": 0.41130760359615226,
         "in_degree_sequence": [
             0,
             9,
@@ -97312,7 +97312,7 @@
     },
     "fao_trade_layer233": {
         "reciprocity": 0.1942675159235669,
-        "average_clustering": 0.28670550230431935,
+        "average_clustering": 0.4158094347728468,
         "in_degree_sequence": [
             5,
             16,
@@ -97579,7 +97579,7 @@
     },
     "fao_trade_layer234": {
         "reciprocity": 0.23690205011389523,
-        "average_clustering": 0.23514027319060526,
+        "average_clustering": 0.3505123688221033,
         "in_degree_sequence": [
             2,
             10,
@@ -97794,7 +97794,7 @@
     },
     "fao_trade_layer238": {
         "reciprocity": 0.2237960339943343,
-        "average_clustering": 0.24986951250876788,
+        "average_clustering": 0.3646820079197891,
         "in_degree_sequence": [
             17,
             18,
@@ -98053,7 +98053,7 @@
     },
     "fao_trade_layer239": {
         "reciprocity": 0.21691176470588236,
-        "average_clustering": 0.3411995659553439,
+        "average_clustering": 0.4986484590960467,
         "in_degree_sequence": [
             19,
             27,
@@ -98346,7 +98346,7 @@
     },
     "fao_trade_layer240": {
         "reciprocity": 0.17657657657657658,
-        "average_clustering": 0.24269435593120806,
+        "average_clustering": 0.3421433428412328,
         "in_degree_sequence": [
             5,
             11,
@@ -98609,7 +98609,7 @@
     },
     "fao_trade_layer242": {
         "reciprocity": 0.16996507566938301,
-        "average_clustering": 0.26117369661296946,
+        "average_clustering": 0.41494684727048037,
         "in_degree_sequence": [
             14,
             8,
@@ -98884,7 +98884,7 @@
     },
     "fao_trade_layer243": {
         "reciprocity": 0.16055045871559634,
-        "average_clustering": 0.34602884798656075,
+        "average_clustering": 0.5210256661916749,
         "in_degree_sequence": [
             10,
             5,
@@ -99123,7 +99123,7 @@
     },
     "fao_trade_layer244": {
         "reciprocity": 0.2081447963800905,
-        "average_clustering": 0.2759200256493863,
+        "average_clustering": 0.39651779055678554,
         "in_degree_sequence": [
             0,
             20,
@@ -99370,7 +99370,7 @@
     },
     "fao_trade_layer245": {
         "reciprocity": 0.3225806451612903,
-        "average_clustering": 0.2924239081426442,
+        "average_clustering": 0.3961119333023358,
         "in_degree_sequence": [
             0,
             2,
@@ -99475,7 +99475,7 @@
     },
     "fao_trade_layer246": {
         "reciprocity": 0.25380710659898476,
-        "average_clustering": 0.26095815413071455,
+        "average_clustering": 0.3505179480583544,
         "in_degree_sequence": [
             0,
             19,
@@ -99596,7 +99596,7 @@
     },
     "fao_trade_layer248": {
         "reciprocity": 0.27251732101616627,
-        "average_clustering": 0.21775420259105358,
+        "average_clustering": 0.30808580493570586,
         "in_degree_sequence": [
             2,
             5,
@@ -99829,7 +99829,7 @@
     },
     "fao_trade_layer249": {
         "reciprocity": 0.2835820895522388,
-        "average_clustering": 0.24359125235669138,
+        "average_clustering": 0.3319101028450622,
         "in_degree_sequence": [
             0,
             1,
@@ -99946,7 +99946,7 @@
     },
     "fao_trade_layer250": {
         "reciprocity": 0.20192307692307693,
-        "average_clustering": 0.17588889606464628,
+        "average_clustering": 0.28473922513614197,
         "in_degree_sequence": [
             0,
             14,
@@ -100093,7 +100093,7 @@
     },
     "fao_trade_layer251": {
         "reciprocity": 0.24764468371467024,
-        "average_clustering": 0.3238567457223472,
+        "average_clustering": 0.44425994509730965,
         "in_degree_sequence": [
             13,
             8,
@@ -100374,7 +100374,7 @@
     },
     "fao_trade_layer252": {
         "reciprocity": 0.36167664670658684,
-        "average_clustering": 0.3675170446478915,
+        "average_clustering": 0.4798125768382827,
         "in_degree_sequence": [
             11,
             11,
@@ -100639,7 +100639,7 @@
     },
     "fao_trade_layer253": {
         "reciprocity": 0.2153846153846154,
-        "average_clustering": 0.2844666973228032,
+        "average_clustering": 0.43152883592329394,
         "in_degree_sequence": [
             20,
             15,
@@ -100948,7 +100948,7 @@
     },
     "fao_trade_layer257": {
         "reciprocity": 0.1771058315334773,
-        "average_clustering": 0.20974949983147645,
+        "average_clustering": 0.32700595625644285,
         "in_degree_sequence": [
             2,
             14,
@@ -101195,7 +101195,7 @@
     },
     "fao_trade_layer259": {
         "reciprocity": 0.21832358674463936,
-        "average_clustering": 0.35836168260840146,
+        "average_clustering": 0.5232361009471532,
         "in_degree_sequence": [
             16,
             36,
@@ -101486,7 +101486,7 @@
     },
     "fao_trade_layer260": {
         "reciprocity": 0.15227272727272728,
-        "average_clustering": 0.2569407453729854,
+        "average_clustering": 0.39662006337689076,
         "in_degree_sequence": [
             0,
             31,
@@ -101751,7 +101751,7 @@
     },
     "fao_trade_layer261": {
         "reciprocity": 0.08280254777070063,
-        "average_clustering": 0.21317878463378304,
+        "average_clustering": 0.3633847214719042,
         "in_degree_sequence": [
             5,
             1,
@@ -101960,7 +101960,7 @@
     },
     "fao_trade_layer262": {
         "reciprocity": 0.31718061674008813,
-        "average_clustering": 0.23602601570798654,
+        "average_clustering": 0.3342703818343672,
         "in_degree_sequence": [
             4,
             5,
@@ -102187,7 +102187,7 @@
     },
     "fao_trade_layer263": {
         "reciprocity": 0.21138211382113822,
-        "average_clustering": 0.33553315018094515,
+        "average_clustering": 0.4823623387387267,
         "in_degree_sequence": [
             9,
             11,
@@ -102424,7 +102424,7 @@
     },
     "fao_trade_layer264": {
         "reciprocity": 0.18009478672985782,
-        "average_clustering": 0.23487849300194355,
+        "average_clustering": 0.33584640030575463,
         "in_degree_sequence": [
             1,
             8,
@@ -102673,7 +102673,7 @@
     },
     "fao_trade_layer265": {
         "reciprocity": 0.2876404494382023,
-        "average_clustering": 0.28341468585278135,
+        "average_clustering": 0.3990090525101312,
         "in_degree_sequence": [
             6,
             13,
@@ -102888,7 +102888,7 @@
     },
     "fao_trade_layer267": {
         "reciprocity": 0.1728395061728395,
-        "average_clustering": 0.13516218894866014,
+        "average_clustering": 0.21124869962079265,
         "in_degree_sequence": [
             0,
             3,
@@ -102983,7 +102983,7 @@
     },
     "fao_trade_layer269": {
         "reciprocity": 0.14953271028037382,
-        "average_clustering": 0.24079181698782173,
+        "average_clustering": 0.3890146756453821,
         "in_degree_sequence": [
             1,
             2,
@@ -103158,7 +103158,7 @@
     },
     "fao_trade_layer270": {
         "reciprocity": 0.14780600461893764,
-        "average_clustering": 0.26853984657345775,
+        "average_clustering": 0.3979891342301082,
         "in_degree_sequence": [
             0,
             15,
@@ -103363,7 +103363,7 @@
     },
     "fao_trade_layer271": {
         "reciprocity": 0.21568627450980393,
-        "average_clustering": 0.14721083952463576,
+        "average_clustering": 0.23260367452096778,
         "in_degree_sequence": [
             5,
             2,
@@ -103512,7 +103512,7 @@
     },
     "fao_trade_layer272": {
         "reciprocity": 0.09090909090909091,
-        "average_clustering": 0.11701979328687086,
+        "average_clustering": 0.19298683824037596,
         "in_degree_sequence": [
             4,
             4,
@@ -103649,7 +103649,7 @@
     },
     "fao_trade_layer273": {
         "reciprocity": 0.191044776119403,
-        "average_clustering": 0.2329572914327244,
+        "average_clustering": 0.3370024624532215,
         "in_degree_sequence": [
             0,
             48,
@@ -103862,7 +103862,7 @@
     },
     "fao_trade_layer274": {
         "reciprocity": 0.4444444444444444,
-        "average_clustering": 0.3818359502751326,
+        "average_clustering": 0.44435905877416904,
         "in_degree_sequence": [
             0,
             14,
@@ -104007,7 +104007,7 @@
     },
     "fao_trade_layer275": {
         "reciprocity": 0.1925925925925926,
-        "average_clustering": 0.2688603062438456,
+        "average_clustering": 0.38432824237908986,
         "in_degree_sequence": [
             0,
             5,
@@ -104134,7 +104134,7 @@
     },
     "fao_trade_layer278": {
         "reciprocity": 0.031746031746031744,
-        "average_clustering": 0.06268927349141254,
+        "average_clustering": 0.11107100267528075,
         "in_degree_sequence": [
             0,
             6,
@@ -104290,7 +104290,7 @@
     },
     "fao_trade_layer282": {
         "reciprocity": 0.057971014492753624,
-        "average_clustering": 0.08906715928971617,
+        "average_clustering": 0.1193588546529723,
         "in_degree_sequence": [
             0,
             32,
@@ -104407,7 +104407,7 @@
     },
     "fao_trade_layer285": {
         "reciprocity": 0.16216216216216217,
-        "average_clustering": 0.26369040656826703,
+        "average_clustering": 0.2670801420801421,
         "in_degree_sequence": [
             0,
             6,
@@ -104460,7 +104460,7 @@
     },
     "fao_trade_layer286": {
         "reciprocity": 0.0625,
-        "average_clustering": 0.11510204081632654,
+        "average_clustering": 0.11818681318681319,
         "in_degree_sequence": [
             0,
             27,
@@ -104525,7 +104525,7 @@
     },
     "fao_trade_layer292": {
         "reciprocity": 0.3212996389891697,
-        "average_clustering": 0.3734257991670297,
+        "average_clustering": 0.5029986865656635,
         "in_degree_sequence": [
             33,
             57,
@@ -104868,7 +104868,7 @@
     },
     "fao_trade_layer294": {
         "reciprocity": 0.28992628992628994,
-        "average_clustering": 0.32250005498379253,
+        "average_clustering": 0.44202423881039515,
         "in_degree_sequence": [
             8,
             21,
@@ -105181,7 +105181,7 @@
     },
     "fao_trade_layer297": {
         "reciprocity": 0.3324324324324324,
-        "average_clustering": 0.32153286470152354,
+        "average_clustering": 0.4319539701166841,
         "in_degree_sequence": [
             3,
             19,
@@ -105448,7 +105448,7 @@
     },
     "fao_trade_layer298": {
         "reciprocity": 0.27605633802816903,
-        "average_clustering": 0.21998664780223873,
+        "average_clustering": 0.32344535956525533,
         "in_degree_sequence": [
             1,
             6,
@@ -105661,7 +105661,7 @@
     },
     "fao_trade_layer299": {
         "reciprocity": 0.2113970588235294,
-        "average_clustering": 0.28812465559955397,
+        "average_clustering": 0.4364303474042334,
         "in_degree_sequence": [
             4,
             32,
@@ -105942,7 +105942,7 @@
     },
     "fao_trade_layer300": {
         "reciprocity": 0.2092130518234165,
-        "average_clustering": 0.3006609015251441,
+        "average_clustering": 0.45714245364374667,
         "in_degree_sequence": [
             42,
             30,
@@ -106197,7 +106197,7 @@
     },
     "fao_trade_layer305": {
         "reciprocity": 0.3858731196860693,
-        "average_clustering": 0.44279079062086424,
+        "average_clustering": 0.5612227821756702,
         "in_degree_sequence": [
             35,
             30,
@@ -106480,7 +106480,7 @@
     },
     "fao_trade_layer306": {
         "reciprocity": 0.3176470588235294,
-        "average_clustering": 0.268221781269962,
+        "average_clustering": 0.342007963785233,
         "in_degree_sequence": [
             0,
             1,
@@ -106615,7 +106615,7 @@
     },
     "fao_trade_layer308": {
         "reciprocity": 0.18892508143322476,
-        "average_clustering": 0.23341801134590426,
+        "average_clustering": 0.3422845949922294,
         "in_degree_sequence": [
             2,
             9,
@@ -106896,7 +106896,7 @@
     },
     "fao_trade_layer310": {
         "reciprocity": 0.3591718825228695,
-        "average_clustering": 0.419716322173364,
+        "average_clustering": 0.5520049920916732,
         "in_degree_sequence": [
             48,
             35,
@@ -107245,7 +107245,7 @@
     },
     "fao_trade_layer311": {
         "reciprocity": 0.17567567567567569,
-        "average_clustering": 0.2781250521630532,
+        "average_clustering": 0.45149552911675006,
         "in_degree_sequence": [
             7,
             25,
@@ -107538,7 +107538,7 @@
     },
     "fao_trade_layer312": {
         "reciprocity": 0.20078226857887874,
-        "average_clustering": 0.38885625431556975,
+        "average_clustering": 0.5506780067107706,
         "in_degree_sequence": [
             5,
             16,
@@ -107809,7 +107809,7 @@
     },
     "fao_trade_layer314": {
         "reciprocity": 0.3425925925925926,
-        "average_clustering": 0.22457295246143924,
+        "average_clustering": 0.2876363491228356,
         "in_degree_sequence": [
             0,
             7,
@@ -107966,7 +107966,7 @@
     },
     "fao_trade_layer315": {
         "reciprocity": 0.35789473684210527,
-        "average_clustering": 0.41046144804252965,
+        "average_clustering": 0.5543035682377665,
         "in_degree_sequence": [
             9,
             16,
@@ -108237,7 +108237,7 @@
     },
     "fao_trade_layer316": {
         "reciprocity": 0.272264631043257,
-        "average_clustering": 0.32401839386706943,
+        "average_clustering": 0.45175873271134215,
         "in_degree_sequence": [
             9,
             7,
@@ -108508,7 +108508,7 @@
     },
     "fao_trade_layer317": {
         "reciprocity": 0.23894389438943894,
-        "average_clustering": 0.3588104178514921,
+        "average_clustering": 0.5247823422012177,
         "in_degree_sequence": [
             25,
             15,
@@ -108823,7 +108823,7 @@
     },
     "fao_trade_layer318": {
         "reciprocity": 0.40266963292547275,
-        "average_clustering": 0.45105968775574007,
+        "average_clustering": 0.5698126713391916,
         "in_degree_sequence": [
             30,
             27,
@@ -109140,7 +109140,7 @@
     },
     "fao_trade_layer322": {
         "reciprocity": 0.11920529801324503,
-        "average_clustering": 0.2127515845529668,
+        "average_clustering": 0.3376569643325833,
         "in_degree_sequence": [
             11,
             6,
@@ -109439,7 +109439,7 @@
     },
     "fao_trade_layer323": {
         "reciprocity": 0.1732283464566929,
-        "average_clustering": 0.1959453889922942,
+        "average_clustering": 0.2695364619951741,
         "in_degree_sequence": [
             1,
             9,
@@ -109720,7 +109720,7 @@
     },
     "fao_trade_layer324": {
         "reciprocity": 0.228,
-        "average_clustering": 0.381921967911936,
+        "average_clustering": 0.5329235890607167,
         "in_degree_sequence": [
             18,
             13,
@@ -110005,7 +110005,7 @@
     },
     "fao_trade_layer325": {
         "reciprocity": 0.3490328006728343,
-        "average_clustering": 0.48120553750628164,
+        "average_clustering": 0.6392212790992106,
         "in_degree_sequence": [
             55,
             31,
@@ -110312,7 +110312,7 @@
     },
     "fao_trade_layer326": {
         "reciprocity": 0.2942884801548887,
-        "average_clustering": 0.3874152846814626,
+        "average_clustering": 0.5256753616977583,
         "in_degree_sequence": [
             23,
             11,
@@ -110597,7 +110597,7 @@
     },
     "fao_trade_layer328": {
         "reciprocity": 0.2540861812778603,
-        "average_clustering": 0.36680459601720594,
+        "average_clustering": 0.5116182761136067,
         "in_degree_sequence": [
             13,
             26,
@@ -110878,7 +110878,7 @@
     },
     "fao_trade_layer329": {
         "reciprocity": 0.23897581792318634,
-        "average_clustering": 0.29982446982616473,
+        "average_clustering": 0.41984553785136147,
         "in_degree_sequence": [
             2,
             12,
@@ -111129,7 +111129,7 @@
     },
     "fao_trade_layer331": {
         "reciprocity": 0.19032258064516128,
-        "average_clustering": 0.2795721416260546,
+        "average_clustering": 0.4057273442518775,
         "in_degree_sequence": [
             13,
             8,
@@ -111394,7 +111394,7 @@
     },
     "fao_trade_layer334": {
         "reciprocity": 0.2852112676056338,
-        "average_clustering": 0.36312082871029117,
+        "average_clustering": 0.48684301091729604,
         "in_degree_sequence": [
             11,
             21,
@@ -111603,7 +111603,7 @@
     },
     "fao_trade_layer335": {
         "reciprocity": 0.29179978700745474,
-        "average_clustering": 0.33666809378028206,
+        "average_clustering": 0.4446617549372092,
         "in_degree_sequence": [
             13,
             9,
@@ -111850,7 +111850,7 @@
     },
     "fao_trade_layer336": {
         "reciprocity": 0.16141732283464566,
-        "average_clustering": 0.372259629074727,
+        "average_clustering": 0.5885241716898142,
         "in_degree_sequence": [
             9,
             5,
@@ -112129,7 +112129,7 @@
     },
     "fao_trade_layer338": {
         "reciprocity": 0.22974607013301088,
-        "average_clustering": 0.3391409815046981,
+        "average_clustering": 0.48984443476976713,
         "in_degree_sequence": [
             7,
             14,
@@ -112382,7 +112382,7 @@
     },
     "fao_trade_layer340": {
         "reciprocity": 0.23011583011583012,
-        "average_clustering": 0.4384817271624293,
+        "average_clustering": 0.60311843276792,
         "in_degree_sequence": [
             19,
             17,
@@ -112673,7 +112673,7 @@
     },
     "fao_trade_layer341": {
         "reciprocity": 0.25066666666666665,
-        "average_clustering": 0.21249330355016638,
+        "average_clustering": 0.30294586794243206,
         "in_degree_sequence": [
             0,
             6,
@@ -112910,7 +112910,7 @@
     },
     "fao_trade_layer343": {
         "reciprocity": 0.17916666666666667,
-        "average_clustering": 0.2243684671434607,
+        "average_clustering": 0.321924374590528,
         "in_degree_sequence": [
             9,
             6,
@@ -113165,7 +113165,7 @@
     },
     "fao_trade_layer344": {
         "reciprocity": 0.26062322946175637,
-        "average_clustering": 0.19549079474320927,
+        "average_clustering": 0.28962556499627296,
         "in_degree_sequence": [
             1,
             7,
@@ -113362,7 +113362,7 @@
     },
     "fao_trade_layer345": {
         "reciprocity": 0.26275787187839306,
-        "average_clustering": 0.303765891033271,
+        "average_clustering": 0.4456550800029837,
         "in_degree_sequence": [
             7,
             13,
@@ -113643,7 +113643,7 @@
     },
     "fao_trade_layer346": {
         "reciprocity": 0.4452296819787986,
-        "average_clustering": 0.3331523536709722,
+        "average_clustering": 0.4041088606614449,
         "in_degree_sequence": [
             6,
             21,
@@ -113838,7 +113838,7 @@
     },
     "fao_trade_layer347": {
         "reciprocity": 0.24731182795698925,
-        "average_clustering": 0.23262522046014875,
+        "average_clustering": 0.3366017627291509,
         "in_degree_sequence": [
             0,
             11,
@@ -114065,7 +114065,7 @@
     },
     "fao_trade_layer350": {
         "reciprocity": 0.1935483870967742,
-        "average_clustering": 0.2728535740153616,
+        "average_clustering": 0.425987038166533,
         "in_degree_sequence": [
             7,
             14,
@@ -114268,7 +114268,7 @@
     },
     "fao_trade_layer352": {
         "reciprocity": 0.11049723756906077,
-        "average_clustering": 0.14278443892988552,
+        "average_clustering": 0.2701371775021916,
         "in_degree_sequence": [
             2,
             3,
@@ -114407,7 +114407,7 @@
     },
     "fao_trade_layer353": {
         "reciprocity": 0.1425891181988743,
-        "average_clustering": 0.2103375027977774,
+        "average_clustering": 0.3151070108257221,
         "in_degree_sequence": [
             16,
             6,
@@ -114680,7 +114680,7 @@
     },
     "fao_trade_layer355": {
         "reciprocity": 0.19130434782608696,
-        "average_clustering": 0.19855066902218277,
+        "average_clustering": 0.2933339607252651,
         "in_degree_sequence": [
             0,
             5,
@@ -114781,7 +114781,7 @@
     },
     "fao_trade_layer357": {
         "reciprocity": 0.1978021978021978,
-        "average_clustering": 0.05886142250983784,
+        "average_clustering": 0.11124338624338623,
         "in_degree_sequence": [
             1,
             7,
@@ -114898,7 +114898,7 @@
     },
     "fao_trade_layer358": {
         "reciprocity": 0.01834862385321101,
-        "average_clustering": 0.14219552261925145,
+        "average_clustering": 0.24864692827846843,
         "in_degree_sequence": [
             0,
             5,
@@ -115025,7 +115025,7 @@
     },
     "fao_trade_layer50": {
         "reciprocity": 0.2376237623762376,
-        "average_clustering": 0.31683052687324914,
+        "average_clustering": 0.44537149170621176,
         "in_degree_sequence": [
             4,
             9,
@@ -115188,7 +115188,7 @@
     },
     "fao_trade_layer85": {
         "reciprocity": 0.11688311688311688,
-        "average_clustering": 0.13355958713337007,
+        "average_clustering": 0.22497081480457443,
         "in_degree_sequence": [
             1,
             7,
@@ -115345,7 +115345,7 @@
     },
     "fao_trade_layer101": {
         "reciprocity": 0.11764705882352941,
-        "average_clustering": 0.08844972807442184,
+        "average_clustering": 0.14075344298558584,
         "in_degree_sequence": [
             1,
             9,
@@ -115466,7 +115466,7 @@
     },
     "fao_trade_layer103": {
         "reciprocity": 0.11956521739130435,
-        "average_clustering": 0.09995848544867744,
+        "average_clustering": 0.17341568924509124,
         "in_degree_sequence": [
             0,
             8,
@@ -115629,7 +115629,7 @@
     },
     "fao_trade_layer106": {
         "reciprocity": 0.40358744394618834,
-        "average_clustering": 0.37274415611424655,
+        "average_clustering": 0.5022086276961195,
         "in_degree_sequence": [
             7,
             10,
@@ -115722,7 +115722,7 @@
     },
     "fao_trade_layer114": {
         "reciprocity": 0.15141955835962145,
-        "average_clustering": 0.2227920904096627,
+        "average_clustering": 0.3492513151031246,
         "in_degree_sequence": [
             3,
             11,
@@ -115927,7 +115927,7 @@
     },
     "fao_trade_layer119": {
         "reciprocity": 0.29411764705882354,
-        "average_clustering": 0.12306308127190978,
+        "average_clustering": 0.1678018678018678,
         "in_degree_sequence": [
             3,
             6,
@@ -116010,7 +116010,7 @@
     },
     "fao_trade_layer120": {
         "reciprocity": 0.3218390804597701,
-        "average_clustering": 0.2963009877053729,
+        "average_clustering": 0.3711617723496846,
         "in_degree_sequence": [
             4,
             8,
@@ -116121,7 +116121,7 @@
     },
     "fao_trade_layer121": {
         "reciprocity": 0.36507936507936506,
-        "average_clustering": 0.244942573738132,
+        "average_clustering": 0.33690611382919083,
         "in_degree_sequence": [
             5,
             11,
@@ -116208,7 +116208,7 @@
     },
     "fao_trade_layer122": {
         "reciprocity": 0.5128205128205128,
-        "average_clustering": 0.4028227856536268,
+        "average_clustering": 0.45164575978779714,
         "in_degree_sequence": [
             7,
             12,
@@ -116299,7 +116299,7 @@
     },
     "fao_trade_layer124": {
         "reciprocity": 0.3053435114503817,
-        "average_clustering": 0.29419764154364836,
+        "average_clustering": 0.35163575476022196,
         "in_degree_sequence": [
             9,
             17,
@@ -116398,7 +116398,7 @@
     },
     "fao_trade_layer131": {
         "reciprocity": 0.08108108108108109,
-        "average_clustering": 0.03688542938542939,
+        "average_clustering": 0.055793650793650805,
         "in_degree_sequence": [
             0,
             1,
@@ -116584,7 +116584,7 @@
     },
     "fao_trade_layer136": {
         "reciprocity": 0.0,
-        "average_clustering": 0.07536290869624203,
+        "average_clustering": 0.15072581739248406,
         "in_degree_sequence": [
             0,
             28,
@@ -116665,7 +116665,7 @@
     },
     "fao_trade_layer225": {
         "reciprocity": 0.379746835443038,
-        "average_clustering": 0.2669995263664346,
+        "average_clustering": 0.31037497849553947,
         "in_degree_sequence": [
             5,
             10,
@@ -116776,7 +116776,7 @@
     },
     "fao_trade_layer232": {
         "reciprocity": 0.2595419847328244,
-        "average_clustering": 0.2267154657442963,
+        "average_clustering": 0.3083217031752476,
         "in_degree_sequence": [
             5,
             11,
@@ -116891,7 +116891,7 @@
     },
     "fao_trade_layer235": {
         "reciprocity": 0.18604651162790697,
-        "average_clustering": 0.31854018627524133,
+        "average_clustering": 0.3834286975713758,
         "in_degree_sequence": [
             0,
             20,
@@ -116994,7 +116994,7 @@
     },
     "fao_trade_layer247": {
         "reciprocity": 0.29357798165137616,
-        "average_clustering": 0.2826733107969012,
+        "average_clustering": 0.34589280575902653,
         "in_degree_sequence": [
             6,
             12,
@@ -117133,7 +117133,7 @@
     },
     "fao_trade_layer276": {
         "reciprocity": 0.22857142857142856,
-        "average_clustering": 0.20367016818005862,
+        "average_clustering": 0.3004143128150018,
         "in_degree_sequence": [
             5,
             17,
@@ -117284,7 +117284,7 @@
     },
     "fao_trade_layer279": {
         "reciprocity": 0.0,
-        "average_clustering": 0.01619426354933988,
+        "average_clustering": 0.03238852709867976,
         "in_degree_sequence": [
             0,
             57,
@@ -117484,7 +117484,7 @@
     },
     "fao_trade_layer354": {
         "reciprocity": 0.47244094488188976,
-        "average_clustering": 0.22625947244867695,
+        "average_clustering": 0.27532195473371945,
         "in_degree_sequence": [
             8,
             4,
@@ -117583,7 +117583,7 @@
     },
     "fao_trade_layer363": {
         "reciprocity": 0.07462686567164178,
-        "average_clustering": 0.4537389870590576,
+        "average_clustering": 0.49748618891191176,
         "in_degree_sequence": [
             0,
             37,
@@ -117710,7 +117710,7 @@
     },
     "fao_trade_layer117": {
         "reciprocity": 0.2958579881656805,
-        "average_clustering": 0.20215754328775504,
+        "average_clustering": 0.2617429595291449,
         "in_degree_sequence": [
             17,
             3,
@@ -117845,7 +117845,7 @@
     },
     "fao_trade_layer128": {
         "reciprocity": 0.21052631578947367,
-        "average_clustering": 0.24683334153630046,
+        "average_clustering": 0.3229606967106967,
         "in_degree_sequence": [
             2,
             8,
@@ -117966,7 +117966,7 @@
     },
     "fao_trade_layer134": {
         "reciprocity": 0.08333333333333333,
-        "average_clustering": 0.07511111111111111,
+        "average_clustering": 0.14400000000000002,
         "in_degree_sequence": [
             0,
             2,
@@ -118025,7 +118025,7 @@
     },
     "fao_trade_layer241": {
         "reciprocity": 0.12903225806451613,
-        "average_clustering": 0.13038901825309593,
+        "average_clustering": 0.17265777412836233,
         "in_degree_sequence": [
             0,
             8,
@@ -118108,7 +118108,7 @@
     },
     "fao_trade_layer284": {
         "reciprocity": 0.0,
-        "average_clustering": 0.050238095238095234,
+        "average_clustering": 0.10047619047619047,
         "in_degree_sequence": [
             0,
             15,
@@ -118178,7 +118178,7 @@
     },
     "fao_trade_layer360": {
         "reciprocity": 0.30434782608695654,
-        "average_clustering": 0.0643639856172156,
+        "average_clustering": 0.10802469135802469,
         "in_degree_sequence": [
             5,
             5,
@@ -118428,7 +118428,7 @@
     },
     "foodweb_little_rock": {
         "reciprocity": 0.03368083400160385,
-        "average_clustering": 0.17336397451883714,
+        "average_clustering": 0.32262801253502993,
         "in_degree_sequence": [
             0,
             1,
@@ -118803,7 +118803,7 @@
     },
     "interactome_figeys": {
         "reciprocity": 0.006199628022318661,
-        "average_clustering": 0.023001468232657342,
+        "average_clustering": 0.03995238431338118,
         "in_degree_sequence": [
             1,
             14,
@@ -123290,7 +123290,7 @@
     },
     "messal_shale": {
         "reciprocity": 0.005896958410924891,
-        "average_clustering": 0.05324625766703355,
+        "average_clustering": 0.10384775503933531,
         "in_degree_sequence": [
             3,
             42,
@@ -124699,7 +124699,7 @@
     },
     "openflights": {
         "reciprocity": 0.9780258487549788,
-        "average_clustering": 0.4782853255477227,
+        "average_clustering": 0.4917731731380377,
         "in_degree_sequence": [
             4,
             9,
@@ -131136,7 +131136,7 @@
     },
     "physician_trust": {
         "reciprocity": 0.31876138433515483,
-        "average_clustering": 0.20993065472216108,
+        "average_clustering": 0.3115751356464073,
         "in_degree_sequence": [
             1,
             3,
@@ -131627,7 +131627,7 @@
     },
     "polblogs": {
         "reciprocity": 0.24252299605781866,
-        "average_clustering": 0.21841240957755392,
+        "average_clustering": 0.3197313275754899,
         "in_degree_sequence": [
             12,
             45,
@@ -134084,7 +134084,7 @@
     },
     "un_migrations": {
         "reciprocity": 0.5028500178126113,
-        "average_clustering": 0.6364794780726611,
+        "average_clustering": 0.7722619697091285,
         "in_degree_sequence": [
             3,
             132,
@@ -136832,7 +136832,7 @@
     },
     "yeast_transcription": {
         "reciprocity": 0.0018281535648994515,
-        "average_clustering": 0.023542991945857128,
+        "average_clustering": 0.04697808740832132,
         "in_degree_sequence": [
             1,
             8,

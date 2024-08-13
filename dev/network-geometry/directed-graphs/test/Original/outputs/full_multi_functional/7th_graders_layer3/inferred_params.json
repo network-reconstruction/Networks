@@ -189,5 +189,5 @@
         "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.1,
         "log_file_path": "logs/full_multi_functional/7th_graders_layer3/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log"
     },
-    "inference_time": 32.266066789627075
+    "inference_time": 17.199805736541748
 }

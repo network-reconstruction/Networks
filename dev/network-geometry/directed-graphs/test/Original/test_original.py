@@ -516,7 +516,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
     """
     from directedS1 import DirectedS1
     proccessed = []
-    for network in list(network_data.keys())[3:]:
+    for network in list(network_data.keys()):
         if len(network_data[network]['in_degree_sequence']) > 1000:
             print(f" {network} for later")
             continue
@@ -558,7 +558,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
 
 if __name__ == '__main__':
     # Test all
-    # exit_code = pytest.main(['-v', '-s'])
+    exit_code = pytest.main(['-v', '-s'])
     # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_functional_model_multi_datasets'])
-    exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_REAL_multi_datasets'])
+    # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_REAL_multi_datasets'])
     sys.exit(exit_code)

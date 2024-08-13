@@ -44,7 +44,8 @@ class NetworkProcessor:
 
     def extract_network_data(self, G):
         reciprocity = nx.reciprocity(G)
-        avg_clustering = nx.average_clustering(G)
+        #compute average undirected clustering coefficient of G
+        avg_clustering = nx.average_clustering(G.to_undirected())
         
         in_degree_sequence = [d for n, d in G.in_degree()]
         out_degree_sequence = [d for n, d in G.out_degree()]

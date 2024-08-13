@@ -80,5 +80,6 @@
         "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.15,
         "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.15,
         "log_file_path": "logs/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log"
-    }
+    },
+    "inference_time": 4.415890216827393
 }
