@@ -7,12 +7,13 @@ Generic Model Class.
 """
 
 class Model:
-    def __init__(self, log_file_path: str = "logs/default.log", verbose: bool = False, **kwargs):
+    def __init__(self, log_file_path: str = "logs/default.log", verbose: bool = False, debug: bool = False, **kwargs):
         """
         Initialize the Model.
         """
         self.logger = self._setup_logging(log_file_path)
         self.verbose = verbose
+        self.debug = debug
         for key, value in kwargs.items():
             setattr(self, key, value)
         
@@ -54,6 +55,8 @@ class Model:
             Parameters.
         """
         for key, value in kwargs.items():
+            if self.verbose:
+                self.logger.info(f"Setting {key} to {value}")
             setattr(self, key, value)
             
     def modify_log_file_path(self, log_file_path: str) -> None:

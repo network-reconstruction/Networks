@@ -1,0 +1,175 @@
+{
+    "beta": 1.0065383911132812,
+    "mu": 0.028925662860274315,
+    "nu": 1.0,
+    "R": 4.615493349664965,
+    "inferred_kappas": [
+        {
+            "in_deg": 5,
+            "out_deg": 3,
+            "kappa_in": 3.604513645172119,
+            "kappa_out": 1.8193953037261963
+        },
+        {
+            "in_deg": 5,
+            "out_deg": 10,
+            "kappa_in": 3.604513645172119,
+            "kappa_out": 208.38880920410156
+        },
+        {
+            "in_deg": 5,
+            "out_deg": 4,
+            "kappa_in": 3.604513645172119,
+            "kappa_out": 38.207916259765625
+        },
+        {
+            "in_deg": 5,
+            "out_deg": 5,
+            "kappa_in": 3.604513645172119,
+            "kappa_out": 13.406816482543945
+        },
+        {
+            "in_deg": 8,
+            "out_deg": 22,
+            "kappa_in": 0.8981425762176514,
+            "kappa_out": 651.8203735351562
+        },
+        {
+            "in_deg": 8,
+            "out_deg": 17,
+            "kappa_in": 0.8981425762176514,
+            "kappa_out": 459.6422119140625
+        },
+        {
+            "in_deg": 8,
+            "out_deg": 6,
+            "kappa_in": 0.8981425762176514,
+            "kappa_out": 4.072734832763672
+        },
+        {
+            "in_deg": 4,
+            "out_deg": 3,
+            "kappa_in": 2.43689227104187,
+            "kappa_out": 1.8193953037261963
+        },
+        {
+            "in_deg": 4,
+            "out_deg": 9,
+            "kappa_in": 2.43689227104187,
+            "kappa_out": 59.5579719543457
+        },
+        {
+            "in_deg": 4,
+            "out_deg": 2,
+            "kappa_in": 2.43689227104187,
+            "kappa_out": 0.2874903678894043
+        },
+        {
+            "in_deg": 4,
+            "out_deg": 6,
+            "kappa_in": 2.43689227104187,
+            "kappa_out": 4.072734832763672
+        },
+        {
+            "in_deg": 6,
+            "out_deg": 8,
+            "kappa_in": 1.4561858177185059,
+            "kappa_out": 4.6670122146606445
+        },
+        {
+            "in_deg": 6,
+            "out_deg": 2,
+            "kappa_in": 1.4561858177185059,
+            "kappa_out": 0.2874903678894043
+        },
+        {
+            "in_deg": 6,
+            "out_deg": 9,
+            "kappa_in": 1.4561858177185059,
+            "kappa_out": 59.5579719543457
+        },
+        {
+            "in_deg": 9,
+            "out_deg": 8,
+            "kappa_in": 3.772731065750122,
+            "kappa_out": 4.6670122146606445
+        },
+        {
+            "in_deg": 9,
+            "out_deg": 6,
+            "kappa_in": 3.772731065750122,
+            "kappa_out": 4.072734832763672
+        },
+        {
+            "in_deg": 12,
+            "out_deg": 6,
+            "kappa_in": 148.2861328125,
+            "kappa_out": 4.072734832763672
+        },
+        {
+            "in_deg": 3,
+            "out_deg": 1,
+            "kappa_in": 0.07557064294815063,
+            "kappa_out": 1.8609135150909424
+        },
+        {
+            "in_deg": 3,
+            "out_deg": 2,
+            "kappa_in": 0.07557064294815063,
+            "kappa_out": 0.2874903678894043
+        },
+        {
+            "in_deg": 11,
+            "out_deg": 7,
+            "kappa_in": 0.9597625136375427,
+            "kappa_out": 31.42770004272461
+        },
+        {
+            "in_deg": 11,
+            "out_deg": 8,
+            "kappa_in": 0.9597625136375427,
+            "kappa_out": 4.6670122146606445
+        },
+        {
+            "in_deg": 7,
+            "out_deg": 2,
+            "kappa_in": 21.128276824951172,
+            "kappa_out": 0.2874903678894043
+        },
+        {
+            "in_deg": 1,
+            "out_deg": 5,
+            "kappa_in": 0.14411239326000214,
+            "kappa_out": 13.406816482543945
+        },
+        {
+            "in_deg": 2,
+            "out_deg": 2,
+            "kappa_in": 0.16648656129837036,
+            "kappa_out": 0.2874903678894043
+        }
+    ],
+    "flags": {
+        "clustering_cvg": false,
+        "kappa_cvg": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "beta_min_hit": true,
+        "beta_max_hit": false
+    },
+    "model_params": {
+        "seed": 0,
+        "verbose": true,
+        "KAPPA_MAX_NB_ITER_CONV": 100,
+        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 50,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.15,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.15,
+        "log_file_path": "logs/full_multi/7th_graders_layer2/DirectedS1/test_directedS1.log"
+    },
+    "inference_time": 830.6113722324371
+}

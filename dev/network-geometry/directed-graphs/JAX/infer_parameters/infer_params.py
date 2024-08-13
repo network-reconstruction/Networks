@@ -2,9 +2,12 @@
 Model from Supplementary Information of the paper: Geometric description of clustering in directed networks: Antoine Allard et al.
 
 """
-
+#handle jaxlib.xla_extension.ArrayImpl
+import jaxlib
 import jax.numpy as jnp
 import jax.random as random
+import jax
+from jax import vmap
 from scipy.special import hyp2f1
 import numpy as np
 from typing import Dict, List, Tuple, Union, Optional, Any
@@ -15,6 +18,11 @@ import json
 import logging
 import os
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+grand_parent_dir = os.path.dirname(parent_dir)
+sys.path.append(grand_parent_dir)
+from general.json_serializable import make_json_serializable
 
 def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
     """
@@ -199,6 +207,26 @@ class DirectedS1Fitter:
         self.out_degree_sequence, self.in_degree_sequence = [], []
         self.verbose = verbose
         
+        
+        #for testing infer_nu purposes:
+        self.exogenous_variables_infer_nu = [
+            "verbose",
+            "debug",
+            "degree",
+            "random_ensemble_kappa_per_degree_class",
+            "nb_vertices",
+            "PI",
+            "NUMERICAL_CONVERGENCE_THRESHOLD_2",
+            "beta",
+            "R",
+            "mu",
+            "random_ensemble_average_degree",
+            "reciprocity",
+            "nu",
+            "random_ensemble_reciprocity"
+        ]
+        
+        
     def _setup_logging(self, log_file_path: str) -> logging.Logger:
         """
         Setup logging with the given log file path.
@@ -234,6 +262,14 @@ class DirectedS1Fitter:
         for key, value in kwargs.items():
             setattr(self, key, value)
         self.model_params.update(kwargs)
+        
+    def clean_params(self) -> None:
+        """
+        Clean the model parameters.
+        """
+        for key in self.model_params:
+            if key not in self.exogenous_variables_infer_nu:
+                self.model_params[key] = None
 
     def _compute_degree_histogram(self, degrees: List[float]) -> Dict[int, int]:
         """
@@ -644,7 +680,68 @@ class DirectedS1Fitter:
                              
         if self.verbose:
             self.logger.info(f"time: {time.time() - start_time}")
+            
+    def infer_nu_vmap(self) -> None:
+        """
+        Infer the parameter nu using JAX for vectorized operations.
+        """
+        if self.verbose:
+            self.logger.info("Inferring nu ...")
+            start_time = time.time()
 
+        if self.debug:
+            self.logger.info(f"self.degree: {self.degree}")
+            self.logger.info(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
+        
+        def compute_contributions(v1, v2):
+            kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
+            kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
+
+            p12 = self.directed_connection_probability(self.PI, kout1kin2)
+            p21 = self.directed_connection_probability(self.PI, kout2kin1)
+
+            xi_00 = jnp.where(
+                jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2,
+                hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta),
+                (1 / (1 - (kout1kin2 / kout2kin1) ** self.beta)) * (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+            )
+
+            xi_p1 = jnp.where(kout1kin2 < kout2kin1, p12, p21)
+
+            z_max = self.find_minimal_angle_by_bisection(kout1kin2, kout2kin1)
+            xi_m1 = jnp.where(
+                z_max < self.PI,
+                (z_max / self.PI) - self.directed_connection_probability(z_max, kout1kin2) - self.directed_connection_probability(z_max, kout2kin1),
+                1 - p12 - p21
+            )
+
+            return xi_m1, xi_00, xi_p1
+
+        v1_indices, v2_indices = jnp.triu_indices(self.nb_vertices, k=1)
+        xi_m1, xi_00, xi_p1 = vmap(compute_contributions)(v1_indices, v2_indices)
+
+        xi_m1 = jnp.sum(xi_m1) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
+        xi_00 = jnp.sum(xi_00) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
+        xi_p1 = jnp.sum(xi_p1) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
+
+        if self.reciprocity > xi_00:
+            self.nu = (self.reciprocity - xi_00) / (xi_p1 - xi_00)
+        else:
+            self.nu = (self.reciprocity - xi_00) / (xi_m1 + xi_00)
+
+        self.nu = jnp.clip(self.nu, -1, 1)
+
+        if self.nu > 0:
+            self.random_ensemble_reciprocity = (xi_p1 - xi_00) * self.nu + xi_00
+        else:
+            self.random_ensemble_reciprocity = (xi_m1 + xi_00) * self.nu + xi_00
+
+        if self.debug:
+            self.logger.info(f"nu: {self.nu}, random_ensemble_reciprocity: {self.random_ensemble_reciprocity} ")
+
+        if self.verbose:
+            self.logger.info(f"time: {time.time() - start_time}")
+        
     def infer_parameters(self) -> None:
         """
         Infer the parameters beta, mu, nu, and R.
@@ -676,6 +773,11 @@ class DirectedS1Fitter:
                     self.logger.info(f"Beta: {self.beta}, iteration count: {iter}")
                 self.infer_kappas()
                 self.compute_random_ensemble_average_degree()
+                #JUST ONCE FOR TEST:
+                #save everything from the exogenous variables to file
+                
+                self.save_variables_json(self.exogenous_variables_infer_nu, f"outputs/test_infer_nus_JAX/exogenous_variables_infer_nu_iter_{iter}.json")
+                iter +=1
                 if not self.CUSTOM_NU:
                     self.infer_nu()
                 self.build_cumul_dist_for_mc_integration()
@@ -961,6 +1063,34 @@ class DirectedS1Fitter:
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
+        
+    def save_variables_json(self, variable_names: List[str], file_path: str) -> None:
+        """
+        Save data to a JSON file.
+
+        Args:
+            variable_names (Dict): Data to save.
+            file_path (str): Filename.
+        """
+        if self.debug:
+            self.logger.info(f"variables are {variable_names}, with types {[type(getattr(self, var_name)) for var_name in variable_names]}")
+        data = {}
+        og_data ={}
+        for var_name in variable_names:
+            value = getattr(self, var_name)
+            og_data[var_name] = value
+            data[var_name] = make_json_serializable(value)
+            #recursively jaxlib.xla_extension.ArrayImpl convert to list or list of jaxlib.xla_extension.ArrayImpl
+            
+        if self.debug:
+            self.logger.info(f"Original data to save: {og_data}")
+            self.logger.info(f"Types changed, data to save: {data}")
+            
+        for i in range(1, len(file_path.split("/"))):
+            if not os.path.exists("/".join(file_path.split("/")[:i])):
+                os.mkdir("/".join(file_path.split("/")[:i]))
+        with open(file_path, "w") as f:
+            json.dump(data, f, indent=4)
 
 def main():
     """
