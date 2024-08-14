@@ -8,7 +8,7 @@ import jax.numpy as jnp
 import jax.random as random
 import jax
 from jax import vmap
-from scipy.special import hyp2f1
+from scipy.special import hyp2f1, factorial, poch
 import numpy as np
 from typing import Dict, List, Tuple, Union, Optional, Any
 import time
@@ -17,6 +17,7 @@ from sortedcontainers import SortedDict
 import json
 import logging
 import os
+from jax.scipy.special import gamma, gammaln
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -41,9 +42,75 @@ def lower_bound(d: SortedDict, key: Any) -> Optional[Tuple]:
     else:
         return None
 
+def pochhammer(a: Union[int, float], n: int) -> float:
+    """
+    Compute the Pochhammer symbol (rising factorial) for given a and n.
+
+    Args:
+        a (Union[int, float]): The starting value.
+        n (int): The number of terms.
+
+    Returns:
+        float: The value of the Pochhammer symbol.
+    """
+    res = poch(a, n)
+    return res
+
+def factorial(n):
+    return jnp.exp(gammaln(n + 1))
+
+def hyp2f1_approx(a: float, b: float, c: float, z: float, n_terms: int =10) -> jnp.ndarray:
+    """
+    Compute the Taylor series expansion for _2F_1(a, b; c; z) using JAX.
+
+    Args:
+        a (float): The parameter a.
+        b (float): The parameter b.
+        c (float): The parameter c.
+        z (float): The variable z.
+        n_terms (int): Number of terms in the series.
+
+    Returns:
+        jnp.ndarray: The value of the hypergeometric function approximation.
+    """
+    # print(f"a: {a}, b: {b}, c: {c}, z: {z}")
+    def series_term(n: int) -> float:
+        term = (pochhammer(a, n) * pochhammer(b, n) / pochhammer(c, n)) * (z**n) / factorial(n)
+        return term
+    
+    terms = []
+    for n in range(n_terms):
+        term = series_term(n)
+        # print(f"term: {term}, n: {n}")
+        terms.append(term)
+    terms = jnp.array(terms)
+    result = jnp.sum(terms, axis=0)
+    return result
+
+def hyp2f1_jax(a: float, b: float, c: float, z: float, n_terms: int = 10) -> jnp.ndarray:
+    """
+    Compute the hypergeometric function _2F_1(a, b; c; z) using JAX.
+    """
+    abs_z = jnp.abs(z)
+    
+    def taylor_series():
+        return hyp2f1_approx(a, b, c, z, n_terms)
+    
+    def transformed_series():
+        z_inv = 1.0 / z
+        factor1 = gamma(c) * gamma(b-a) / (gamma(b) * gamma(c-a))
+        factor2 = (-z)**(-a) * hyp2f1_approx(a, 1-c+a, 1-b+a, z_inv, n_terms)
+        
+        factor3 = gamma(c) * gamma(a-b) / (gamma(a) * gamma(c-b))
+        factor4 = (-z)**(-b) * hyp2f1_approx(b, 1-c+b, 1-a+b, z_inv, n_terms)
+        
+        return (factor1 * factor2 + factor3 * factor4).real
+    
+    # Use a conditional to choose between Taylor series and transformation
+    return jax.lax.cond(abs_z < 1, taylor_series, transformed_series)
 
 def hyp2f1a(beta: float, z: float) -> float:
-    """Compute hypergeometric function for parameters beta and z.
+    """Wrapper for scipy as not JAX implemented to compute hypergeometric function for parameters beta and z.
     
     Args:
         beta (float): Parameter beta.
@@ -54,30 +121,66 @@ def hyp2f1a(beta: float, z: float) -> float:
     """
     return hyp2f1(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
-
-def hyp2f1b(beta: float, z: float) -> float:
-    """Compute hypergeometric function for parameters beta and z.
+def hyp2f1a_jax_old(beta: float, z: float) -> float:
+    """Compute hypergeometric function for parameters beta and z (S75a).
     
     Args:
         beta (float): Parameter beta.
         z (float): Parameter z.
     
     Returns:
-        float: Hypergeometric function 2F1(1, 2/beta, 1 + 2/beta, z).
+        float: Hypergeometric function 2F1(1, 1/beta, 1 + 1/beta, z).
     """
-    return hyp2f1(1.0, 2.0 / beta, 1.0 + (2.0 / beta), z).real
+    return hyp2f1_approx(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
+
+def hyp2f1a_jax(beta: float, z: float) -> float:
+    """Compute hypergeometric function for parameters beta and z (S75a).
+    
+    Args:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(1, 1/beta, 1 + 1/beta, z).
+    """
+    return hyp2f1_jax(1.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
 
 def hyp2f1c(beta: float, z: float) -> float:
+    """Wrapper for scipy as not JAX implemented to compute hypergeometric function for parameters beta and z.
+    
+    Args:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(2, 1/beta, 1 + 1/beta, z).
+    """
+    return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
+
+def hyp2f1c_jax(beta:float, z: float) -> float:
     """Compute hypergeometric function for parameters beta and z (S75b).
     
     Args:
         beta (float): Parameter beta.
         z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(2, 1/beta, 1 + 1/beta, z).
     """
-    return hyp2f1(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
+    return hyp2f1_jax(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 
-
+def hyp2f1c_jax_old(beta:float, z: float) -> float:
+    """Compute hypergeometric function for parameters beta and z (S75b).
+    
+    Args:
+        beta (float): Parameter beta.
+        z (float): Parameter z.
+    
+    Returns:
+        float: Hypergeometric function 2F1(2, 1/beta, 1 + 1/beta, z).
+    """
+    return hyp2f1_approx(2.0, 1.0 / beta, 1.0 + (1.0 / beta), z).real
 class DirectedS1Fitter:
     """
     A class used to represent the parameter inference model for directed hyperbolic networks.
@@ -317,7 +420,26 @@ class DirectedS1Fitter:
         Returns:
             float: Directed connection probability.
         """
-        return (z / self.PI) * hyp2f1a(self.beta, -((self.R * z) / (self.mu * koutkin)) ** self.beta)
+        beta = self.beta
+        hyp2f1a_z = -((self.R * z) / (self.mu * koutkin)) ** self.beta
+        directed_prob = (z / self.PI) * hyp2f1a(beta, hyp2f1a_z)
+        return directed_prob
+    
+    def directed_connection_probability_jax(self, z: float, koutkin: float) -> float:
+        """
+        Compute the directed connection probability using hypergeometric function.
+
+        Args:
+            z (float): Angle between two nodes.
+            koutkin (float): Product of out-degree and in-degree.
+
+        Returns:
+            float: Directed connection probability.
+        """
+        beta = self.beta
+        hyp2f1a_z = -((self.R * z) / (self.mu * koutkin)) ** self.beta
+        directed_prob = (z / self.PI) * hyp2f1a_jax(beta, hyp2f1a_z)
+        return directed_prob
 
     def undirected_connection_probability(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
         """
@@ -357,6 +479,44 @@ class DirectedS1Fitter:
 
         return conn_prob
 
+    def undirected_connection_probability_jax(self, z: float, kout1kin2: float, kout2kin1: float) -> float:
+        """
+        Compute the undirected connection probability.
+
+        Args:
+            z (float): Angle between two nodes.
+            kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
+            kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
+
+        Returns:
+            float: Undirected connection probability.
+        """
+        p12 = self.directed_connection_probability_jax(z, kout1kin2)
+        p21 = self.directed_connection_probability_jax(z, kout2kin1)
+
+        conn_prob = 0
+        if jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
+            conn_prob -= (1 - jnp.abs(self.nu)) * hyp2f1c_jax(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
+        else:
+            conn_prob -= ((1 - jnp.abs(self.nu)) / (1 - (kout1kin2 / kout2kin1) ** self.beta)) * (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+        conn_prob += p12
+        conn_prob += p21
+        if self.nu > 0:
+            if kout1kin2 < kout2kin1:
+                conn_prob -= self.nu * p12
+            else:
+                conn_prob -= self.nu * p21
+        elif self.nu < 0:
+            z_max = self.find_minimal_angle_by_bisection_jax(kout1kin2, kout2kin1)
+            if z_max < z:
+                p12 = self.directed_connection_probability_jax(z_max, kout1kin2)
+                p21 = self.directed_connection_probability_jax(z_max, kout2kin1)
+                conn_prob -= self.nu * ((z_max / self.PI) - p12 - p21)
+            else:
+                conn_prob -= self.nu * ((z / self.PI) - p12 - p21)
+
+        return conn_prob
+    
     def find_minimal_angle_by_bisection(self, kout1kin2: float, kout2kin1: float) -> float:
         """
         Find the minimal angle by bisection.
@@ -380,8 +540,47 @@ class DirectedS1Fitter:
                 z_min = z_mid
             else:
                 z_max = z_mid
+            
         return (z_min + z_max) / 2
 
+    def find_minimal_angle_by_bisection_jax(self, kout1kin2: float, kout2kin1: float) -> float:
+        """
+        Compute the undirected connection probability.
+
+        Args:
+            z (float): Angle between two nodes.
+            kout1kin2 (float): Product of out-degree of node 1 and in-degree of node 2.
+            kout2kin1 (float): Product of out-degree of node 2 and in-degree of node 1.
+
+        Returns:
+            float: Undirected connection probability.
+        """
+        def cond_fun(state):
+            z_min, z_max = state
+            return (z_max - z_min) > self.NUMERICAL_CONVERGENCE_THRESHOLD_2
+
+        def body_fun(state):
+            z_min, z_max = state
+            z_mid = (z_min + z_max) / 2
+            pz_min = self.directed_connection_probability_jax(z_min, kout1kin2) + self.directed_connection_probability_jax(z_min, kout2kin1)
+            pz_mid = self.directed_connection_probability_jax(z_mid, kout1kin2) + self.directed_connection_probability_jax(z_mid, kout2kin1)
+            
+            # Update z_min and z_max using jax.numpy.where
+            z_min = jnp.where((pz_min * pz_mid) > 0, z_mid, z_min)
+            z_max = jnp.where((pz_min * pz_mid) <= 0, z_mid, z_max)
+            
+            return z_min, z_max
+        # Initial state
+        z_min = 0.0
+        z_max = self.PI
+
+        # Use jax.lax.while_loop to perform the bisection
+        z_min, z_max = jax.lax.while_loop(cond_fun, body_fun, (z_min, z_max))
+        out = (z_min + z_max) / 2
+        # self.logger.log(logging.INFO, f"out: {out}")
+        return out
+
+    #     return (z_min + z_max) / 2
     def build_cumul_dist_for_mc_integration(self) -> None:
         """
         Build cumulative distribution for Monte Carlo integration.
@@ -589,16 +788,19 @@ class DirectedS1Fitter:
                     self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
             error = jnp.inf
+            total_error = 0
             keep_going = False
             #Check error for each of the kappa has to be less than threshold.
             for direction in directions:
                 for el in self.degree_histogram[direction].items():
                     error = jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] - el[0])
+                    total_error += error
                     if error > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
                         keep_going = True
                         break
-            if self.verbose:
+            if self.verbose and cnt % (self.KAPPA_MAX_NB_ITER_CONV // 10) == 0:
                 self.logger.info(f"Error: {error}, NUMERICAL_CONVERGENCE_THRESHOLD_1: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
+                self.logger.info(f"Total error for all kappa: {error}")
                 
             if keep_going:
                 for direction in directions:
@@ -630,14 +832,25 @@ class DirectedS1Fitter:
             self.logger.info(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
             
         xi_m1, xi_00, xi_p1 = 0, 0, 0
+        
+
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
-                kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
-                kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
-
+                if self.debug:
+                    self.logger.info(f"v1: {v1}, v2: {v2}")
+                    self.logger.info(f"degree[1][v1]: {self.degree[1][v1]}, degree[1][v2]: {self.degree[1][v2]}")
+                kout1 = self.random_ensemble_kappa_per_degree_class[1][self.degree[1][v1]]
+                kin2 = self.random_ensemble_kappa_per_degree_class[0][self.degree[0][v2]]
+                kout2 = self.random_ensemble_kappa_per_degree_class[1][self.degree[1][v2]]
+                kin1 = self.random_ensemble_kappa_per_degree_class[0][self.degree[0][v1]]
+                kout1kin2 = kout1 * kin2
+                kout2kin1 = kout2 * kin1
+                if self.debug:
+                    self.logger.info(f"kout1kin2: {kout1kin2}, kout2kin1: {kout2kin1}")
                 p12 = self.directed_connection_probability(self.PI, kout1kin2)
                 p21 = self.directed_connection_probability(self.PI, kout2kin1)
-
+                if self.debug:
+                    self.logger.info(f"p12: {p12}, p21: {p21}")
                 if jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
                     xi_00 += hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
                 else:
@@ -686,40 +899,77 @@ class DirectedS1Fitter:
         Infer the parameter nu using JAX for vectorized operations.
         """
         if self.verbose:
-            self.logger.info("Inferring nu ...")
+            self.logger.info("Inferring nu with vmap ...")
             start_time = time.time()
 
         if self.debug:
             self.logger.info(f"self.degree: {self.degree}")
             self.logger.info(f"self.random_ensemble_kappa_per_degree_class: {self.random_ensemble_kappa_per_degree_class}")
         
-        def compute_contributions(v1, v2):
-            kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
-            kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
+        # Convert self.degree to JAX array and ensure int type
+        degree = jnp.array(self.degree).astype(int)
 
-            p12 = self.directed_connection_probability(self.PI, kout1kin2)
-            p21 = self.directed_connection_probability(self.PI, kout2kin1)
+        # Create meshgrid for v1 and v2 indices
+        v1_indices, v2_indices = jnp.triu_indices(self.nb_vertices, k=1)
 
+        # Get degree values from the meshgrid
+        degree_1_v1 = degree[1][v1_indices]
+        degree_1_v2 = degree[1][v2_indices]
+        degree_0_v1 = degree[0][v1_indices]
+        degree_0_v2 = degree[0][v2_indices]
+        if self.debug:
+            self.logger.info(f"degree_1_v1 type: {degree_1_v1.dtype}, degree_1_v1 shape: {degree_1_v1.shape}")
+            
+        kout1_vec = jnp.array([self.random_ensemble_kappa_per_degree_class[1][int(i)] for i in degree_1_v1])
+        kin2_vec =  jnp.array([self.random_ensemble_kappa_per_degree_class[0][int(i)] for i in degree_0_v2])
+        kout2_vec = jnp.array([self.random_ensemble_kappa_per_degree_class[1][int(i)] for i in degree_1_v2])
+        kin1_vec =  jnp.array([self.random_ensemble_kappa_per_degree_class[0][int(i)] for i in degree_0_v1])      
+
+        if self.debug:
+            self.logger.info(f"kout1_vec type: {kout1_vec.dtype}, kout1_vec shape: {kout1_vec.shape}")
+            self.logger.info(f"kin2_vec type: {kin2_vec.dtype}, kin2_vec shape: {kin2_vec.shape}")
+            self.logger.info(f"kout2_vec type: {kout2_vec.dtype}, kout2_vec shape: {kout2_vec.shape}")
+            self.logger.info(f"kin1_vec type: {kin1_vec.dtype}, kin1_vec shape: {kin1_vec.shape}")
+        kout1kin2_vec = kout1_vec * kin2_vec
+        kout2kin1_vec = kout2_vec * kin1_vec
+        
+        if self.debug:
+            self.logger.info(f"kout1kin2_vec: {kout1kin2_vec}, kout1kin2_vec: {kout1kin2_vec}")
+            
+
+        
+        def compute_contributions(kout1kin2,kout2kin1):
+            p12 = self.directed_connection_probability_jax(self.PI, kout1kin2)
+            p21 = self.directed_connection_probability_jax(self.PI, kout2kin1)
+            first = hyp2f1c_jax(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
+
+            second = (1 / (1 - (kout1kin2 / kout2kin1) ** self.beta)) * (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+            if self.debug:
+                self.logger.info(f"p12: {p12}, p21: {p21}")
+                self.logger.info(f"kout1kin2: {kout1kin2}, kout2kin1: {kout2kin1}, beta: {self.beta}, mu: {self.mu}, R: {self.R}")
+                self.logger.info(f"first: {first}, second: {second}")
             xi_00 = jnp.where(
                 jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2,
-                hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta),
-                (1 / (1 - (kout1kin2 / kout2kin1) ** self.beta)) * (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+                first,second
             )
 
             xi_p1 = jnp.where(kout1kin2 < kout2kin1, p12, p21)
-
-            z_max = self.find_minimal_angle_by_bisection(kout1kin2, kout2kin1)
+            z_max = self.find_minimal_angle_by_bisection_jax(kout1kin2, kout2kin1)
             xi_m1 = jnp.where(
                 z_max < self.PI,
-                (z_max / self.PI) - self.directed_connection_probability(z_max, kout1kin2) - self.directed_connection_probability(z_max, kout2kin1),
+                (z_max / self.PI) - self.directed_connection_probability_jax(z_max, kout1kin2) - self.directed_connection_probability_jax(z_max, kout2kin1),
                 1 - p12 - p21
             )
+            
+            if self.debug:
+                self.logger.info(f"xi_m1: {xi_m1}, xi_00: {xi_00}, xi_p1: {xi_p1}")
 
             return xi_m1, xi_00, xi_p1
 
-        v1_indices, v2_indices = jnp.triu_indices(self.nb_vertices, k=1)
-        xi_m1, xi_00, xi_p1 = vmap(compute_contributions)(v1_indices, v2_indices)
+        # Vectorize the computation using vmap with mesh-based inputs
+        xi_m1, xi_00, xi_p1 = vmap(compute_contributions)(kout1kin2_vec, kout2kin1_vec)
 
+        # Final calculations
         xi_m1 = jnp.sum(xi_m1) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
         xi_00 = jnp.sum(xi_00) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
         xi_p1 = jnp.sum(xi_p1) / (self.random_ensemble_average_degree * self.nb_vertices / 2)
@@ -741,6 +991,7 @@ class DirectedS1Fitter:
 
         if self.verbose:
             self.logger.info(f"time: {time.time() - start_time}")
+
         
     def infer_parameters(self) -> None:
         """
@@ -776,7 +1027,7 @@ class DirectedS1Fitter:
                 #JUST ONCE FOR TEST:
                 #save everything from the exogenous variables to file
                 
-                self.save_variables_json(self.exogenous_variables_infer_nu, f"outputs/test_infer_nus_JAX/exogenous_variables_infer_nu_iter_{iter}.json")
+                self.save_variables_json(self.exogenous_variables_infer_nu, f"outputs/test_infer_nus_JAX/{self.output_rootname}/exogenous_variables_infer_nu_iter_{iter}.json")
                 iter +=1
                 if not self.CUSTOM_NU:
                     self.infer_nu()
@@ -911,7 +1162,10 @@ class DirectedS1Fitter:
         if self.verbose:
             self.logger.info(f"Number of vertices: {self.nb_vertices}")
 
-        self.degree = [self.in_degree_sequence, self.out_degree_sequence]
+        degree = [self.in_degree_sequence, self.out_degree_sequence]
+        self.degree = degree
+        # self.degree = (jnp.array(degree[0], dtype=jnp.int32), jnp.array(degree[1], dtype=jnp.int32))
+
 
         self._fit(reciprocity, average_local_clustering)
         

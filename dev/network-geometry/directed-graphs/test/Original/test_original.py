@@ -484,14 +484,14 @@ def test_directedS1_functional_model_multi_datasets(imported_modules, network_da
     Test the DirectedS1 class on works on multinetwork in network_data, testing on first 3 of list"""
     from directedS1 import DirectedS1
 
-    for network in list(network_data.keys())[2:]:
+    for network in list(network_data.keys())[:2]:
         model =  DirectedS1(log_file_path = f"logs/full_multi_functional/{network}/DirectedS1/test_directedS1_functional.log",
                             verbose = True)
         #Model is going serious mode.
         model.set_params_fitter(seed = 0,
                                 verbose = True,
                                 log_file_path = f"logs/full_multi_functional/{network}/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log",
-                                KAPPA_MAX_NB_ITER_CONV = 10,
+                                KAPPA_MAX_NB_ITER_CONV = 1000,
                                 EXP_CLUST_NB_INTEGRATION_MC_STEPS = 10,
                                 NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1e-1,
                                 NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1e-1)
@@ -516,7 +516,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
     """
     from directedS1 import DirectedS1
     proccessed = []
-    for network in list(network_data.keys()):
+    for network in list(network_data.keys())[2:]:
         if len(network_data[network]['in_degree_sequence']) > 1000:
             print(f" {network} for later")
             continue
@@ -528,10 +528,10 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
         model.set_params_fitter(seed = 0,
                                 verbose = True,
                                 log_file_path = f"logs/full_multi/{network}/DirectedS1Fitter/test_infer_params_fit_from_file.log",
-                                KAPPA_MAX_NB_ITER_CONV = 30,
+                                KAPPA_MAX_NB_ITER_CONV = 1000,
                                 EXP_CLUST_NB_INTEGRATION_MC_STEPS = 500,
-                                NUMERICAL_CONVERGENCE_THRESHOLD_1 = 1.5e-1,
-                                NUMERICAL_CONVERGENCE_THRESHOLD_2 = 1.5e-1,
+                                NUMERICAL_CONVERGENCE_THRESHOLD_1 = 5e-5,
+                                NUMERICAL_CONVERGENCE_THRESHOLD_2 = 5e-5,
                                 debug = False)
         model.set_params_generator(seed = 0, verbose = True, log_file_path = f"logs/full_multi/{network}/DirectedS1Generator/test_generation_generate_from_file.log")
         model.set_params_ensemble_analyser(verbose = True, log_file_path = f"logs/full_multi/{network}/DirectedS1EnsembleAnalyser/test_ensemble_analysis.log")
@@ -558,7 +558,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
 
 if __name__ == '__main__':
     # Test all
-    exit_code = pytest.main(['-v', '-s'])
+    # exit_code = pytest.main(['-v', '-s'])
     # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_functional_model_multi_datasets'])
-    # exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_REAL_multi_datasets'])
+    exit_code = pytest.main(['-v', '-s', 'test_original.py::test_directedS1_REAL_multi_datasets'])
     sys.exit(exit_code)

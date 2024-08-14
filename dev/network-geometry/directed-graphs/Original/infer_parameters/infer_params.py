@@ -536,8 +536,9 @@ class DirectedS1Fitter:
         if self.verbose:
             self.logger.info(f"KAPPA_MAX_NB_ITER_CONV: {self.KAPPA_MAX_NB_ITER_CONV}")
 
+
         while keep_going and cnt < self.KAPPA_MAX_NB_ITER_CONV:
-            if self.verbose:
+            if self.verbose and cnt % (self.KAPPA_MAX_NB_ITER_CONV // 10) == 0:
                 self.logger.info(f"Iteration: {cnt}, Previous Iteration time: {time.time() - start_time}")
                 start_time = time.time()
             for direction in directions:
@@ -553,16 +554,19 @@ class DirectedS1Fitter:
                     self.random_ensemble_expected_degree_per_degree_class[0][in_deg] += prob_conn * count_in
                     self.random_ensemble_expected_degree_per_degree_class[1][out_deg] += prob_conn * count_out
             error = jnp.inf
+            total_error = 0
             keep_going = False
             #Check error for each of the kappa has to be less than threshold.
             for direction in directions:
                 for el in self.degree_histogram[direction].items():
                     error = jnp.abs(self.random_ensemble_expected_degree_per_degree_class[direction][el[0]] - el[0])
+                    total_error += error
                     if error > self.NUMERICAL_CONVERGENCE_THRESHOLD_1:
                         keep_going = True
                         break
-            if self.verbose:
+            if self.verbose and cnt % (self.KAPPA_MAX_NB_ITER_CONV // 10) == 0:
                 self.logger.info(f"Error: {error}, NUMERICAL_CONVERGENCE_THRESHOLD_1: {self.NUMERICAL_CONVERGENCE_THRESHOLD_1}")
+                self.logger.info(f"Total error for all kappa: {error}")
                 
             if keep_going:
                 for direction in directions:
@@ -596,8 +600,8 @@ class DirectedS1Fitter:
         xi_m1, xi_00, xi_p1 = 0, 0, 0
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
-                kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v1])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v2])]
-                kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][int(self.degree[1][v2])] * self.random_ensemble_kappa_per_degree_class[0][int(self.degree[0][v1])]
+                kout1kin2 = self.random_ensemble_kappa_per_degree_class[1][self.degree[1][v1]] * self.random_ensemble_kappa_per_degree_class[0][self.degree[0][v2]]
+                kout2kin1 = self.random_ensemble_kappa_per_degree_class[1][self.degree[1][v2]] * self.random_ensemble_kappa_per_degree_class[0][self.degree[0][v1]]
 
                 p12 = self.directed_connection_probability(self.PI, kout1kin2)
                 p21 = self.directed_connection_probability(self.PI, kout2kin1)
@@ -809,7 +813,8 @@ class DirectedS1Fitter:
         if self.verbose:
             self.logger.info(f"Number of vertices: {self.nb_vertices}")
 
-        self.degree = [self.in_degree_sequence, self.out_degree_sequence]
+        degree = [self.in_degree_sequence, self.out_degree_sequence]
+        self.degree = (jnp.array(degree[0], dtype=jnp.int32), jnp.array(degree[1], dtype=jnp.int32))
 
         self._fit(reciprocity, average_local_clustering)
         

@@ -564,38 +564,76 @@ def test_hyp2f1_functional(imported_modules):
     """
     Test the JAX hyp2f1 functionals vs custom ones
     """    
-    from infer_params import hyp2f1a, hyp2f1c, hyp2f1a_jax, hyp2f1c_jax
+    from infer_params import hyp2f1a, hyp2f1c, hyp2f1a_jax, hyp2f1c_jax, hyp2f1c_jax_old, hyp2f1a_jax_old
     
     # 10 random values from 1 to 25
-    #[15 11 17 11  1  9 12 11 12 21]
-    beta_test = [15, 11, 17, 11, 1, 9, 12, 11, 12, 21]
+    # beta all 1.4
     # 10 random values between 0 and less than 1
     #     [0.9164811  0.35498715 0.06878747 0.9135031  0.87685119 0.56036752
     #  0.41428043 0.37951876 0.14973024 0.50931914]
-    z_test =  [0.9164811, 0.35498715, 0.06878747, 0.9135031, 0.87685119, 0.56036752, 0.41428043, 0.37951876, 0.14973024, 0.50931914]
+    z_test =  [-289, -3.89, 0.9164811,0.9135031,  0.35498715, 0.41428043, 0.87685119, 0.56036752]
+    beta_test = [1.4 for i in range(len(z_test))]
     hyp2f1a_res = np.zeros(10)
     hyp2f1c_res = np.zeros(10)
     hyp2f1a_jax_res = np.zeros(10)
     hyp2f1c_jax_res = np.zeros(10)
+    hyp2f1a_jax_old_res = np.zeros(10)
+    hyp2f1c_jax_old_res = np.zeros(10)
     
-    for i in range(10):
+    for i in range(len(z_test)):
         hyp2f1a_res[i] = hyp2f1a(beta_test[i], z_test[i])
         hyp2f1c_res[i] = hyp2f1c(beta_test[i], z_test[i])
         hyp2f1a_jax_res[i] = hyp2f1a_jax(beta_test[i], z_test[i])
         hyp2f1c_jax_res[i] = hyp2f1c_jax(beta_test[i], z_test[i])
-    print(f"beta_test: {beta_test}")
-    print(f"z_test: {z_test}")
-    print(f"hyp2f1a_res: {hyp2f1a_res}")
-    print(f"hyp2f1a_jax_res: {hyp2f1a_jax_res}")
-    print(f"hyp2f1c_res: {hyp2f1c_res}")
-    print(f"hyp2f1c_jax_res: {hyp2f1c_jax_res}")
+        hyp2f1a_jax_old_res[i] = hyp2f1a_jax_old(beta_test[i], z_test[i])
+        hyp2f1c_jax_old_res[i] = hyp2f1c_jax_old(beta_test[i], z_test[i])
+    print(f"beta_test:\n {beta_test}")
+    print(f"z_test:\n {z_test}")
+    print(f"hyp2f1a_res:\n {hyp2f1a_res}")
+    print(f"hyp2f1a_jax_res:\n {hyp2f1a_jax_res}")
+    print(f"hyp2f1a_jax_old_res:\n {hyp2f1a_jax_old_res}")
+    print(f"hyp2f1c_res:\n {hyp2f1c_res}")
+    print(f"hyp2f1c_jax_res:\n {hyp2f1c_jax_res}")
+    print(f"hyp2f1c_jax_old_res:\n {hyp2f1c_jax_old_res}")
     error_hyp2f1a = np.abs(hyp2f1a_res - hyp2f1a_jax_res)
     error_hyp2f1c = np.abs(hyp2f1c_res - hyp2f1c_jax_res)
+    error_hyp2f1a_old = np.abs(hyp2f1a_res - hyp2f1a_jax_old_res)
+    error_hyp2f1c_old = np.abs(hyp2f1c_res - hyp2f1c_jax_old_res)
     print(f"Error hyp2f1a: {error_hyp2f1a}")
     print(f"Error hyp2f1c: {error_hyp2f1c}")
+    print(f"Error hyp2f1a_old: {error_hyp2f1a_old}")
+    print(f"Error hyp2f1c_old: {error_hyp2f1c_old}")
     assert np.allclose(hyp2f1a_res, hyp2f1a_jax_res, rtol=1e-2), "hyp2f1a and hyp2f1a_jax are not approximately equal"
     assert np.allclose(hyp2f1c_res, hyp2f1c_jax_res, rtol=1e-2), "hyp2f1c and hyp2f1c_jax are not approximately equal"
-        
+    
+def test_directed_connection_probability_functional(setup_paths, functional_fit_model):
+    """
+    Test the JAX directed connection probability functionals vs custom ones
+    """    
+    koutkin = [1.8369663e+01, 3.9241583e+02]
+    #directed_connection_probability, directed_connection_probability_jax
+    with open(f"outputs/test_infer_nus_JAX/7th_graders_layer1/exogenous_variables_infer_nu_iter_0.json") as file:
+        exogenous_variables_infer_nu = json.load(file)
+    for d in exogenous_variables_infer_nu["random_ensemble_kappa_per_degree_class"]:
+        #convert all dict keys in d to int
+        for k in list(d.keys()):
+            d[int(k)] = d.pop(k)
+    for parameter in exogenous_variables_infer_nu:
+        functional_fit_model.set_params(**{str(parameter): exogenous_variables_infer_nu[parameter]})
+    print(f"functional_fit_model.beta: {functional_fit_model.beta}, functional_fit_model.R: {functional_fit_model.R}, functional_fit_model.mu: {functional_fit_model.mu}")
+    p_res = np.zeros(2)
+    p_res_jax = np.zeros(2)
+    for i in range(2):
+        print(f"second argument: {-((functional_fit_model.R * np.pi) / (functional_fit_model.mu * koutkin[i])) ** functional_fit_model.beta}")
+
+        p_res[i] = functional_fit_model.directed_connection_probability(np.pi, koutkin[i])
+        p_res_jax[i] = functional_fit_model.directed_connection_probability_jax(np.pi, koutkin[i])
+    print(f"p_res: {p_res}")
+    print(f"p_res_jax: {p_res_jax}")
+    error_p = np.abs(p_res - p_res_jax)
+    print(f"Error p: {error_p}")
+    assert np.allclose(p_res, p_res_jax, rtol=1e-2), "p_res and p_res_jax are not approximately equal"
+
     
     
 def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_data):
@@ -618,9 +656,11 @@ def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_dat
     
     # num files in outputs/test_infer_nus_JAX/ ending with .json
     num_files = len([name for name in os.listdir("outputs/test_infer_nus_JAX/") if name.endswith(".json")])
-    for i in range(1,num_files):
+    for i in range(1):
         print(f"Iteration: {i}")
-        with open(f"outputs/test_infer_nus_JAX/7th_graders_layer1/exogenous_variables_infer_nu_iter_{i}.json") as file:
+        #7th_graders_layer1
+        #celegansneural
+        with open(f"outputs/test_infer_nus_JAX/celegansneural/exogenous_variables_infer_nu_iter_{i}.json") as file:
             exogenous_variables_infer_nu = json.load(file)
         # exogenous_variables_infer_nu is dictionary of parameters to set
         #set params from exogenous_variables_infer_nu
@@ -633,18 +673,20 @@ def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_dat
             functional_fit_model.set_params(**{str(parameter): exogenous_variables_infer_nu[parameter]})
             
         #bisection is is normal: 
-        functional_fit_model
+        functional_fit_model.set_params(debug = False)    
+        print(f"Running vmap infer nu")
+        vmap_start = time.time()
+        functional_fit_model.infer_nu_vmap()
+        print(f"Time Vmap: {time.time() - vmap_start}")
+        vmap_nu = functional_fit_model.nu
+        
         print(f"Running normal infer nu")
         normal_start = time.time()  
         functional_fit_model.infer_nu()
         print(f"Time: {time.time() - normal_start}")
         normal_nu = functional_fit_model.nu
         
-        print(f"Running vmap infer nu")
-        vmap_start = time.time()
-        functional_fit_model.infer_nu_vmap()
-        print(f"Time Vmap: {time.time() - vmap_start}")
-        vmap_nu = functional_fit_model.nu
+        
         
         print(f"Normal nu: {normal_nu}, Vmap nu: {vmap_nu}")
         #compare approximately
@@ -657,6 +699,8 @@ if __name__ == '__main__':
     # test_hyp2f1_functional
     # exit_code = pytest.main(['-v', '-s'])
     # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_params_functional_fit_from_network_data'])
+    # test_directed_connection_probability_functional
+    # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_directed_connection_probability_functional'])
     exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_nu_vmap_functional'])
     # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_hyp2f1_functional'])
     

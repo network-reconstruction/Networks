@@ -7,164 +7,164 @@
         {
             "in_deg": 4,
             "out_deg": 7,
-            "kappa_in": 0.8244695663452148,
-            "kappa_out": 3.230224609375
+            "kappa_in": 2.370088577270508,
+            "kappa_out": 2.6243762969970703
         },
         {
             "in_deg": 4,
             "out_deg": 1,
-            "kappa_in": 0.8244695663452148,
-            "kappa_out": 0.16680265963077545
+            "kappa_in": 2.370088577270508,
+            "kappa_out": 1.6196860074996948
         },
         {
             "in_deg": 4,
             "out_deg": 5,
-            "kappa_in": 0.8244695663452148,
-            "kappa_out": 12.925089836120605
+            "kappa_in": 2.370088577270508,
+            "kappa_out": 33.223331451416016
         },
         {
             "in_deg": 7,
             "out_deg": 7,
-            "kappa_in": 1.2328591346740723,
-            "kappa_out": 3.230224609375
+            "kappa_in": 3.0875091552734375,
+            "kappa_out": 2.6243762969970703
         },
         {
             "in_deg": 7,
             "out_deg": 8,
-            "kappa_in": 1.2328591346740723,
-            "kappa_out": 6.682240962982178
+            "kappa_in": 3.0875091552734375,
+            "kappa_out": 7.522851943969727
         },
         {
             "in_deg": 7,
             "out_deg": 3,
-            "kappa_in": 1.2328591346740723,
-            "kappa_out": 2.5680506229400635
+            "kappa_in": 3.0875091552734375,
+            "kappa_out": 1.7094212770462036
         },
         {
             "in_deg": 6,
             "out_deg": 20,
-            "kappa_in": 3.3641273975372314,
-            "kappa_out": 77.89627838134766
+            "kappa_in": 0.29873260855674744,
+            "kappa_out": 3538.0400390625
         },
         {
             "in_deg": 6,
             "out_deg": 19,
-            "kappa_in": 3.3641273975372314,
-            "kappa_out": 73.19744110107422
+            "kappa_in": 0.29873260855674744,
+            "kappa_out": 3154.8623046875
         },
         {
             "in_deg": 8,
             "out_deg": 16,
-            "kappa_in": 18.56050682067871,
-            "kappa_out": 59.28261184692383
+            "kappa_in": 16.527362823486328,
+            "kappa_out": 2045.181640625
         },
         {
             "in_deg": 3,
             "out_deg": 9,
-            "kappa_in": 0.5430222153663635,
-            "kappa_out": 15.621111869812012
+            "kappa_in": 2.6708555221557617,
+            "kappa_out": 25.61855697631836
         },
         {
             "in_deg": 3,
             "out_deg": 4,
-            "kappa_in": 0.5430222153663635,
-            "kappa_out": 9.499672889709473
+            "kappa_in": 2.6708555221557617,
+            "kappa_out": 19.340288162231445
         },
         {
             "in_deg": 3,
             "out_deg": 1,
-            "kappa_in": 0.5430222153663635,
-            "kappa_out": 0.16680265963077545
+            "kappa_in": 2.6708555221557617,
+            "kappa_out": 1.6196860074996948
         },
         {
             "in_deg": 12,
             "out_deg": 11,
-            "kappa_in": 14.890217781066895,
-            "kappa_out": 21.76881980895996
+            "kappa_in": 4.669581890106201,
+            "kappa_out": 42.437442779541016
         },
         {
             "in_deg": 12,
             "out_deg": 8,
-            "kappa_in": 14.890217781066895,
-            "kappa_out": 6.682240962982178
+            "kappa_in": 4.669581890106201,
+            "kappa_out": 7.522851943969727
         },
         {
             "in_deg": 17,
             "out_deg": 6,
-            "kappa_in": 56.059757232666016,
-            "kappa_out": 4.049518585205078
+            "kappa_in": 1642.0645751953125,
+            "kappa_out": 3.72699236869812
         },
         {
             "in_deg": 13,
             "out_deg": 2,
-            "kappa_in": 17.650615692138672,
-            "kappa_out": 3.6073131561279297
+            "kappa_in": 6.572084426879883,
+            "kappa_out": 3.7257161140441895
         },
         {
             "in_deg": 13,
             "out_deg": 6,
-            "kappa_in": 17.650615692138672,
-            "kappa_out": 4.049518585205078
+            "kappa_in": 6.572084426879883,
+            "kappa_out": 3.72699236869812
         },
         {
             "in_deg": 9,
             "out_deg": 11,
-            "kappa_in": 3.1570093631744385,
-            "kappa_out": 21.76881980895996
+            "kappa_in": 0.01096537709236145,
+            "kappa_out": 42.437442779541016
         },
         {
             "in_deg": 9,
             "out_deg": 7,
-            "kappa_in": 3.1570093631744385,
-            "kappa_out": 3.230224609375
+            "kappa_in": 0.01096537709236145,
+            "kappa_out": 2.6243762969970703
         },
         {
             "in_deg": 9,
             "out_deg": 1,
-            "kappa_in": 3.1570093631744385,
-            "kappa_out": 0.16680265963077545
+            "kappa_in": 0.01096537709236145,
+            "kappa_out": 1.6196860074996948
         },
         {
             "in_deg": 5,
             "out_deg": 1,
-            "kappa_in": 8.59295654296875,
-            "kappa_out": 0.16680265963077545
+            "kappa_in": 2.1584129333496094,
+            "kappa_out": 1.6196860074996948
         },
         {
             "in_deg": 11,
             "out_deg": 8,
-            "kappa_in": 12.33757209777832,
-            "kappa_out": 6.682240962982178
+            "kappa_in": 3.2282371520996094,
+            "kappa_out": 7.522851943969727
         },
         {
             "in_deg": 11,
             "out_deg": 9,
-            "kappa_in": 12.33757209777832,
-            "kappa_out": 15.621111869812012
+            "kappa_in": 3.2282371520996094,
+            "kappa_out": 25.61855697631836
         },
         {
             "in_deg": 0,
             "out_deg": 6,
-            "kappa_in": 9.44128114497289e-05,
-            "kappa_out": 4.049518585205078
+            "kappa_in": 0.8294929265975952,
+            "kappa_out": 3.72699236869812
         },
         {
             "in_deg": 2,
             "out_deg": 10,
-            "kappa_in": 0.22797520458698273,
-            "kappa_out": 32.666595458984375
+            "kappa_in": 4.573995590209961,
+            "kappa_out": 339.78558349609375
         },
         {
             "in_deg": 2,
             "out_deg": 1,
-            "kappa_in": 0.22797520458698273,
-            "kappa_out": 0.16680265963077545
+            "kappa_in": 4.573995590209961,
+            "kappa_out": 1.6196860074996948
         },
         {
             "in_deg": 2,
             "out_deg": 7,
-            "kappa_in": 0.22797520458698273,
-            "kappa_out": 3.230224609375
+            "kappa_in": 4.573995590209961,
+            "kappa_out": 2.6243762969970703
         }
     ],
     "flags": {
@@ -183,11 +183,12 @@
     "model_params": {
         "seed": 0,
         "verbose": true,
-        "KAPPA_MAX_NB_ITER_CONV": 10,
-        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 10,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.1,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.1,
-        "log_file_path": "logs/full_multi_functional/7th_graders_layer3/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log"
+        "KAPPA_MAX_NB_ITER_CONV": 1000,
+        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 500,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 5e-05,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 5e-05,
+        "log_file_path": "logs/full_multi/7th_graders_layer3/DirectedS1Fitter/test_infer_params_fit_from_file.log",
+        "debug": false
     },
-    "inference_time": 17.199805736541748
+    "inference_time": 2307.4409730434418
 }
