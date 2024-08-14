@@ -6,6 +6,8 @@ import json
 import os
 import sys
 import pytest
+import time
+import numpy as np
 # import logging
 
 #TODO make the tests more rigorous checking the data.
@@ -192,7 +194,7 @@ def test_infer_params_functional_fit_from_network_data(setup_paths, functional_f
                         network_name: str = ""
                         ) -> None:
     """
-    network = list(network_data.keys())[0]
+    network = list(network_data.keys())[4]
     deg_seq = (network_data[network]['in_degree_sequence'], network_data[network]['out_degree_sequence'])
     
     #shouldn't happen theoretically
@@ -557,10 +559,48 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
             with open(f"logs/full_multi/{network}/DirectedS1/ERROR.txt", 'w') as file:
                 file.write(str(e))
             continue 
-                                  
+              
+def test_hyp2f1_functional(imported_modules):
+    """
+    Test the JAX hyp2f1 functionals vs custom ones
+    """    
+    from infer_params import hyp2f1a, hyp2f1c, hyp2f1a_jax, hyp2f1c_jax
+    
+    # 10 random values from 1 to 25
+    #[15 11 17 11  1  9 12 11 12 21]
+    beta_test = [15, 11, 17, 11, 1, 9, 12, 11, 12, 21]
+    # 10 random values between 0 and less than 1
+    #     [0.9164811  0.35498715 0.06878747 0.9135031  0.87685119 0.56036752
+    #  0.41428043 0.37951876 0.14973024 0.50931914]
+    z_test =  [0.9164811, 0.35498715, 0.06878747, 0.9135031, 0.87685119, 0.56036752, 0.41428043, 0.37951876, 0.14973024, 0.50931914]
+    hyp2f1a_res = np.zeros(10)
+    hyp2f1c_res = np.zeros(10)
+    hyp2f1a_jax_res = np.zeros(10)
+    hyp2f1c_jax_res = np.zeros(10)
+    
+    for i in range(10):
+        hyp2f1a_res[i] = hyp2f1a(beta_test[i], z_test[i])
+        hyp2f1c_res[i] = hyp2f1c(beta_test[i], z_test[i])
+        hyp2f1a_jax_res[i] = hyp2f1a_jax(beta_test[i], z_test[i])
+        hyp2f1c_jax_res[i] = hyp2f1c_jax(beta_test[i], z_test[i])
+    print(f"beta_test: {beta_test}")
+    print(f"z_test: {z_test}")
+    print(f"hyp2f1a_res: {hyp2f1a_res}")
+    print(f"hyp2f1a_jax_res: {hyp2f1a_jax_res}")
+    print(f"hyp2f1c_res: {hyp2f1c_res}")
+    print(f"hyp2f1c_jax_res: {hyp2f1c_jax_res}")
+    error_hyp2f1a = np.abs(hyp2f1a_res - hyp2f1a_jax_res)
+    error_hyp2f1c = np.abs(hyp2f1c_res - hyp2f1c_jax_res)
+    print(f"Error hyp2f1a: {error_hyp2f1a}")
+    print(f"Error hyp2f1c: {error_hyp2f1c}")
+    assert np.allclose(hyp2f1a_res, hyp2f1a_jax_res, rtol=1e-2), "hyp2f1a and hyp2f1a_jax are not approximately equal"
+    assert np.allclose(hyp2f1c_res, hyp2f1c_jax_res, rtol=1e-2), "hyp2f1c and hyp2f1c_jax are not approximately equal"
+        
+    
+    
 def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_data):
     """
-    Test that the DirectedS1Fitter class can be instantiated and fit works as expected.
+    Test that infer nu vmap and normal infer nu are approximately equal.
     """
     #TODO: TEST (Works on script)
     # take the first network in network data
@@ -572,36 +612,52 @@ def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_dat
                         network_name: str = ""
                         ) -> None:
     """
-    network = list(network_data.keys())[0]
-    deg_seq = (network_data[network]['in_degree_sequence'], network_data[network]['out_degree_sequence'])
     
-    #shouldn't happen theoretically
-    assert len(deg_seq[0]) == len(deg_seq[1]), "TEST DATA ERROR: In and out degree sequences are not of the same length" 
     functional_fit_model.clean_params()
     functional_fit_model.modify_log_file_path("logs/test_infer_nus_JAX/test_infer_nus_JAX.log")
     
-    with open("outputs/test_infer_nus_JAX/exogenous_variables_infer_nu_iter_0.json") as file:
-        exogenous_variables_infer_nu = json.load(file)
-    # exogenous_variables_infer_nu is dictionary of parameters to set
-    #set params from exogenous_variables_infer_nu
-    functional_fit_model.set_params(**exogenous_variables_infer_nu)
-    
-    print(f"Running normal infer nu")
-    functional_fit_model.infer_nu()
-    
-    normal_nu = functional_fit_model.nu
-    
-    print(f"Running vmap infer nu")
-    functional_fit_model.infer_nu_vmap()
-    vmap_nu = functional_fit_model.nu
-    
-    print(f"Normal nu: {normal_nu}, Vmap nu: {vmap_nu}")
-    assert normal_nu == vmap_nu, "Normal and vmap nu are not equal"
+    # num files in outputs/test_infer_nus_JAX/ ending with .json
+    num_files = len([name for name in os.listdir("outputs/test_infer_nus_JAX/") if name.endswith(".json")])
+    for i in range(1,num_files):
+        print(f"Iteration: {i}")
+        with open(f"outputs/test_infer_nus_JAX/7th_graders_layer1/exogenous_variables_infer_nu_iter_{i}.json") as file:
+            exogenous_variables_infer_nu = json.load(file)
+        # exogenous_variables_infer_nu is dictionary of parameters to set
+        #set params from exogenous_variables_infer_nu
+        #TEMPORY FIX, TODO fix saving that the dictionary keys are not strings
+        for d in exogenous_variables_infer_nu["random_ensemble_kappa_per_degree_class"]:
+            #convert all dict keys in d to int
+            for k in list(d.keys()):
+                d[int(k)] = d.pop(k)
+        for parameter in exogenous_variables_infer_nu:
+            functional_fit_model.set_params(**{str(parameter): exogenous_variables_infer_nu[parameter]})
+            
+        #bisection is is normal: 
+        functional_fit_model
+        print(f"Running normal infer nu")
+        normal_start = time.time()  
+        functional_fit_model.infer_nu()
+        print(f"Time: {time.time() - normal_start}")
+        normal_nu = functional_fit_model.nu
+        
+        print(f"Running vmap infer nu")
+        vmap_start = time.time()
+        functional_fit_model.infer_nu_vmap()
+        print(f"Time Vmap: {time.time() - vmap_start}")
+        vmap_nu = functional_fit_model.nu
+        
+        print(f"Normal nu: {normal_nu}, Vmap nu: {vmap_nu}")
+        #compare approximately
+        rel = 1e-2
+        assert normal_nu == pytest.approx(vmap_nu, rel=rel), f"Beta iteration {i}, Normal nu and Vmap nu are not approximately equal, threshold: {rel}"
     
     
 if __name__ == '__main__':
     # Test all
+    # test_hyp2f1_functional
     # exit_code = pytest.main(['-v', '-s'])
-    exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_params_functional_fit_from_network_data'])
-    # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_nu_vmap_functional'])
+    # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_params_functional_fit_from_network_data'])
+    exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_nu_vmap_functional'])
+    # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_hyp2f1_functional'])
+    
     sys.exit(exit_code)
