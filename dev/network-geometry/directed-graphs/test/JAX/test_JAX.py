@@ -660,7 +660,8 @@ def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_dat
         print(f"Iteration: {i}")
         #7th_graders_layer1
         #celegansneural
-        with open(f"outputs/test_infer_nus_JAX/celegansneural/exogenous_variables_infer_nu_iter_{i}.json") as file:
+        
+        with open(f"outputs/test_infer_nus_JAX/7th_graders_layer1/exogenous_variables_infer_nu_iter_{i}.json") as file:
             exogenous_variables_infer_nu = json.load(file)
         # exogenous_variables_infer_nu is dictionary of parameters to set
         #set params from exogenous_variables_infer_nu
@@ -697,11 +698,11 @@ def test_infer_nu_vmap_functional(setup_paths, functional_fit_model, network_dat
 if __name__ == '__main__':
     # Test all
     # test_hyp2f1_functional
-    # exit_code = pytest.main(['-v', '-s'])
+    exit_code = pytest.main(['-v', '-s'])
     # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_params_functional_fit_from_network_data'])
     # test_directed_connection_probability_functional
     # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_directed_connection_probability_functional'])
-    exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_nu_vmap_functional'])
+    # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_infer_nu_vmap_functional'])
     # exit_code = pytest.main(['-v', '-s', 'test_JAX.py::test_hyp2f1_functional'])
     
     sys.exit(exit_code)

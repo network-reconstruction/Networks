@@ -274,7 +274,22 @@ class NetworkVisualizer:
         """
         sorted_data = np.sort(data)
         ccdf = 1.0 - np.arange(1, len(sorted_data) + 1) / len(sorted_data)
-        return sorted_data, ccdf
+        # if repeated values in data, plot as single mid point plot between all points with same value
+        #take all sections of repeated values combine is one output
+        x = []
+        y = []
+        start = 0 
+        for i in range(len(sorted_data)):
+            if i == 0:
+                continue
+            elif sorted_data[i] != sorted_data[i-1]:
+                x.append(sorted_data[i-1])
+                y.append(ccdf[start:i].mean())
+                start = i
+        y.append(ccdf[start:].mean())
+        x.append(sorted_data[-1])
+  
+        return x, y
 
     def save_distributions(self, output_dir: str, title: str = '', loglog: bool = True) -> None:
         """
@@ -339,7 +354,7 @@ class NetworkVisualizer:
             
             # In-Degree Distribution
             x, y = self._ccdf(in_degrees)
-            plt.plot(x, y, marker='o', linestyle='none')
+            plt.plot(x, y, label = 'CCDF', linestyle = 'None', marker = '.')
             plt.xscale('log')
             plt.yscale('log')
             plt.title(f'{title} In-Degree Distribution (Unweighted, Directed)')
@@ -350,7 +365,7 @@ class NetworkVisualizer:
             
             # Out-Degree Distribution
             x, y = self._ccdf(out_degrees)
-            plt.plot(x, y, marker='o', linestyle='none')
+            plt.plot(x, y, label = 'CCDF', linestyle = 'None', marker = '.')
             plt.xscale('log')
             plt.yscale('log')
             plt.title(f'{title} Out-Degree Distribution (Unweighted, Directed)')
@@ -377,7 +392,8 @@ class NetworkVisualizer:
 
             # In-Degree Distribution
             x, y = self._ccdf(in_degrees)
-            plt.plot(x, y, marker='o', linestyle='none')
+            #plot ccdf as plot, but for repeated y values, plot as single mid point plot
+            plt.plot(x, y, label = 'CCDF', linestyle = 'None', marker = '.')
             plt.xscale('log')
             plt.yscale('log')
             plt.title(f'{title} In-Degree Distribution (Weighted, Directed)')
@@ -388,7 +404,8 @@ class NetworkVisualizer:
 
             # Out-Degree Distribution
             x, y = self._ccdf(out_degrees)
-            plt.plot(x, y, marker='o', linestyle='none')
+            # make dot setp plot instead of line plot
+            plt.plot(x, y, label = 'CCDF', linestyle = 'None', marker = '.')
             plt.xscale('log')
             plt.yscale('log')
             plt.title(f'{title} Out-Degree Distribution (Weighted, Directed)')

@@ -1026,11 +1026,10 @@ class DirectedS1Fitter:
                 self.compute_random_ensemble_average_degree()
                 #JUST ONCE FOR TEST:
                 #save everything from the exogenous variables to file
-                
-                self.save_variables_json(self.exogenous_variables_infer_nu, f"outputs/test_infer_nus_JAX/{self.output_rootname}/exogenous_variables_infer_nu_iter_{iter}.json")
+                # self.save_variables_json(self.exogenous_variables_infer_nu, f"outputs/test_infer_nus_JAX/{self.output_rootname}/exogenous_variables_infer_nu_iter_{iter}.json")
                 iter +=1
                 if not self.CUSTOM_NU:
-                    self.infer_nu()
+                    self.infer_nu_vmap()
                 self.build_cumul_dist_for_mc_integration()
                 self.compute_random_ensemble_clustering()
 
@@ -1245,7 +1244,6 @@ class DirectedS1Fitter:
                     },
                     ...
                 ],
-                
                 "flags":
                 {
                     "clustering_cvg": bool,

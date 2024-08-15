@@ -202,6 +202,35 @@ class DirectedS1EnsembleAnalyser:
         
         return output
     
+    def _ccdf(self, data):
+        """
+        Computes the complementary cumulative distribution function (CCDF) for a dataset.
+
+        Args:
+            data (array-like): The input data.
+
+        Returns:
+            x (array-like): The sorted data points.
+            y (array-like): The CCDF values.
+        """
+        sorted_data = np.sort(data)
+        ccdf = 1.0 - np.arange(1, len(sorted_data) + 1) / len(sorted_data)
+        # if repeated values in data, plot as single mid point plot between all points with same value
+        #take all sections of repeated values combine is one output
+        x = []
+        y = []
+        start = 0 
+        for i in range(len(sorted_data)):
+            if i == 0:
+                continue
+            elif sorted_data[i] != sorted_data[i-1]:
+                x.append(sorted_data[i-1])
+                y.append(ccdf[start:i].mean())
+                start = i
+        y.append(ccdf[start:].mean())
+        x.append(sorted_data[-1])
+  
+        return x, y
     def _save_data(self) -> None:
         """
         Saves the analysis output data to a JSON file.
@@ -245,9 +274,8 @@ class DirectedS1EnsembleAnalyser:
         # Plotting the complementary cumulative degree distributions
         plt.figure(figsize=(12, 6))
         plt.subplot(1, 2, 1)
-        in_degree_sorted = np.sort(all_in_degrees)
-        in_degree_ccdf = 1 - np.arange(1, len(in_degree_sorted)+1) / len(in_degree_sorted)
-        plt.plot(in_degree_sorted, in_degree_ccdf, marker='o', linestyle='none', color='blue')
+        in_degree_sorted, in_degree_ccdf = self._ccdf(all_in_degrees)
+        plt.plot(in_degree_sorted, in_degree_ccdf, label = 'CCDF', linestyle = 'None', marker = '.')
         plt.title("In-Degree CCDF")
         plt.xlabel("In-Degree")
         plt.ylabel("CCDF")
@@ -255,9 +283,8 @@ class DirectedS1EnsembleAnalyser:
         plt.yscale('log')
 
         plt.subplot(1, 2, 2)
-        out_degree_sorted = np.sort(all_out_degrees)
-        out_degree_ccdf = 1 - np.arange(1, len(out_degree_sorted)+1) / len(out_degree_sorted)
-        plt.plot(out_degree_sorted, out_degree_ccdf, marker='o', linestyle='none', color='red')
+        out_degree_sorted, out_degree_ccdf = self._ccdf(all_out_degrees)
+        plt.plot(out_degree_sorted, out_degree_ccdf, label = 'CCDF', linestyle = 'None', marker = '.')
         plt.title("Out-Degree CCDF")
         plt.xlabel("Out-Degree")
         plt.ylabel("CCDF")
