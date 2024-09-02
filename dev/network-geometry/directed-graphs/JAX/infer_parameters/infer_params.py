@@ -517,6 +517,7 @@ class DirectedS1Fitter:
 
         return conn_prob
     
+    #TODO this could be wrong it uses 1/(1+chi^beta) instead of directed connection prob itself. I can perhaps vectorize this to a certain precision build a cdf then do the cut.
     def find_minimal_angle_by_bisection(self, kout1kin2: float, kout2kin1: float) -> float:
         """
         Find the minimal angle by bisection.
@@ -534,7 +535,7 @@ class DirectedS1Fitter:
             z_mid = (z_min + z_max) / 2
             pz_min = self.directed_connection_probability(z_min, kout1kin2) + self.directed_connection_probability(z_min, kout2kin1)
             pz_mid = self.directed_connection_probability(z_mid, kout1kin2) + self.directed_connection_probability(z_mid, kout2kin1)
-            pz_max = self.directed_connection_probability(z_max, kout1kin2) + self.directed_connection_probability(z_max, kout2kin1)
+            # pz_max = self.directed_connection_probability(z_max, kout1kin2) + self.directed_connection_probability(z_max, kout2kin1)
 
             if (pz_min * pz_mid) > 0:
                 z_min = z_mid
@@ -833,7 +834,6 @@ class DirectedS1Fitter:
             
         xi_m1, xi_00, xi_p1 = 0, 0, 0
         
-
         for v1 in range(self.nb_vertices):
             for v2 in range(v1 + 1, self.nb_vertices):
                 if self.debug:

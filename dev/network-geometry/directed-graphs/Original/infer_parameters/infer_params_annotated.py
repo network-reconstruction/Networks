@@ -684,9 +684,9 @@ class DirectedS1Fitter_JAX:
                 else:
                     xi_m1 += 1 - p12 - p21
 
-        xi_m1 /= self.random_ensemble_average_degree * self.nb_vertices / 2
-        xi_00 /= self.random_ensemble_average_degree * self.nb_vertices / 2
-        xi_p1 /= self.random_ensemble_average_degree * self.nb_vertices / 2
+        xi_m1 /= self.random_ensemble_average_degree * self.nb_vertices / 2 #s75a
+        xi_00 /= self.random_ensemble_average_degree * self.nb_vertices / 2 #s76a
+        xi_p1 /= self.random_ensemble_average_degree * self.nb_vertices / 2 #s77a
 
         if self.reciprocity > xi_00:
             self.nu = (self.reciprocity - xi_00) / (xi_p1 - xi_00)
@@ -698,7 +698,7 @@ class DirectedS1Fitter_JAX:
         if self.nu < -1:
             self.nu = -1
 
-        if self.nu > 0:
+        if self.nu > 0: #S78 or 11a
             self.random_ensemble_reciprocity = (xi_p1 - xi_00) * self.nu + xi_00
         else:
             self.random_ensemble_reciprocity = (xi_m1 + xi_00) * self.nu + xi_00

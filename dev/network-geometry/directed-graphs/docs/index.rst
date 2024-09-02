@@ -8,7 +8,7 @@ Work based on the paper "Geometric description of clustering in directed network
 The module is divided into 2 main parts:
 
 1. Original: The original code provided by Antoine Allard et al., modified for python and as a full pipeline, 
-including the generation of random directed networks, inference of parameters from a given network, and analysis of the ensemble of networks generated
+including the generation of random directed networks, inference of parameters from a given network, and analysis of the ensemble of networks generated.
 
 2. JAX: The code that has been converted to JAX for vectorized inference, generation, and analysis of networks.
 
