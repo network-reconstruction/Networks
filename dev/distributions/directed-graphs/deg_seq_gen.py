@@ -237,6 +237,6 @@ if __name__ == "__main__":
                                                   scale_1=scale_1,
                                                   scale_2=scale_2,
                                                   capula="gaussian",
-                                                  capula_cov_matrix=jnp.array([[1,1.0585],[1.0585,4.485]]))
+                                                  capula_cov_matrix=jnp.array([[1,-0.999],[-0.999,1]]))
     degree_seq.plot('degree_sequence_mixture.png')
     # degree_seq.save('degree_sequence_mixture.txt')

@@ -48,7 +48,7 @@ def pareto_inverse_cdf(u: jnp.ndarray, scale: float, shape: float) -> jnp.ndarra
     Returns:
         jnp.ndarray: Inverse CDF of the Pareto distribution
     """
-    return scale * (u)** (-(1 / shape))
+    return scale * (1-u)** (-(1 / shape))
 
 def independent_copula_sample(key: jnp.ndarray, n: int) -> Tuple[jnp.ndarray, jnp.ndarray]:
     """
