@@ -460,7 +460,7 @@ def test_functional_directedS1_model(imported_modules, functional_directedS1_mod
                                         #    num_samples: int = 10,
                                         #    save_inferred_params: bool = False,
                                         #    save_evaluation: bool = False) -> None:
-    network = list(network_data.keys())[0]
+    network = list(network_data.keys())[0] #7thgraders_layer 1
     deg_seq = (network_data[network]['in_degree_sequence'], network_data[network]['out_degree_sequence'])
     functional_directedS1_model.fit_generate_analyse_from_network_data(deg_seq = deg_seq,
                                                                        reciprocity = network_data[network]['reciprocity'],
@@ -484,7 +484,7 @@ def test_directedS1_functional_model_multi_datasets(imported_modules, network_da
     Test the DirectedS1 class on works on multinetwork in network_data, testing on first 3 of list"""
     from directedS1 import DirectedS1
 
-    for network in list(network_data.keys())[:2]:
+    for network in list(network_data.keys())[:3]:
         model =  DirectedS1(log_file_path = f"logs/full_multi_functional/{network}/DirectedS1/test_directedS1_functional.log",
                             verbose = True)
         #Model is going serious mode.
@@ -516,7 +516,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
     """
     from directedS1 import DirectedS1
     proccessed = []
-    for network in list(network_data.keys())[2:]:
+    for network in list(network_data.keys())[4:]:
         if len(network_data[network]['in_degree_sequence']) > 1000:
             print(f" {network} for later")
             continue
@@ -528,7 +528,7 @@ def test_directedS1_REAL_multi_datasets(imported_modules, network_data):
         model.set_params_fitter(seed = 0,
                                 verbose = True,
                                 log_file_path = f"logs/full_multi/{network}/DirectedS1Fitter/test_infer_params_fit_from_file.log",
-                                KAPPA_MAX_NB_ITER_CONV = 1000,
+                                KAPPA_MAX_NB_ITER_CONV = 30,
                                 EXP_CLUST_NB_INTEGRATION_MC_STEPS = 500,
                                 NUMERICAL_CONVERGENCE_THRESHOLD_1 = 5e-5,
                                 NUMERICAL_CONVERGENCE_THRESHOLD_2 = 5e-5,

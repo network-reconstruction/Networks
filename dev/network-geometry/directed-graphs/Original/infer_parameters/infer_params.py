@@ -302,7 +302,9 @@ class DirectedS1Fitter:
         if jnp.abs(kout1kin2 - kout2kin1) < self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
             conn_prob -= (1 - jnp.abs(self.nu)) * hyp2f1c(self.beta, -((self.R * self.PI) / (self.mu * kout1kin2)) ** self.beta)
         else:
-            conn_prob -= ((1 - jnp.abs(self.nu)) / (1 - (kout1kin2 / kout2kin1) ** self.beta)) * (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+            conn_prob -= ((1 - jnp.abs(self.nu)) / (1 - (kout1kin2 / kout2kin1) ** self.beta)) 
+            conn_prob *= (p12 - (kout1kin2 / kout2kin1) ** self.beta * p21)
+            
         conn_prob += p12
         conn_prob += p21
         if self.nu > 0:
@@ -336,14 +338,17 @@ class DirectedS1Fitter:
         z_max = self.PI
         while (z_max - z_min) > self.NUMERICAL_CONVERGENCE_THRESHOLD_2:
             z_mid = (z_min + z_max) / 2
-            pz_min = self.directed_connection_probability(z_min, kout1kin2) + self.directed_connection_probability(z_min, kout2kin1)
-            pz_mid = self.directed_connection_probability(z_mid, kout1kin2) + self.directed_connection_probability(z_mid, kout2kin1)
-            pz_max = self.directed_connection_probability(z_max, kout1kin2) + self.directed_connection_probability(z_max, kout2kin1)
+            pz_min = self.directed_connection_probability(z_min, kout1kin2) + self.directed_connection_probability(z_min, kout2kin1) - 1
+            pz_mid = self.directed_connection_probability(z_mid, kout1kin2) + self.directed_connection_probability(z_mid, kout2kin1) - 1
+            pz_max = self.directed_connection_probability(z_max, kout1kin2) + self.directed_connection_probability(z_max, kout2kin1) - 1
 
             if (pz_min * pz_mid) > 0:
                 z_min = z_mid
-            else:
+            elif (pz_max * pz_mid) > 0:
                 z_max = z_mid
+            else:
+                z_min = self.PI
+                z_max = self.PI
         return (z_min + z_max) / 2
 
     def build_cumul_dist_for_mc_integration(self) -> None:
@@ -570,8 +575,11 @@ class DirectedS1Fitter:
                 
             if keep_going:
                 for direction in directions:
-                    for el in self.degree_histogram[direction].items():
-                        self.random_ensemble_kappa_per_degree_class[direction][el[0]] += (el[0] - self.random_ensemble_expected_degree_per_degree_class[direction][el[0]]) * random.uniform(self.engine)
+                    for el in self.degree_histogram[direction].items(): #el is a tuple of degree and count
+                        shift = (el[0] - self.random_ensemble_expected_degree_per_degree_class[direction][el[0]]) * random.uniform(self.engine)
+                        if self.verbose:
+                            self.logger.info(f"degree class k: {el[0]}, <k| kappa>: {self.random_ensemble_kappa_per_degree_class[direction][el[0]]}, shift: {shift}")
+                        self.random_ensemble_kappa_per_degree_class[direction][el[0]] += shift
                         if self.random_ensemble_kappa_per_degree_class[direction][el[0]] < 0:
                             self.random_ensemble_kappa_per_degree_class[direction][el[0]] = jnp.abs(self.random_ensemble_kappa_per_degree_class[direction][el[0]])
                 cnt += 1

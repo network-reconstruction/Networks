@@ -71,7 +71,7 @@ class DegreeSeq:
         if self.verbose:
             print('Generating degree sequence...')
         
-        in_degrees, out_degrees = distribution(key, self.n, **kwargs)
+        out_degrees, in_degrees  = distribution(key, self.n, **kwargs)
         self.in_degrees = in_degrees
         self.out_degrees = out_degrees
 
@@ -120,7 +120,7 @@ class DegreeSeq:
         # Plot 2D histogram for joint distribution of in-degrees and out-degrees
         x = self.out_degrees
         y = self.in_degrees
-
+        # print(f"first 100 points: {jnp.stack([x, y], axis=1)[:100]}")
         # Log-spaced bins
         bins = [jnp.logspace(jnp.log10(min(x[x > 0])), jnp.log10(max(x)), 60), 
                 jnp.logspace(jnp.log10(min(y[y > 0])), jnp.log10(max(y)), 60)]
@@ -132,28 +132,27 @@ class DegreeSeq:
         hist[hist < 10] = jnp.nan
         axs[0, 2].imshow(hist.T, extent=[xedges[0], xedges[-1], yedges[0], yedges[-1]], aspect='auto', cmap='Blues', norm="log")
 
-        # TLS estimator line
+        #TLS:
+        #-----------------------------------
         # from sklearn.linear_model import LinearRegression
 
-        # # Prepare data for TLS
-        # log_x = jnp.log(x[x > 0])
-        # log_y = jnp.log(y[y > 0])
-        # X = jnp.vstack([log_x, jnp.ones(len(log_x))]).T
-
+        
         # # Perform linear regression using TLS
-        # reg = LinearRegression().fit(X[:, :1], log_y)
+        # reg = LinearRegression().fit(jnp.log(x[x > 0]).reshape(-1, 1), jnp.log(y[x > 0]))
         # slope = reg.coef_[0]
         # intercept = reg.intercept_
+        # print(F"tls slope: {slope}, intercept: {intercept}")
 
         # # Plot TLS estimator line
         # x_fit = jnp.linspace(jnp.log(min(x[x > 0])), jnp.log(max(x)), 100)
         # y_fit = slope * x_fit + intercept
-        
         # axs[0, 2].plot(jnp.exp(x_fit), jnp.exp(y_fit), 'r-', label=f'TLS Slope: {slope:.2f}')
-
-        # Set axis to log scale
+        #-----------------------------------
         axs[0, 2].set_xscale('log')
         axs[0, 2].set_yscale('log')
+        #x and y min are 1
+        axs[0, 2].set_xlim(left=1)
+        axs[0, 2].set_ylim(bottom=1)
         axs[0, 2].set_title('2D Histogram of In-Degrees and Out-Degrees')
         axs[0, 2].set_xlabel('Out-Degrees (log scale)')
         axs[0, 2].set_ylabel('In-Degrees (log scale)')
@@ -165,15 +164,16 @@ class DegreeSeq:
 
         # QQ plot for out-degrees against pareto
         stats.probplot(self.out_degrees, dist="pareto", sparams=(1.59,), plot=axs[1, 1])
-        axs[1, 1].set_title('QQ Plot of Out-Degrees vs Pareto')
+        axs[1, 1].set_title('QQ Plot of Out-Degrees vs Pareto (1.59)')
 
         # QQ plot for in-degrees against lognormal
+        # print(f"self.in_degrees: {self.in_degrees[:10]}")
         stats.probplot(self.in_degrees, dist="lognorm", sparams=(jnp.std(jnp.log(self.in_degrees)),), plot=axs[2, 0])
         axs[2, 0].set_title('QQ Plot of In-Degrees vs Lognormal')
 
         # QQ plot for in-degrees against pareto
         stats.probplot(self.in_degrees, dist="pareto", sparams=(2.38,), plot=axs[2, 1])
-        axs[2, 1].set_title('QQ Plot of In-Degrees vs Pareto')
+        axs[2, 1].set_title('QQ Plot of In-Degrees vs Pareto (2.38)')
 
         # PDF plot for out-degrees
         sns.kdeplot(jnp.log(self.out_degrees), ax=axs[1, 2], color='skyblue', fill=True)
@@ -209,12 +209,34 @@ class DegreeSeq:
 
 if __name__ == "__main__":
     # Ecuador 2015 example parameters
-    mu = jnp.array([39.06, 39.06])
+    exp_mu = jnp.array([39.06, 39.06])
+    #out, in
     Sigma = jnp.array([[2.89, 1.37], [1.37, 2.06]])
+    # mu = jnp.log(exp_mu) - 0.5 * jnp.diag(Sigma)
     key = random.PRNGKey(0)
-    transition_point = 50 # Transition point for the weighting function
+    transition_point = 0
+    tail_indices = [1.59, 2.38] # out , in
+    #exp_sigma, as Sigma is that of the lognormal distribution
+    # exp_Sigma_11 = (jnp.exp(mu[0] + 1/2*Sigma[0,0]))**2 * (jnp.exp(Sigma[0, 0]) - 1)
+    # exp_Sigma_22 = (jnp.exp(mu[1] + 1/2*Sigma[1,1]))**2 * (jnp.exp(Sigma[1, 1]) - 1)
+    # exp_Sigma_12 = (jnp.exp(mu[0] + 1/2*Sigma[0,0])) * (jnp.exp(mu[1] + 1/2*Sigma[1,1])) * (jnp.exp(Sigma[0, 1]) - 1)
+    # exp_Sigma_21 = exp_Sigma_12
+
+    # exp_Sigma = jnp.array([[exp_Sigma_11, exp_Sigma_12], [exp_Sigma_21, exp_Sigma_22]])/4000
+    # print(f"exp_Sigma: {exp_Sigma}")
+    scale_2 = exp_mu[1] * (tail_indices[1] - 2) / (tail_indices[1] - 1)
+    scale_1 = scale_2
 
     degree_seq = DegreeSeq(n=86345, verbose=True)
-    in_degrees, out_degrees = degree_seq.generate(key, bivariate_lognormal_pareto2, exp_mu=mu, Sigma=Sigma, tail_indices=[1.59, 2.38], transition_point=transition_point,beta= 4)
+    out_degrees, in_degrees = degree_seq.generate(key,
+                                                  bivariate_lognormal_pareto2,
+                                                  exp_mu=exp_mu,
+                                                  Sigma=Sigma,
+                                                  tail_indices=tail_indices,
+                                                  transition_point=transition_point,
+                                                  scale_1=scale_1,
+                                                  scale_2=scale_2,
+                                                  capula="gaussian",
+                                                  capula_cov_matrix=jnp.array([[1,1.0585],[1.0585,4.485]]))
     degree_seq.plot('degree_sequence_mixture.png')
-    degree_seq.save('degree_sequence_mixture.txt')
+    # degree_seq.save('degree_sequence_mixture.txt')

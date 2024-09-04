@@ -190,5 +190,5 @@
         "log_file_path": "logs/full_multi/7th_graders_layer3/DirectedS1Fitter/test_infer_params_fit_from_file.log",
         "debug": false
     },
-    "inference_time": 2307.4409730434418
+    "inference_time": 1235.0810084342957
 }

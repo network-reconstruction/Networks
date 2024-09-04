@@ -1,7 +1,7 @@
 {
     "beta": 1.0065383911132812,
     "mu": 0.022865332663059235,
-    "nu": -0.3900350332260132,
+    "nu": -0.4388335943222046,
     "R": 47.26901809829292,
     "inferred_kappas": [
         {
@@ -1169,10 +1169,10 @@
         "verbose": true,
         "KAPPA_MAX_NB_ITER_CONV": 30,
         "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 500,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.15,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.15,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 5e-05,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 5e-05,
         "log_file_path": "logs/full_multi/celegansneural/DirectedS1Fitter/test_infer_params_fit_from_file.log",
         "debug": false
     },
-    "inference_time": 38748.38190817833
+    "inference_time": 148467.05016326904
 }

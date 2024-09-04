@@ -7,146 +7,146 @@
         {
             "in_deg": 5,
             "out_deg": 3,
-            "kappa_in": 0.6508504152297974,
-            "kappa_out": 2.4384543895721436
+            "kappa_in": 3.7836732864379883,
+            "kappa_out": 0.8200885653495789
         },
         {
             "in_deg": 5,
             "out_deg": 10,
-            "kappa_in": 0.6508504152297974,
-            "kappa_out": 36.66392517089844
+            "kappa_in": 3.7836732864379883,
+            "kappa_out": 874.0005493164062
         },
         {
             "in_deg": 5,
             "out_deg": 4,
-            "kappa_in": 0.6508504152297974,
-            "kappa_out": 11.896255493164062
+            "kappa_in": 3.7836732864379883,
+            "kappa_out": 36.7482795715332
         },
         {
             "in_deg": 5,
             "out_deg": 5,
-            "kappa_in": 0.6508504152297974,
-            "kappa_out": 9.03455924987793
+            "kappa_in": 3.7836732864379883,
+            "kappa_out": 10.183895111083984
         },
         {
             "in_deg": 8,
             "out_deg": 22,
-            "kappa_in": 3.4840447902679443,
-            "kappa_out": 92.23302459716797
+            "kappa_in": 0.22561216354370117,
+            "kappa_out": 5246.4033203125
         },
         {
             "in_deg": 8,
             "out_deg": 17,
-            "kappa_in": 3.4840447902679443,
-            "kappa_out": 68.5566635131836
+            "kappa_in": 0.22561216354370117,
+            "kappa_out": 3299.8623046875
         },
         {
             "in_deg": 8,
             "out_deg": 6,
-            "kappa_in": 3.4840447902679443,
-            "kappa_out": 4.5577874183654785
+            "kappa_in": 0.22561216354370117,
+            "kappa_out": 2.475193977355957
         },
         {
             "in_deg": 4,
             "out_deg": 3,
-            "kappa_in": 0.6545963287353516,
-            "kappa_out": 2.4384543895721436
+            "kappa_in": 2.7655203342437744,
+            "kappa_out": 0.8200885653495789
         },
         {
             "in_deg": 4,
             "out_deg": 9,
-            "kappa_in": 0.6545963287353516,
-            "kappa_out": 21.28408432006836
+            "kappa_in": 2.7655203342437744,
+            "kappa_out": 51.589420318603516
         },
         {
             "in_deg": 4,
             "out_deg": 2,
-            "kappa_in": 0.6545963287353516,
-            "kappa_out": 0.5370115041732788
+            "kappa_in": 2.7655203342437744,
+            "kappa_out": 0.8545168042182922
         },
         {
             "in_deg": 4,
             "out_deg": 6,
-            "kappa_in": 0.6545963287353516,
-            "kappa_out": 4.5577874183654785
+            "kappa_in": 2.7655203342437744,
+            "kappa_out": 2.475193977355957
         },
         {
             "in_deg": 6,
             "out_deg": 8,
-            "kappa_in": 1.213348627090454,
-            "kappa_out": 5.088603973388672
+            "kappa_in": 2.150909662246704,
+            "kappa_out": 2.9751694202423096
         },
         {
             "in_deg": 6,
             "out_deg": 2,
-            "kappa_in": 1.213348627090454,
-            "kappa_out": 0.5370115041732788
+            "kappa_in": 2.150909662246704,
+            "kappa_out": 0.8545168042182922
         },
         {
             "in_deg": 6,
             "out_deg": 9,
-            "kappa_in": 1.213348627090454,
-            "kappa_out": 21.28408432006836
+            "kappa_in": 2.150909662246704,
+            "kappa_out": 51.589420318603516
         },
         {
             "in_deg": 9,
             "out_deg": 8,
-            "kappa_in": 11.190691947937012,
-            "kappa_out": 5.088603973388672
+            "kappa_in": 3.37015700340271,
+            "kappa_out": 2.9751694202423096
         },
         {
             "in_deg": 9,
             "out_deg": 6,
-            "kappa_in": 11.190691947937012,
-            "kappa_out": 4.5577874183654785
+            "kappa_in": 3.37015700340271,
+            "kappa_out": 2.475193977355957
         },
         {
             "in_deg": 12,
             "out_deg": 6,
-            "kappa_in": 38.194156646728516,
-            "kappa_out": 4.5577874183654785
+            "kappa_in": 728.712158203125,
+            "kappa_out": 2.475193977355957
         },
         {
             "in_deg": 3,
             "out_deg": 1,
-            "kappa_in": 1.2914762496948242,
-            "kappa_out": 2.0548489093780518
+            "kappa_in": 0.6929078102111816,
+            "kappa_out": 0.8163202404975891
         },
         {
             "in_deg": 3,
             "out_deg": 2,
-            "kappa_in": 1.2914762496948242,
-            "kappa_out": 0.5370115041732788
+            "kappa_in": 0.6929078102111816,
+            "kappa_out": 0.8545168042182922
         },
         {
             "in_deg": 11,
             "out_deg": 7,
-            "kappa_in": 3.541410207748413,
-            "kappa_out": 14.794283866882324
+            "kappa_in": 1.1478908061981201,
+            "kappa_out": 25.381877899169922
         },
         {
             "in_deg": 11,
             "out_deg": 8,
-            "kappa_in": 3.541410207748413,
-            "kappa_out": 5.088603973388672
+            "kappa_in": 1.1478908061981201,
+            "kappa_out": 2.9751694202423096
         },
         {
             "in_deg": 7,
             "out_deg": 2,
-            "kappa_in": 17.659332275390625,
-            "kappa_out": 0.5370115041732788
+            "kappa_in": 27.166400909423828,
+            "kappa_out": 0.8545168042182922
         },
         {
             "in_deg": 1,
             "out_deg": 5,
-            "kappa_in": 0.7626415491104126,
-            "kappa_out": 9.03455924987793
+            "kappa_in": 0.34645721316337585,
+            "kappa_out": 10.183895111083984
         },
         {
             "in_deg": 2,
             "out_deg": 2,
-            "kappa_in": 0.6813948154449463,
-            "kappa_out": 0.5370115041732788
+            "kappa_in": 1.0262763500213623,
+            "kappa_out": 0.8545168042182922
         }
     ],
     "flags": {
@@ -165,11 +165,11 @@
     "model_params": {
         "seed": 0,
         "verbose": true,
-        "KAPPA_MAX_NB_ITER_CONV": 100,
-        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 50,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.15,
-        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.15,
-        "log_file_path": "logs/full_multi_functional/7th_graders_layer2/DirectedS1/test_directedS1_functional.log"
+        "KAPPA_MAX_NB_ITER_CONV": 1000,
+        "EXP_CLUST_NB_INTEGRATION_MC_STEPS": 10,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_1": 0.1,
+        "NUMERICAL_CONVERGENCE_THRESHOLD_2": 0.1,
+        "log_file_path": "logs/full_multi_functional/7th_graders_layer2/DirectedS1Fitter/test_infer_params_functional_fit_from_file.log"
     },
-    "inference_time": 29.355979442596436
+    "inference_time": 89.2189245223999
 }
